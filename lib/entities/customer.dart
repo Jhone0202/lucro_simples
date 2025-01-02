@@ -7,12 +7,14 @@ class Customer {
   int? id;
   String? photoURL;
   String name;
+  String phoneNumber;
   CustomerType type;
 
   Customer({
     this.id,
     this.photoURL,
     required this.name,
+    required this.phoneNumber,
     required this.type,
   });
 
@@ -21,6 +23,7 @@ class Customer {
       'id': id,
       'photoURL': photoURL,
       'name': name,
+      'phoneNumber': phoneNumber,
       'type': type.id,
     };
   }
@@ -30,6 +33,7 @@ class Customer {
       id: map['id'] != null ? map['id'] as int : null,
       photoURL: map['photoURL'] != null ? map['photoURL'] as String : null,
       name: map['name'] as String,
+      phoneNumber: map['phoneNumber'] as String,
       type: CustomerType.fromId(map['type'] as int),
     );
   }
