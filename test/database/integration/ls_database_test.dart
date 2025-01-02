@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lucro_simples/app_mode.dart';
-import 'package:lucro_simples/database/ls_database.dart';
+import 'package:lucro_simples/databases/ls_database.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import '../mocks/ls_database_mock.dart';

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:lucro_simples/database/ls_migration_scripts.dart';
+import 'package:lucro_simples/databases/ls_migration_scripts.dart';
 import 'package:lucro_simples/helpers/directory_helper.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
