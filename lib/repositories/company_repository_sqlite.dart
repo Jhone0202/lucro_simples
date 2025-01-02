@@ -17,11 +17,7 @@ class CompanyRepositorySqlite extends ICompanyRepository {
 
     final savedCompany = await _getCompanyByKey('id', id);
 
-    if (savedCompany == null) {
-      throw 'Não foi possível cadastrar a empresa corretamente';
-    }
-
-    return savedCompany;
+    return savedCompany!;
   }
 
   Future<Company?> _getCompanyByKey(String key, dynamic value) async {
