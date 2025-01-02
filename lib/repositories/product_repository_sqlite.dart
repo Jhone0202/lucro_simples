@@ -62,7 +62,7 @@ class ProductRepositorySqlite extends IProductRepository {
 
     final res = await database.query(
       'products',
-      where: 'ideprod LIKE "%?%"',
+      where: 'name LIKE "%?%"',
       whereArgs: [search],
       orderBy: 'TRIM(name)',
       limit: limit,
