@@ -44,7 +44,7 @@ class _IntroCompanyPageState extends State<IntroCompanyPage> {
 
   Future _saveAndInitSession() async {
     company.name = nameController.text;
-    company.userName = nameController.text;
+    company.userName = userNameController.text;
 
     final saved = await repository.registerNewCompany(company);
     SessionManager.initSession(saved);

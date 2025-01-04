@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:lucro_simples/managers/session_manager.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = 'home_page';
@@ -9,19 +12,28 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  final company = SessionManager.loggedCompany!;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: ClipOval(
+              child: company.photoURL != null
+                  ? Image.file(
+                      File(company.photoURL!),
+                      fit: BoxFit.cover,
+                    )
+                  : const Icon(
+                      Icons.camera_alt,
+                      color: Colors.grey,
+                    ),
+            ),
+            title: Text(company.name),
+            subtitle: Text(company.userName),
+          ),
         ),
         body: Center(
           child: Column(
@@ -30,15 +42,11 @@ class _HomePageState extends State<HomePage> {
               const Text(
                 'You have pushed the button this many times:',
               ),
-              Text(
-                '$_counter',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: _incrementCounter,
+          onPressed: () {},
           tooltip: 'Increment',
           child: const Icon(Icons.add),
         ));
