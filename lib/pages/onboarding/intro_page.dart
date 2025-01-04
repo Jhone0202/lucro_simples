@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lucro_simples/components/rounded_button.dart';
 import 'package:lucro_simples/pages/onboarding/intro_company_page.dart';
 
 class IntroPage extends StatefulWidget {
-  static const String routeName = '/';
+  static const String routeName = '/intro_page';
   const IntroPage({super.key});
 
   @override
@@ -29,19 +30,14 @@ class _IntroPageState extends State<IntroPage> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
-            FilledButton(
+            RoundedButton(
               onPressed: () => Navigator.pushNamed(
                 context,
                 IntroCompanyPage.routeName,
               ),
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('Começar'),
-                  SizedBox(width: 8),
-                  Icon(Icons.arrow_forward),
-                ],
-              ),
+              title: 'Começar',
+              iconData: Icons.arrow_forward,
+              expanded: false,
             ),
           ],
         ),

@@ -33,4 +33,15 @@ class CompanyRepositorySqlite extends ICompanyRepository {
 
     return Company.fromMap(res.first);
   }
+
+  @override
+  Future<Company?> getSavedCompany() async {
+    final database = await LsDatabase().db;
+
+    final res = await database.query('companies', limit: 1);
+
+    if (res.isEmpty) return null;
+
+    return Company.fromMap(res.first);
+  }
 }

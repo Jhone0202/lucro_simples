@@ -2,7 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lucro_simples/app_injector.dart';
+import 'package:lucro_simples/components/rounded_button.dart';
 import 'package:lucro_simples/entities/company.dart';
+import 'package:lucro_simples/managers/session_manager.dart';
+import 'package:lucro_simples/pages/home_page.dart';
+import 'package:lucro_simples/repositories/company_repository_interface.dart';
 import 'package:lucro_simples/utils/input_decorations.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -15,21 +20,41 @@ class IntroCompanyPage extends StatefulWidget {
 }
 
 class _IntroCompanyPageState extends State<IntroCompanyPage> {
-  final _company = Company(name: '', userName: '');
-  final _picker = ImagePicker();
+  final picker = ImagePicker();
+
+  final repository = getIt.get<ICompanyRepository>();
+  final company = Company(name: '', userName: '');
+  final formKey = GlobalKey<FormState>();
+
+  final nameController = TextEditingController();
+  final userNameController = TextEditingController();
 
   Future _selectPhoto() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      final appDir = await getApplicationDocumentsDirectory();
+      final dir = await getApplicationDocumentsDirectory();
       final fileName = pickedFile.name;
-      final savedImage =
-          await File(pickedFile.path).copy('${appDir.path}/$fileName');
+      final saved = await File(pickedFile.path).copy('${dir.path}/$fileName');
 
-      setState(() {
-        _company.photoURL = savedImage.path; // Salva o caminho da imagem
-      });
+      company.photoURL = saved.path;
+      setState(() {});
+    }
+  }
+
+  Future _saveAndInitSession() async {
+    company.name = nameController.text;
+    company.userName = nameController.text;
+
+    final saved = await repository.registerNewCompany(company);
+    SessionManager.initSession(saved);
+
+    if (mounted) {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        HomePage.routeName,
+        (route) => false,
+      );
     }
   }
 
@@ -57,52 +82,54 @@ class _IntroCompanyPageState extends State<IntroCompanyPage> {
                 backgroundColor: Colors.grey.shade100,
                 padding: EdgeInsets.zero,
               ),
-              child: _company.photoURL != null
+              child: company.photoURL != null
                   ? ClipOval(
                       child: Image.file(
-                        File(_company.photoURL!),
+                        File(company.photoURL!),
                         fit: BoxFit.cover,
                         width: 160,
                         height: 160,
                       ),
                     )
                   : const Icon(
-                      Icons.photo,
+                      Icons.camera_alt,
                       color: Colors.grey,
                     ),
             ),
             const SizedBox(height: 24),
             Form(
+              key: formKey,
               child: Column(
                 children: [
                   TextFormField(
+                    controller: nameController,
                     decoration: defaultFormDecoration(context).copyWith(
                       labelText: 'Nome da Empresa',
                     ),
+                    validator: (v) => v?.trim().isEmpty == true
+                        ? 'Por favor, informe o nome da sua empresa.'
+                        : null,
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
+                    controller: userNameController,
                     decoration: defaultFormDecoration(context).copyWith(
                       labelText: 'Seu Nome',
                     ),
+                    validator: (v) => v?.trim().isEmpty == true
+                        ? 'Por favor, informe o seu nome.'
+                        : null,
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 32),
-            FilledButton(
-              onPressed: () => Navigator.pushNamed(
-                context,
-                IntroCompanyPage.routeName,
-              ),
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('Continuar'),
-                  SizedBox(width: 8),
-                  Icon(Icons.arrow_forward),
-                ],
-              ),
+            RoundedButton(
+              onPressed: _saveAndInitSession,
+              title: 'Salvar',
+              iconData: Icons.arrow_forward,
+              expanded: false,
+              formKey: formKey,
             ),
           ],
         ),

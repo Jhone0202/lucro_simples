@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/utils/feedback_user.dart';
 
-class PrimaryButton extends StatefulWidget {
+class RoundedButton extends StatefulWidget {
   final String title;
   final Function? onPressed;
   final bool expanded;
@@ -15,7 +15,7 @@ class PrimaryButton extends StatefulWidget {
   final bool small;
   final Color? contentColor;
 
-  const PrimaryButton({
+  const RoundedButton({
     super.key,
     required this.title,
     this.onPressed,
@@ -31,10 +31,10 @@ class PrimaryButton extends StatefulWidget {
   });
 
   @override
-  State<PrimaryButton> createState() => _PrimaryButtonState();
+  State<RoundedButton> createState() => _RoundedButtonState();
 }
 
-class _PrimaryButtonState extends State<PrimaryButton> {
+class _RoundedButtonState extends State<RoundedButton> {
   bool _isLoading = false;
 
   Future<void> _handleOnPressed() async {
@@ -85,14 +85,11 @@ class _PrimaryButtonState extends State<PrimaryButton> {
             _isLoading || widget.onPressed == null ? null : _handleOnPressed,
         style: FilledButton.styleFrom(
           visualDensity: widget.small ? VisualDensity.compact : null,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(6),
-          ),
           disabledBackgroundColor: Colors.grey,
           disabledForegroundColor: Colors.white70,
           padding: widget.small
               ? const EdgeInsets.symmetric(horizontal: 8, vertical: 4)
-              : const EdgeInsets.all(20),
+              : null,
           backgroundColor: widget.backgroundColor,
           foregroundColor: widget.contentColor,
         ),
@@ -111,10 +108,6 @@ class _PrimaryButtonState extends State<PrimaryButton> {
               const SizedBox(width: 8),
               Text(widget.loadingTitle),
             ] else ...[
-              if (widget.iconData != null) ...[
-                Icon(widget.iconData, size: widget.small ? 14 : 20),
-                SizedBox(width: widget.small ? 4 : 8),
-              ],
               Flexible(
                 child: Text(
                   widget.title,
@@ -123,6 +116,10 @@ class _PrimaryButtonState extends State<PrimaryButton> {
                   style: TextStyle(fontSize: widget.small ? 12 : null),
                 ),
               ),
+              if (widget.iconData != null) ...[
+                SizedBox(width: widget.small ? 4 : 8),
+                Icon(widget.iconData, size: widget.small ? 14 : 20),
+              ],
             ]
           ],
         ),
