@@ -65,8 +65,10 @@ class CustomerRepositorySqlite extends ICustomerRepository {
 
     final res = await database.query(
       'customers',
-      where: 'name LIKE "%$search%" OR phoneNumber LIKE "%$search%"',
-      orderBy: 'TRIM(name)',
+      where: search.isEmpty
+          ? null
+          : 'name LIKE "%$search%" OR phoneNumber LIKE "%$search%"',
+      orderBy: 'name',
       limit: limit,
       offset: offset,
     );

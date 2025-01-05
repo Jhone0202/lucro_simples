@@ -1,7 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:lucro_simples/managers/session_manager.dart';
+import 'package:lucro_simples/pages/home/customers_page.dart';
+import 'package:lucro_simples/pages/home/dashboard_page.dart';
+import 'package:lucro_simples/pages/home/products_page.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = 'home_page';
@@ -15,8 +15,6 @@ class _HomePageState extends State<HomePage> {
   final pageController = PageController();
   int currentIndex = 0;
 
-  final company = SessionManager.loggedCompany!;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,29 +24,10 @@ class _HomePageState extends State<HomePage> {
           currentIndex = page;
           setState(() {});
         },
-        children: [
-          Scaffold(
-            appBar: AppBar(
-              title: ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: ClipOval(
-                  child: company.photoURL != null
-                      ? Image.file(
-                          File(company.photoURL!),
-                          fit: BoxFit.cover,
-                        )
-                      : const Icon(
-                          Icons.camera_alt,
-                          color: Colors.grey,
-                        ),
-                ),
-                title: Text(company.name),
-                subtitle: Text(company.userName),
-              ),
-            ),
-          ),
-          Container(),
-          Container(),
+        children: const [
+          DashboardPage(),
+          ProductsPage(),
+          CustomersPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

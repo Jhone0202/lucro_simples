@@ -6,7 +6,8 @@ Map<int, String> lsMigrationScripts = {
         name TEXT NOT NULL,                    
         userName TEXT NOT NULL          
       );
-
+    ''',
+  2: '''
       CREATE TABLE products (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         photoURL TEXT,                       
@@ -14,15 +15,17 @@ Map<int, String> lsMigrationScripts = {
         costPrice REAL NOT NULL,             
         salePrice REAL NOT NULL              
       );
-
-      CREATE TABLE customers (
+    ''',
+  3: '''
+        CREATE TABLE customers (
         id INTEGER PRIMARY KEY AUTOINCREMENT,   
         photoURL TEXT,                          
         name TEXT NOT NULL,  
         phoneNumber TEXT NOT NULL,                     
         type INTEGER NOT NULL                   
       );
-
+    ''',
+  4: '''
       CREATE TABLE sales (
         id INTEGER PRIMARY KEY AUTOINCREMENT,          
         productId INTEGER NOT NULL,                    
@@ -41,6 +44,9 @@ Map<int, String> lsMigrationScripts = {
         FOREIGN KEY (customerId) REFERENCES customers(id),  
         FOREIGN KEY (companyId) REFERENCES companies(id)     
       );
-
-      ''',
+    ''',
+  5: '''
+      INSERT INTO customers (photoURL, name, phoneNumber, type) 
+      VALUES (NULL, 'Consumidor Final', '00000000000', 1);
+    '''
 };

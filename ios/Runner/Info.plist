@@ -45,5 +45,7 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>O aplicativo te permite selecionar fotos da galeria para cadastrar sua empresa, produto ou cliente</string>	
 </dict>
 </plist>
