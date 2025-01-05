@@ -47,6 +47,6 @@ Map<int, String> lsMigrationScripts = {
     ''',
   5: '''
       INSERT INTO customers (photoURL, name, phoneNumber, type) 
-      VALUES (NULL, 'Consumidor Final', '00000000000', 1);
+      VALUES (NULL, 'Consumidor Final', '+00 (00) 0 0000-0000', 1);
     '''
 };

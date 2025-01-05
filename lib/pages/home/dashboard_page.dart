@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:lucro_simples/components/circle_file_image.dart';
 import 'package:lucro_simples/managers/session_manager.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -19,21 +18,7 @@ class _DashboardPageState extends State<DashboardPage> {
       appBar: AppBar(
         title: ListTile(
           contentPadding: EdgeInsets.zero,
-          leading: SizedBox(
-            width: 56,
-            height: 56,
-            child: ClipOval(
-              child: company.photoURL != null
-                  ? Image.file(
-                      File(company.photoURL!),
-                      fit: BoxFit.cover,
-                    )
-                  : const Icon(
-                      Icons.camera_alt,
-                      color: Colors.grey,
-                    ),
-            ),
-          ),
+          leading: CircleFileImage(filePath: company.photoURL),
           title: Text(company.name),
           subtitle: Text(company.userName),
         ),
