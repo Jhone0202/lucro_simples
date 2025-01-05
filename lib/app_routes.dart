@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucro_simples/pages/home_page.dart';
+import 'package:lucro_simples/pages/home/home_page.dart';
 import 'package:lucro_simples/pages/onboarding/intro_company_page.dart';
 import 'package:lucro_simples/pages/onboarding/intro_page.dart';
 import 'package:lucro_simples/pages/splash_page.dart';

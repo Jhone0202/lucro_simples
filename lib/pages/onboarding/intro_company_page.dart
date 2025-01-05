@@ -6,7 +6,7 @@ import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/components/rounded_button.dart';
 import 'package:lucro_simples/entities/company.dart';
 import 'package:lucro_simples/managers/session_manager.dart';
-import 'package:lucro_simples/pages/home_page.dart';
+import 'package:lucro_simples/pages/home/home_page.dart';
 import 'package:lucro_simples/repositories/company_repository_interface.dart';
 import 'package:lucro_simples/utils/input_decorations.dart';
 import 'package:path_provider/path_provider.dart';

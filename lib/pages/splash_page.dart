@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/managers/session_manager.dart';
-import 'package:lucro_simples/pages/home_page.dart';
+import 'package:lucro_simples/pages/home/home_page.dart';
 import 'package:lucro_simples/pages/onboarding/intro_page.dart';
 import 'package:lucro_simples/repositories/company_repository_interface.dart';
 
