@@ -58,6 +58,31 @@ class _NewSalePageState extends State<NewSalePage> {
     if (mounted) Navigator.pop(context, saved);
   }
 
+  void _addQuantity() {
+    sale.quantity++;
+    _refreshValues();
+  }
+
+  void _removeQuantity() {
+    sale.quantity--;
+    _refreshValues();
+  }
+
+  void _editQuantity(int newQuantity) {
+    sale.quantity = newQuantity;
+    _refreshValues();
+  }
+
+  void _refreshValues() {
+    final totalCost = widget.args.product.costPrice * sale.quantity;
+
+    sale.subtotal = widget.args.product.salePrice * sale.quantity;
+    sale.total = sale.subtotal - sale.discount;
+    sale.profit = sale.total - totalCost;
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,9 +164,9 @@ class _NewSalePageState extends State<NewSalePage> {
                 ),
                 Expanded(
                   child: EditQuantityWidget(
-                    remove: () {},
-                    add: () {},
-                    edit: () {},
+                    remove: _removeQuantity,
+                    add: _addQuantity,
+                    edit: _editQuantity,
                     quantity: sale.quantity,
                   ),
                 ),
