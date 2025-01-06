@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_routes.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -14,6 +15,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routes: appRoutes,
+      localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
+      supportedLocales: const <Locale>[Locale('pt', 'BR')],
     );
   }
 }

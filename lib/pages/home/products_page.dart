@@ -7,7 +7,10 @@ import 'package:lucro_simples/repositories/product_repository_interface.dart';
 import 'package:lucro_simples/utils/formaters_util.dart';
 
 class ProductsPage extends StatefulWidget {
-  const ProductsPage({super.key});
+  static const String routeName = 'products_page';
+
+  final bool getProduct;
+  const ProductsPage({super.key, this.getProduct = false});
 
   @override
   State<ProductsPage> createState() => _ProductsPageState();
@@ -29,6 +32,9 @@ class _ProductsPageState extends State<ProductsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: widget.getProduct
+          ? AppBar(title: const Text('Selecione o Produto'))
+          : null,
       body: SafeArea(
         child: Column(
           children: [
@@ -50,7 +56,9 @@ class _ProductsPageState extends State<ProductsPage> {
                     ),
                     child: InkWell(
                       onTap: () {
-                        print('a');
+                        if (widget.getProduct) {
+                          Navigator.pop(context, product);
+                        }
                       },
                       borderRadius: BorderRadius.circular(16),
                       child: Padding(

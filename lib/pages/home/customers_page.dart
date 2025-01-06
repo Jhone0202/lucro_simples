@@ -5,7 +5,10 @@ import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/repositories/customer_repository_interface.dart';
 
 class CustomersPage extends StatefulWidget {
-  const CustomersPage({super.key});
+  static const String routeName = 'customers_page';
+
+  final bool getCustomer;
+  const CustomersPage({super.key, this.getCustomer = false});
 
   @override
   State<CustomersPage> createState() => _CustomersPageState();
@@ -27,6 +30,9 @@ class _CustomersPageState extends State<CustomersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: widget.getCustomer
+          ? AppBar(title: const Text('Selecione o Cliente'))
+          : null,
       body: SafeArea(
         child: Column(
           children: [
@@ -48,7 +54,9 @@ class _CustomersPageState extends State<CustomersPage> {
                     ),
                     child: InkWell(
                       onTap: () {
-                        print('a');
+                        if (widget.getCustomer) {
+                          Navigator.pop(context, customer);
+                        }
                       },
                       borderRadius: BorderRadius.circular(16),
                       child: Padding(
