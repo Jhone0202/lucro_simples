@@ -66,7 +66,7 @@ class _ProductRegisterPageState extends State<ProductRegisterPage> {
               Expanded(
                 child: Form(
                   key: formKey,
-                  child: Column(
+                  child: ListView(
                     children: [
                       AspectRatio(
                         aspectRatio: 1.6,

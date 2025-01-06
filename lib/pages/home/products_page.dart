@@ -1,7 +1,9 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/entities/product.dart';
+import 'package:lucro_simples/helpers/adaptive_grid_helper.dart';
 import 'package:lucro_simples/pages/product_register_page.dart';
 import 'package:lucro_simples/repositories/product_repository_interface.dart';
 import 'package:lucro_simples/utils/formaters_util.dart';
@@ -26,6 +28,8 @@ class _ProductsPageState extends State<ProductsPage> {
     repository.getPaginatedProducts('', 100, 0).then((res) {
       products = res;
       setState(() {});
+    }).catchError((error) {
+      log(error);
     });
   }
 
@@ -39,12 +43,8 @@ class _ProductsPageState extends State<ProductsPage> {
         child: Column(
           children: [
             Expanded(
-              child: GridView.builder(
-                padding: const EdgeInsets.all(16),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 1,
-                ),
+              child: AdaptiveGridHelper(
+                minSizeItem: 200,
                 itemCount: products.length,
                 itemBuilder: (context, index) {
                   final product = products[index];
@@ -64,6 +64,7 @@ class _ProductsPageState extends State<ProductsPage> {
                       child: Padding(
                         padding: const EdgeInsets.all(8),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             AspectRatio(
                               aspectRatio: 1.6,
@@ -92,7 +93,6 @@ class _ProductsPageState extends State<ProductsPage> {
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
-                            const SizedBox(height: 4),
                             Text(
                               formatRealBr(product.salePrice),
                               maxLines: 1,
