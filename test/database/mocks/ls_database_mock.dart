@@ -47,6 +47,8 @@ class LsDatabaseMock {
       subtotal: 38,
       total: 35,
       profit: 7,
+      productName: '',
+      customerName: '',
     );
   }
 }

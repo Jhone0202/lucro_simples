@@ -47,15 +47,43 @@ class _DashboardPageState extends State<DashboardPage> {
           subtitle: Text(company.userName),
         ),
       ),
-      body: ListView.builder(
-        itemCount: sales.length,
-        itemBuilder: (context, index) {
-          final sale = sales[index];
-          return ListTile(
-            title: Text(getFriendlyDateTime(sale.saleDate)),
-            subtitle: Text(formatRealBr(sale.total)),
-          );
-        },
+      body: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Text(
+              'Histórico de Vendas',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            separatorBuilder: (context, index) => Divider(
+              color: Colors.grey.shade300,
+            ),
+            itemCount: sales.length,
+            itemBuilder: (context, index) {
+              final sale = sales[index];
+              return ListTile(
+                title: Text(sale.productName),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(sale.customerName),
+                    Text(formatRealBr(sale.total)),
+                  ],
+                ),
+                leading: CircleFileImage(filePath: sale.productPhotoURL),
+                trailing: Text(
+                  getFriendlyDateTime(sale.saleDate, separated: true),
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  textAlign: TextAlign.end,
+                ),
+              );
+            },
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {

@@ -34,7 +34,7 @@ class SaleRepositorySqlite extends ISaleRepository {
   ) async {
     final database = await LsDatabase().db;
 
-    // Adicionar campos para buscar pelo nome do cliente ou produto
+    // TODO:Adicionar campos para buscar pelo nome do cliente ou produto
     final res = await database.query(
       'sales',
       orderBy: 'saleDate DESC',
