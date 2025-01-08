@@ -66,12 +66,21 @@ class _DashboardPageState extends State<DashboardPage> {
             itemBuilder: (context, index) {
               final sale = sales[index];
               return ListTile(
-                title: Text(sale.productName),
+                title: Text(
+                  sale.productName,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(sale.customerName),
-                    Text(formatRealBr(sale.total)),
+                    Text(
+                      formatRealBr(sale.total),
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleSmall
+                          ?.copyWith(color: Colors.green),
+                    ),
                   ],
                 ),
                 leading: CircleFileImage(filePath: sale.productPhotoURL),

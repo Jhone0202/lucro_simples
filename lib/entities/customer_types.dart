@@ -14,6 +14,14 @@ abstract class CustomerType {
         throw ArgumentError('Unknown customer type: $id');
     }
   }
+
+  static List<CustomerType> getAllTypes() {
+    return [
+      IndividualCustomer(),
+      BusinessCustomer(),
+      ConsignmentCustomer(),
+    ];
+  }
 }
 
 class IndividualCustomer implements CustomerType {

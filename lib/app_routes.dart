@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucro_simples/pages/customer_register_page.dart';
 import 'package:lucro_simples/pages/home/customers_page.dart';
 import 'package:lucro_simples/pages/home/home_page.dart';
 import 'package:lucro_simples/pages/home/products_page.dart';
@@ -25,4 +26,5 @@ final appRoutes = <String, WidgetBuilder>{
         args: ModalRoute.of(context)?.settings.arguments as NewSalePageArgs,
       ),
   ProductRegisterPage.routeName: (context) => const ProductRegisterPage(),
+  CustomerRegisterPage.routeName: (context) => const CustomerRegisterPage(),
 };

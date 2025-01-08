@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/components/circle_file_image.dart';
 import 'package:lucro_simples/entities/customer.dart';
+import 'package:lucro_simples/pages/customer_register_page.dart';
 import 'package:lucro_simples/repositories/customer_repository_interface.dart';
 
 class CustomersPage extends StatefulWidget {
@@ -106,7 +107,10 @@ class _CustomersPageState extends State<CustomersPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () => Navigator.pushNamed(
+          context,
+          CustomerRegisterPage.routeName,
+        ),
         label: const Text('Cadastrar Cliente'),
         icon: const Icon(Icons.add),
       ),
