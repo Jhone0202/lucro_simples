@@ -60,4 +60,78 @@ Map<int, String> lsMigrationScripts = {
           customerName = (SELECT name FROM customers WHERE customers.id = sales.customerId);
     ''',
   11: 'ALTER TABLE sales ADD COLUMN increase REAL DEFAULT 0',
+  12: '''
+        CREATE TABLE payment_methods (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,   
+        name TEXT NOT NULL,                          
+        increasePercent REAL NOT NULL,  
+        discountPercent REAL NOT NULL,
+        maxInstallments INTEGER NOT NULL
+      )
+    ''',
+  13: '''
+      INSERT INTO payment_methods (name, increasePercent, discountPercent, maxInstallments) 
+      VALUES
+        ('Dinheiro', 0, 0, 1)
+        ('Pix', 0, 0, 1), 
+        ('Cartão de Crédito', 5, 0, 12)
+        ('Cartão de Débito', 2, 0, 1)
+    ''',
+  14: '''
+      CREATE TABLE sale_items (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,          
+        productId INTEGER NOT NULL,                    
+        saleId INTEGER NOT NULL,          
+        productName TEXT NOT NULL,                     
+        productPhotoURL TEXT,                               
+        quantity INTEGER NOT NULL,                     
+        productPrice REAL NOT NULL,                        
+        total REAL NOT NULL,                           
+        profit REAL NOT NULL,                                             
+        FOREIGN KEY (productId) REFERENCES products(id),    
+        FOREIGN KEY (saleId) REFERENCES sales(id)
+      )
+    ''',
+  15: '''
+      ALTER TABLE sales ADD COLUMN paymentMethodId INTEGER DEFAULT 1;
+    ''',
+  16: '''
+      INSERT INTO sales_items (
+        saleId, productId, productName, productPhotoURL, quantity, productPrice, total, profit
+      )
+      SELECT 
+        id AS saleId,
+        productId,
+        productName,
+        productPhotoURL,
+        quantity,
+        subtotal / quantity AS productPrice,
+        subtotal AS total,
+        profit
+      FROM sales;
+    ''',
+  17: '''
+      CREATE TABLE sales_temp AS
+      SELECT 
+        id,
+        customerId,
+        customerName,
+        customerPhotoURL,
+        companyId,
+        saleDate,
+        deliveryDate,
+        discount,
+        subtotal,
+        total,
+        profit,
+        deliveryType,
+        deliveryCost,
+        increase,
+        paymentMethodId
+      FROM sales;
+
+      DROP TABLE sales;
+
+      ALTER TABLE sales_temp RENAME TO sales;
+    ''',
 };

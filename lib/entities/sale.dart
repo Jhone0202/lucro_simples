@@ -17,6 +17,7 @@ class Sale {
   double subtotal;
   double total;
   double profit;
+  int paymentMethodId;
 
   Sale({
     this.id,
@@ -34,6 +35,7 @@ class Sale {
     required this.subtotal,
     required this.total,
     required this.profit,
+    required this.paymentMethodId,
   });
 
   Map<String, dynamic> toMap() {
@@ -52,6 +54,7 @@ class Sale {
       'subtotal': subtotal,
       'total': total,
       'profit': profit,
+      'paymentMethodId': paymentMethodId,
     };
   }
 
@@ -77,6 +80,7 @@ class Sale {
       subtotal: map['subtotal'] as double,
       total: map['total'] as double,
       profit: map['profit'] as double,
+      paymentMethodId: map['paymentMethodId'] as int,
     );
   }
 }

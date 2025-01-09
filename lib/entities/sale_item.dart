@@ -5,10 +5,10 @@ class SaleItem {
   int? id;
   int productId;
   int saleId;
-  String name;
-  String? photoURL;
+  String productName;
+  String? productPhotoURL;
   int quantity;
-  double price;
+  double productPrice;
   double total;
   double profit;
 
@@ -16,10 +16,10 @@ class SaleItem {
     this.id,
     required this.productId,
     required this.saleId,
-    required this.name,
-    this.photoURL,
+    required this.productName,
+    this.productPhotoURL,
     required this.quantity,
-    required this.price,
+    required this.productPrice,
     required this.total,
     required this.profit,
   });
@@ -29,10 +29,10 @@ class SaleItem {
       'id': id,
       'productId': productId,
       'saleId': saleId,
-      'name': name,
-      'photoURL': photoURL,
+      'productName': productName,
+      'productPhotoURL': productPhotoURL,
       'quantity': quantity,
-      'price': price,
+      'productPrice': productPrice,
       'total': total,
       'profit': profit,
     };
@@ -43,10 +43,12 @@ class SaleItem {
       id: map['id'] != null ? map['id'] as int : null,
       productId: map['productId'] as int,
       saleId: map['saleId'] as int,
-      name: map['name'] as String,
-      photoURL: map['photoURL'] != null ? map['photoURL'] as String : null,
+      productName: map['productName'] as String,
+      productPhotoURL: map['productPhotoURL'] != null
+          ? map['productPhotoURL'] as String
+          : null,
       quantity: map['quantity'] as int,
-      price: map['price'] as double,
+      productPrice: map['productPrice'] as double,
       total: map['total'] as double,
       profit: map['profit'] as double,
     );

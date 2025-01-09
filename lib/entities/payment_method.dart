@@ -6,12 +6,14 @@ class PaymentMethod {
   final String name;
   final double increasePercent;
   final double discountPercent;
+  final int maxInstallments;
 
   PaymentMethod({
     this.id,
     required this.name,
     this.increasePercent = 0,
     this.discountPercent = 0,
+    this.maxInstallments = 1,
   });
 
   Map<String, dynamic> toMap() {
@@ -20,6 +22,7 @@ class PaymentMethod {
       'name': name,
       'increasePercent': increasePercent,
       'discountPercent': discountPercent,
+      'maxInstallments': maxInstallments,
     };
   }
 
@@ -29,6 +32,7 @@ class PaymentMethod {
       name: map['name'] as String,
       increasePercent: map['increasePercent'] as double,
       discountPercent: map['discountPercent'] as double,
+      maxInstallments: map['maxInstallments'] as int,
     );
   }
 
