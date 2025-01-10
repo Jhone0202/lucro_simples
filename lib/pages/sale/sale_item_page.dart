@@ -27,6 +27,7 @@ class _SaleItemPageState extends State<SaleItemPage> {
     saleItem = SaleItem(
       productId: widget.product.id!,
       productName: widget.product.name,
+      productPhotoURL: widget.product.photoURL,
       quantity: 1,
       productPrice: widget.product.salePrice,
       total: widget.product.salePrice,

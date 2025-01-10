@@ -111,25 +111,25 @@ Map<int, String> lsMigrationScripts = {
       FROM sales
     ''',
   17: '''
-  CREATE TABLE sales_temp AS
-  SELECT 
-    id,
-    customerId,
-    customerName,
-    customerPhotoURL,
-    companyId,
-    saleDate,
-    deliveryDate,
-    discount,
-    subtotal,
-    total,
-    profit,
-    deliveryType,
-    deliveryCost,
-    increase,
-    paymentMethodId
-  FROM sales
-''',
+      CREATE TABLE sales_temp AS
+      SELECT 
+        id,
+        customerId,
+        customerName,
+        customerPhotoURL,
+        companyId,
+        saleDate,
+        deliveryDate,
+        discount,
+        subtotal,
+        total,
+        profit,
+        deliveryType,
+        deliveryCost,
+        increase,
+        paymentMethodId
+      FROM sales
+    ''',
   18: 'PRAGMA foreign_keys = OFF',
   19: 'DROP TABLE sales',
   20: 'PRAGMA foreign_keys = ON',
@@ -163,4 +163,11 @@ Map<int, String> lsMigrationScripts = {
 ''',
   24: 'DROP TABLE sales',
   25: 'ALTER TABLE sales_temp RENAME TO sales',
+  26: '''
+      ALTER TABLE sales ADD COLUMN customerPhoneNumber TEXT DEFAULT ""
+    ''',
+  27: '''
+      UPDATE sales 
+      SET customerPhoneNumber = (SELECT phoneNumber FROM customers WHERE customers.id = sales.customerId)
+    ''',
 };

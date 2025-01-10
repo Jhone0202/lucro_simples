@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/components/primary_button.dart';
+import 'package:lucro_simples/components/sale_customer_card.dart';
+import 'package:lucro_simples/components/sale_item_tile.dart';
+import 'package:lucro_simples/components/sale_payment_card.dart';
+import 'package:lucro_simples/components/sale_profit_card.dart';
+import 'package:lucro_simples/components/secondary_button.dart';
 import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/entities/delivery_type.dart';
+import 'package:lucro_simples/entities/product.dart';
 import 'package:lucro_simples/entities/sale.dart';
 import 'package:lucro_simples/entities/sale_item.dart';
 import 'package:lucro_simples/managers/session_manager.dart';
+import 'package:lucro_simples/pages/home/products_page.dart';
+import 'package:lucro_simples/pages/sale/sale_item_page.dart';
 import 'package:lucro_simples/repositories/sale_repository_interface.dart';
 
 class NewSalePageArgs {
@@ -45,6 +53,7 @@ class _NewSalePageState extends State<NewSalePage> {
       customerId: customer.id!,
       customerName: customer.name,
       customerPhotoURL: customer.photoURL,
+      customerPhoneNumber: customer.phoneNumber,
       companyId: SessionManager.loggedCompany!.id!,
       saleDate: DateTime.now(),
       deliveryDate: DateTime.now(),
@@ -66,6 +75,39 @@ class _NewSalePageState extends State<NewSalePage> {
     if (mounted) Navigator.pop(context, saved);
   }
 
+  Future _selectAndAddNewItem() async {
+    final product = await Navigator.pushNamed(
+      context,
+      ProductsPage.routeName,
+      arguments: true,
+    ) as Product?;
+
+    if (product == null) return;
+
+    final saleItem = await Navigator.pushNamed(
+      context,
+      SaleItemPage.routeName,
+      arguments: product,
+    ) as SaleItem?;
+
+    if (saleItem == null) return;
+
+    sale.items.add(saleItem);
+    _refreshValues();
+  }
+
+  void _refreshValues() {
+    final double profit = sale.items.fold(0, (sum, i) => sum + i.profit);
+    final double subtotal = sale.items.fold(0, (sum, i) => sum + i.total);
+    final double total = subtotal + sale.increase - sale.discount;
+
+    sale.profit = profit;
+    sale.subtotal = subtotal;
+    sale.total = total;
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,17 +116,30 @@ class _NewSalePageState extends State<NewSalePage> {
       ),
       body: ListView(
         children: [
-          ListView.builder(
+          ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: sale.items.length,
-            itemBuilder: (context, index) => ListTile(
-              title: Text(sale.items[index].productName),
+            separatorBuilder: (context, i) => const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Divider(),
             ),
+            itemCount: sale.items.length,
+            itemBuilder: (context, i) => SaleItemTile(item: sale.items[i]),
           ),
+          SecondaryButton(
+            onPressed: _selectAndAddNewItem,
+            title: 'Adicionar Item',
+            margin: const EdgeInsets.all(16),
+            iconData: Icons.add,
+          ),
+          SaleCustomerCard(sale: sale),
+          SalePaymentCard(sale: sale),
+          SaleProfitCard(profit: sale.profit),
           PrimaryButton(
             onPressed: _registerSale,
             title: 'Concluír Venda',
+            iconData: Icons.check,
+            margin: const EdgeInsets.all(16),
           ),
         ],
       ),

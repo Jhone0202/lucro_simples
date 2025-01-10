@@ -6,6 +6,7 @@ class Sale {
   int customerId;
   String? customerPhotoURL;
   String customerName;
+  String customerPhoneNumber;
   int companyId;
   DateTime saleDate;
   DateTime deliveryDate;
@@ -24,6 +25,7 @@ class Sale {
     required this.customerId,
     this.customerPhotoURL,
     required this.customerName,
+    required this.customerPhoneNumber,
     required this.companyId,
     required this.saleDate,
     required this.deliveryDate,
@@ -44,6 +46,7 @@ class Sale {
       'customerId': customerId,
       'customerPhotoURL': customerPhotoURL,
       'customerName': customerName,
+      'customerPhoneNumber': customerPhoneNumber,
       'companyId': companyId,
       'saleDate': saleDate.millisecondsSinceEpoch,
       'deliveryDate': deliveryDate.millisecondsSinceEpoch,
@@ -66,6 +69,7 @@ class Sale {
           ? map['customerPhotoURL'] as String
           : null,
       customerName: map['customerName'] as String,
+      customerPhoneNumber: map['customerPhoneNumber'] as String,
       companyId: map['companyId'] as int,
       saleDate: DateTime.fromMillisecondsSinceEpoch(map['saleDate'] as int),
       deliveryDate:

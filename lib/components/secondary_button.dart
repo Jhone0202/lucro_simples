@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/utils/feedback_user.dart';
 
-class PrimaryButton extends StatefulWidget {
+class SecondaryButton extends StatefulWidget {
   final String title;
   final Function? onPressed;
   final bool expanded;
@@ -10,12 +10,11 @@ class PrimaryButton extends StatefulWidget {
   final IconData? iconData;
   final String loadingTitle;
   final String? successMsg;
-  final Color? backgroundColor;
   final GlobalKey<FormState>? formKey;
   final bool small;
   final Color? contentColor;
 
-  const PrimaryButton({
+  const SecondaryButton({
     super.key,
     required this.title,
     this.onPressed,
@@ -24,17 +23,16 @@ class PrimaryButton extends StatefulWidget {
     this.iconData,
     this.loadingTitle = 'Carregando...',
     this.successMsg,
-    this.backgroundColor,
     this.formKey,
     this.small = false,
     this.contentColor,
   });
 
   @override
-  State<PrimaryButton> createState() => _PrimaryButtonState();
+  State<SecondaryButton> createState() => _SecondaryButtonState();
 }
 
-class _PrimaryButtonState extends State<PrimaryButton> {
+class _SecondaryButtonState extends State<SecondaryButton> {
   bool _isLoading = false;
 
   Future<void> _handleOnPressed() async {
@@ -80,10 +78,10 @@ class _PrimaryButtonState extends State<PrimaryButton> {
     return Container(
       width: widget.expanded ? double.maxFinite : null,
       margin: widget.margin,
-      child: FilledButton(
+      child: OutlinedButton(
         onPressed:
             _isLoading || widget.onPressed == null ? null : _handleOnPressed,
-        style: FilledButton.styleFrom(
+        style: OutlinedButton.styleFrom(
           visualDensity: widget.small ? VisualDensity.compact : null,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
@@ -93,8 +91,8 @@ class _PrimaryButtonState extends State<PrimaryButton> {
           padding: widget.small
               ? const EdgeInsets.symmetric(horizontal: 8, vertical: 4)
               : const EdgeInsets.all(12),
-          backgroundColor: widget.backgroundColor,
           foregroundColor: widget.contentColor,
+          side: BorderSide(color: Theme.of(context).primaryColor),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
