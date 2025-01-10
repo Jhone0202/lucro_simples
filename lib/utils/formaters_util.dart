@@ -20,3 +20,7 @@ String getFriendlyDateTime(DateTime? dateTime, {bool separated = false}) {
     return '$dateFormatted às${separated ? '\n' : ''}${DateFormat.Hm('pt_BR').format(dateTime)}';
   }
 }
+
+String formatId(int id) {
+  return NumberFormat('00000').format(id);
+}

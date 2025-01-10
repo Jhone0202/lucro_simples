@@ -52,6 +52,7 @@ class LsDatabaseMock {
       deliveryType: DELIVERY_TYPE.pickup,
       increase: 0,
       paymentMethodId: 0,
+      customerPhoneNumber: '',
     );
   }
 }

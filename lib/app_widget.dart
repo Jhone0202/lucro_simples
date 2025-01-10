@@ -11,8 +11,9 @@ class MyApp extends StatelessWidget {
       title: 'Lucro Simples',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        dividerTheme: const DividerThemeData(color: Color(0xFFEDEEF2)),
       ),
       routes: appRoutes,
       localizationsDelegates: const [GlobalMaterialLocalizations.delegate],

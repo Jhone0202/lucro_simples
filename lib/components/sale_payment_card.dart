@@ -60,7 +60,7 @@ class SalePaymentCard extends StatelessWidget {
               Text(formatRealBr(sale.increase)),
             ],
           ),
-          const Divider(),
+          Divider(color: Theme.of(context).primaryColor.withOpacity(0.1)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
