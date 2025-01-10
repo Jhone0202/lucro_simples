@@ -15,7 +15,7 @@ class SaleItem {
   SaleItem({
     this.id,
     required this.productId,
-    required this.saleId,
+    this.saleId = 0,
     required this.productName,
     this.productPhotoURL,
     required this.quantity,

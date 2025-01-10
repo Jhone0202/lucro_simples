@@ -58,7 +58,7 @@ class Sale {
     };
   }
 
-  factory Sale.fromMap(Map<String, dynamic> map, List<SaleItem> saleItems) {
+  factory Sale.fromMap(Map<String, dynamic> map, [List<SaleItem>? saleItems]) {
     return Sale(
       id: map['id'] != null ? map['id'] as int : null,
       customerId: map['customerId'] as int,
@@ -70,7 +70,7 @@ class Sale {
       saleDate: DateTime.fromMillisecondsSinceEpoch(map['saleDate'] as int),
       deliveryDate:
           DateTime.fromMillisecondsSinceEpoch(map['deliveryDate'] as int),
-      items: saleItems,
+      items: saleItems ?? [],
       deliveryCost: map['deliveryCost'] as double,
       deliveryType: DELIVERY_TYPE.values.firstWhere(
         (e) => e.toString().split('.').last == map['deliveryType'],

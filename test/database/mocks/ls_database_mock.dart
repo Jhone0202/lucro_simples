@@ -1,6 +1,7 @@
 import 'package:lucro_simples/entities/company.dart';
 import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/entities/customer_types.dart';
+import 'package:lucro_simples/entities/delivery_type.dart';
 import 'package:lucro_simples/entities/product.dart';
 import 'package:lucro_simples/entities/sale.dart';
 
@@ -37,18 +38,20 @@ class LsDatabaseMock {
     required int companyId,
   }) {
     return Sale(
-      productId: productId,
       customerId: customerId,
       companyId: companyId,
       saleDate: DateTime.now(),
       deliveryDate: DateTime.now().add(const Duration(days: 2)),
-      quantity: 1,
       discount: 3,
       subtotal: 38,
       total: 35,
       profit: 7,
-      productName: '',
       customerName: '',
+      items: [],
+      deliveryCost: 0,
+      deliveryType: DELIVERY_TYPE.pickup,
+      increase: 0,
+      paymentMethodId: 0,
     );
   }
 }

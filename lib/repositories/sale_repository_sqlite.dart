@@ -1,5 +1,6 @@
 import 'package:lucro_simples/databases/ls_database.dart';
 import 'package:lucro_simples/entities/sale.dart';
+import 'package:lucro_simples/entities/sale_item.dart';
 import 'package:lucro_simples/repositories/sale_repository_interface.dart';
 
 class SaleRepositorySqlite extends ISaleRepository {
@@ -7,7 +8,16 @@ class SaleRepositorySqlite extends ISaleRepository {
   Future<Sale> registerNewSale(Sale sale) async {
     final database = await LsDatabase().db;
 
-    final id = await database.insert('sales', sale.toMap());
+    final id = await database.transaction((txn) async {
+      final saleId = await txn.insert('sales', sale.toMap());
+
+      for (var item in sale.items) {
+        item.saleId = saleId;
+        await txn.insert('sale_items', item.toMap());
+      }
+
+      return saleId;
+    });
 
     return await _getSaleById(id);
   }
@@ -15,15 +25,23 @@ class SaleRepositorySqlite extends ISaleRepository {
   Future<Sale> _getSaleById(int id) async {
     final database = await LsDatabase().db;
 
-    final res = await database.query(
+    final saleRes = await database.query(
       'sales',
       where: 'id = ?',
       whereArgs: [id],
     );
 
-    if (res.isEmpty) throw 'Venda $id não encontrada';
+    if (saleRes.isEmpty) throw 'Venda $id não encontrada';
 
-    return Sale.fromMap(res.first);
+    final itemsRes = await database.query(
+      'sale_items',
+      where: 'saleId = ?',
+      whereArgs: [id],
+    );
+
+    final items = itemsRes.map((e) => SaleItem.fromMap(e)).toList();
+
+    return Sale.fromMap(saleRes.first, items);
   }
 
   @override
@@ -34,14 +52,37 @@ class SaleRepositorySqlite extends ISaleRepository {
   ) async {
     final database = await LsDatabase().db;
 
-    // TODO:Adicionar campos para buscar pelo nome do cliente ou produto
     final res = await database.query(
       'sales',
+      where: search.isEmpty ? null : 'customerName LIKE ?',
+      whereArgs: search.isEmpty ? null : ['%$search%'],
       orderBy: 'saleDate DESC',
       limit: limit,
       offset: offset,
     );
 
     return res.map((e) => Sale.fromMap(e)).toList();
+  }
+
+  @override
+  Future<Sale> getSaleDetails(int saleId) async {
+    final database = await LsDatabase().db;
+
+    final saleRes = await database.query(
+      'sales',
+      where: 'id = ?',
+      whereArgs: [saleId],
+    );
+
+    if (saleRes.isEmpty) throw 'Venda $saleId não encontrada';
+
+    final itemsRes = await database.query(
+      'sale_items',
+      where: 'saleId = ?',
+      whereArgs: [saleId],
+    );
+
+    final items = itemsRes.map((e) => SaleItem.fromMap(e)).toList();
+    return Sale.fromMap(saleRes.first, items);
   }
 }

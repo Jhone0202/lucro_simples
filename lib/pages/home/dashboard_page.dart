@@ -6,10 +6,12 @@ import 'package:lucro_simples/components/circle_file_image.dart';
 import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/entities/product.dart';
 import 'package:lucro_simples/entities/sale.dart';
+import 'package:lucro_simples/entities/sale_item.dart';
 import 'package:lucro_simples/managers/session_manager.dart';
 import 'package:lucro_simples/pages/home/customers_page.dart';
 import 'package:lucro_simples/pages/home/products_page.dart';
-import 'package:lucro_simples/pages/new_sale_page.dart';
+import 'package:lucro_simples/pages/sale/new_sale_page.dart';
+import 'package:lucro_simples/pages/sale/sale_item_page.dart';
 import 'package:lucro_simples/repositories/sale_repository_interface.dart';
 import 'package:lucro_simples/utils/feedback_user.dart';
 import 'package:lucro_simples/utils/formaters_util.dart';
@@ -67,13 +69,13 @@ class _DashboardPageState extends State<DashboardPage> {
               final sale = sales[index];
               return ListTile(
                 title: Text(
-                  sale.productName,
+                  sale.customerName,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(sale.customerName),
+                    Text(sale.id?.toString() ?? ''),
                     Text(
                       formatRealBr(sale.total),
                       style: Theme.of(context)
@@ -83,7 +85,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                   ],
                 ),
-                leading: CircleFileImage(filePath: sale.productPhotoURL),
+                leading: CircleFileImage(filePath: sale.customerPhotoURL),
                 trailing: Text(
                   getFriendlyDateTime(sale.saleDate, separated: true),
                   style: Theme.of(context).textTheme.bodyMedium,
@@ -96,14 +98,6 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          final product = await Navigator.pushNamed(
-            context,
-            ProductsPage.routeName,
-            arguments: true,
-          ) as Product?;
-
-          if (product == null) return;
-
           final customer = await Navigator.pushNamed(
             context,
             CustomersPage.routeName,
@@ -112,10 +106,26 @@ class _DashboardPageState extends State<DashboardPage> {
 
           if (customer == null) return;
 
+          final product = await Navigator.pushNamed(
+            context,
+            ProductsPage.routeName,
+            arguments: true,
+          ) as Product?;
+
+          if (product == null) return;
+
+          final saleItem = await Navigator.pushNamed(
+            context,
+            SaleItemPage.routeName,
+            arguments: product,
+          ) as SaleItem?;
+
+          if (saleItem == null) return;
+
           final newSale = await Navigator.pushNamed(
             context,
             NewSalePage.routeName,
-            arguments: NewSalePageArgs(product: product, customer: customer),
+            arguments: NewSalePageArgs(items: [saleItem], customer: customer),
           ) as Sale?;
 
           if (newSale != null) {

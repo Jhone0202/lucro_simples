@@ -57,7 +57,7 @@ Map<int, String> lsMigrationScripts = {
       UPDATE sales 
       SET productPhotoURL = (SELECT photoURL FROM products WHERE products.id = sales.productId),
           productName = (SELECT name FROM products WHERE products.id = sales.productId),
-          customerName = (SELECT name FROM customers WHERE customers.id = sales.customerId);
+          customerName = (SELECT name FROM customers WHERE customers.id = sales.customerId)
     ''',
   11: 'ALTER TABLE sales ADD COLUMN increase REAL DEFAULT 0',
   12: '''
@@ -72,9 +72,9 @@ Map<int, String> lsMigrationScripts = {
   13: '''
       INSERT INTO payment_methods (name, increasePercent, discountPercent, maxInstallments) 
       VALUES
-        ('Dinheiro', 0, 0, 1)
+        ('Dinheiro', 0, 0, 1),
         ('Pix', 0, 0, 1), 
-        ('Cartão de Crédito', 5, 0, 12)
+        ('Cartão de Crédito', 5, 0, 12),
         ('Cartão de Débito', 2, 0, 1)
     ''',
   14: '''
@@ -93,10 +93,10 @@ Map<int, String> lsMigrationScripts = {
       )
     ''',
   15: '''
-      ALTER TABLE sales ADD COLUMN paymentMethodId INTEGER DEFAULT 1;
+      ALTER TABLE sales ADD COLUMN paymentMethodId INTEGER DEFAULT 1
     ''',
   16: '''
-      INSERT INTO sales_items (
+      INSERT INTO sale_items (
         saleId, productId, productName, productPhotoURL, quantity, productPrice, total, profit
       )
       SELECT 
@@ -108,30 +108,59 @@ Map<int, String> lsMigrationScripts = {
         subtotal / quantity AS productPrice,
         subtotal AS total,
         profit
-      FROM sales;
+      FROM sales
     ''',
   17: '''
-      CREATE TABLE sales_temp AS
-      SELECT 
-        id,
-        customerId,
-        customerName,
-        customerPhotoURL,
-        companyId,
-        saleDate,
-        deliveryDate,
-        discount,
-        subtotal,
-        total,
-        profit,
-        deliveryType,
-        deliveryCost,
-        increase,
-        paymentMethodId
-      FROM sales;
-
-      DROP TABLE sales;
-
-      ALTER TABLE sales_temp RENAME TO sales;
-    ''',
+  CREATE TABLE sales_temp AS
+  SELECT 
+    id,
+    customerId,
+    customerName,
+    customerPhotoURL,
+    companyId,
+    saleDate,
+    deliveryDate,
+    discount,
+    subtotal,
+    total,
+    profit,
+    deliveryType,
+    deliveryCost,
+    increase,
+    paymentMethodId
+  FROM sales
+''',
+  18: 'PRAGMA foreign_keys = OFF',
+  19: 'DROP TABLE sales',
+  20: 'PRAGMA foreign_keys = ON',
+  21: 'ALTER TABLE sales_temp RENAME TO sales',
+  22: '''
+      CREATE TABLE sales_temp (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        customerId INTEGER NOT NULL,
+        customerName TEXT NOT NULL,
+        customerPhotoURL TEXT,
+        companyId INTEGER NOT NULL,
+        saleDate INTEGER NOT NULL,
+        deliveryDate INTEGER NOT NULL,
+        discount REAL NOT NULL,
+        subtotal REAL NOT NULL,
+        total REAL NOT NULL,
+        profit REAL NOT NULL,
+        deliveryType TEXT NOT NULL,
+        deliveryCost REAL NOT NULL,
+        increase REAL NOT NULL,
+        paymentMethodId INTEGER NOT NULL,
+        FOREIGN KEY (customerId) REFERENCES customers(id),
+        FOREIGN KEY (companyId) REFERENCES companies(id),
+        FOREIGN KEY (paymentMethodId) REFERENCES payment_methods(id)
+      )
+  ''',
+  23: '''
+    INSERT INTO sales_temp (id, customerId, customerName, customerPhotoURL, companyId, saleDate, deliveryDate, discount, subtotal, total, profit, deliveryType, deliveryCost, increase, paymentMethodId)
+    SELECT id, customerId, customerName, customerPhotoURL, companyId, saleDate, deliveryDate, discount, subtotal, total, profit, deliveryType, deliveryCost, increase, paymentMethodId
+    FROM sales;
+''',
+  24: 'DROP TABLE sales',
+  25: 'ALTER TABLE sales_temp RENAME TO sales',
 };
