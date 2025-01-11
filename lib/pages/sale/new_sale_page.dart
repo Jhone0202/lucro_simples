@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/components/primary_button.dart';
 import 'package:lucro_simples/components/sale_customer_card.dart';
+import 'package:lucro_simples/components/sale_delivery_card.dart';
 import 'package:lucro_simples/components/sale_item_tile.dart';
 import 'package:lucro_simples/components/sale_payment_card.dart';
 import 'package:lucro_simples/components/sale_profit_card.dart';
@@ -37,6 +38,7 @@ class NewSalePage extends StatefulWidget {
 class _NewSalePageState extends State<NewSalePage> {
   final repository = getIt.get<ISaleRepository>();
   late Sale sale;
+  PaymentMethod paymentMethod = PaymentMethod(name: 'Dinheiro');
 
   @override
   void initState() {
@@ -103,12 +105,7 @@ class _NewSalePageState extends State<NewSalePage> {
     if (method.id == null) throw 'Método de pagamento inválido';
 
     sale.paymentMethodId = method.id!;
-
-    final increase = sale.subtotal * method.increasePercent / 100;
-    sale.increase = increase;
-
-    final discount = sale.subtotal * method.discountPercent / 100;
-    sale.discount = discount;
+    paymentMethod = method;
 
     _refreshValues();
   }
@@ -123,9 +120,25 @@ class _NewSalePageState extends State<NewSalePage> {
     _refreshValues();
   }
 
+  void setDelivery(Delivery delivery) {
+    sale.deliveryCost = delivery.cost;
+    sale.deliveryDate = delivery.deliveryDate;
+    sale.deliveryType = delivery.type;
+
+    _refreshValues();
+  }
+
   void _refreshValues() {
     final double profit = sale.items.fold(0, (sum, i) => sum + i.profit);
-    final double subtotal = sale.items.fold(0, (sum, i) => sum + i.total);
+    final double itemsTotal = sale.items.fold(0, (sum, i) => sum + i.total);
+    final double subtotal = itemsTotal + sale.deliveryCost;
+
+    final increase = subtotal * paymentMethod.increasePercent / 100;
+    sale.increase = double.parse(increase.toStringAsFixed(2));
+
+    final discount = subtotal * paymentMethod.discountPercent / 100;
+    sale.discount = double.parse(discount.toStringAsFixed(2));
+
     final double total = subtotal + sale.increase - sale.discount;
 
     sale.profit = profit;
@@ -156,10 +169,14 @@ class _NewSalePageState extends State<NewSalePage> {
           SecondaryButton(
             onPressed: _selectAndAddNewItem,
             title: 'Adicionar Item',
-            margin: const EdgeInsets.all(16),
+            margin: const EdgeInsets.fromLTRB(16, 12, 16, 12),
             iconData: Icons.add,
           ),
           SaleCustomerCard(sale: sale),
+          SaleDeliveryCard(
+            sale: sale,
+            setDelivery: setDelivery,
+          ),
           SalePaymentCard(
             sale: sale,
             setPaymentMethod: setPaymentMethod,
@@ -171,7 +188,7 @@ class _NewSalePageState extends State<NewSalePage> {
             onPressed: _registerSale,
             title: 'Concluír Venda',
             iconData: Icons.check,
-            margin: const EdgeInsets.all(16),
+            margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
           ),
         ],
       ),

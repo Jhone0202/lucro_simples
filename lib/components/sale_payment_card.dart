@@ -163,7 +163,7 @@ class _SalePaymentCardState extends State<SalePaymentCard> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(8.0),
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor.withOpacity(0.05),
         borderRadius: BorderRadius.circular(12),
@@ -200,7 +200,16 @@ class _SalePaymentCardState extends State<SalePaymentCard> {
             items: paymentMethods
                 .map((e) => DropdownMenuItem(value: e, child: Text(e.name)))
                 .toList(),
-            decoration: defaultFormDecoration(context),
+            decoration: paymentDropDecoration(context).copyWith(
+              isDense: true,
+              contentPadding: const EdgeInsets.all(8),
+            ),
+            style: Theme.of(context).textTheme.bodyMedium,
+            icon: Icon(
+              Icons.arrow_drop_down,
+              color: Theme.of(context).primaryColor,
+            ),
+            iconSize: 20,
           ),
           const SizedBox(height: 8),
           Row(
