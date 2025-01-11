@@ -85,6 +85,8 @@ class _NewSalePageState extends State<NewSalePage> {
 
     if (product == null) return;
 
+    if (!mounted) return;
+
     final saleItem = await Navigator.pushNamed(
       context,
       SaleItemPage.routeName,
@@ -108,6 +110,16 @@ class _NewSalePageState extends State<NewSalePage> {
     final discount = sale.subtotal * method.discountPercent / 100;
     sale.discount = discount;
 
+    _refreshValues();
+  }
+
+  void setDiscount(double discount) {
+    sale.discount = discount;
+    _refreshValues();
+  }
+
+  void setIncrease(double increase) {
+    sale.increase = increase;
     _refreshValues();
   }
 
@@ -151,6 +163,8 @@ class _NewSalePageState extends State<NewSalePage> {
           SalePaymentCard(
             sale: sale,
             setPaymentMethod: setPaymentMethod,
+            setDiscount: setDiscount,
+            setIncrease: setIncrease,
           ),
           SaleProfitCard(profit: sale.profit),
           PrimaryButton(

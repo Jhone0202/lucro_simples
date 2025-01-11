@@ -1,4 +1,6 @@
+import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/entities/payment_method.dart';
 import 'package:lucro_simples/entities/sale.dart';
@@ -11,10 +13,14 @@ class SalePaymentCard extends StatefulWidget {
     super.key,
     required this.sale,
     required this.setPaymentMethod,
+    required this.setDiscount,
+    required this.setIncrease,
   });
 
   final Sale sale;
   final Function(PaymentMethod paymentMethod) setPaymentMethod;
+  final Function(double discount) setDiscount;
+  final Function(double increase) setIncrease;
 
   @override
   State<SalePaymentCard> createState() => _SalePaymentCardState();
@@ -35,6 +41,122 @@ class _SalePaymentCardState extends State<SalePaymentCard> {
     paymentMethods = await saleRepository.getPaymentMethods();
     selected = paymentMethods.firstOrNull;
     setState(() {});
+  }
+
+  bool _validateAndSave(GlobalKey<FormState> formKey) {
+    final form = formKey.currentState;
+
+    if (form == null) return true;
+
+    if (form.validate()) {
+      form.save();
+      return true;
+    }
+
+    return false;
+  }
+
+  void _editDiscount() {
+    final formKey = GlobalKey<FormState>();
+    final controller = MoneyMaskedTextController(
+      leftSymbol: 'R\$',
+      initialValue: widget.sale.discount,
+    );
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Editar Desconto'),
+        content: Form(
+          key: formKey,
+          child: TextFormField(
+            controller: controller,
+            autofocus: true,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            keyboardType: TextInputType.number,
+            decoration: defaultFormDecoration(context).copyWith(
+              labelText: 'Desconto',
+            ),
+            validator: (_) {
+              if (controller.numberValue <= 0) {
+                return 'O desconto deve ser maior que 0';
+              }
+
+              final maxDiscount = widget.sale.subtotal + widget.sale.increase;
+              if (controller.numberValue > maxDiscount) {
+                return '${formatRealBr(maxDiscount)} é o máximo permitido';
+              }
+
+              return null;
+            },
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Voltar'),
+          ),
+          TextButton(
+            onPressed: () {
+              if (_validateAndSave(formKey)) {
+                widget.setDiscount(controller.numberValue);
+                Navigator.pop(context);
+              }
+            },
+            child: const Text('Salvar'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _editIncrease() {
+    final formKey = GlobalKey<FormState>();
+    final controller = MoneyMaskedTextController(
+      leftSymbol: 'R\$',
+      initialValue: widget.sale.increase,
+    );
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Editar Acréscimo'),
+        content: Form(
+          key: formKey,
+          child: TextFormField(
+            controller: controller,
+            autofocus: true,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            keyboardType: TextInputType.number,
+            decoration: defaultFormDecoration(context).copyWith(
+              labelText: 'Acréscimo',
+            ),
+            validator: (_) {
+              if (controller.numberValue <= 0) {
+                return 'O acréscimo deve ser maior que 0';
+              }
+
+              return null;
+            },
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Voltar'),
+          ),
+          TextButton(
+            onPressed: () {
+              if (_validateAndSave(formKey)) {
+                widget.setIncrease(controller.numberValue);
+                Navigator.pop(context);
+              }
+            },
+            child: const Text('Salvar'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -88,21 +210,59 @@ class _SalePaymentCardState extends State<SalePaymentCard> {
               Text(formatRealBr(widget.sale.subtotal)),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Desconto'),
-              Text(formatRealBr(widget.sale.discount)),
-            ],
+          const SizedBox(height: 4),
+          InkWell(
+            onTap: _editDiscount,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                children: [
+                  const Text('Desconto'),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4),
+                    child: Icon(
+                      Icons.edit,
+                      size: 12,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      formatRealBr(widget.sale.discount),
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Acréscimo'),
-              Text(formatRealBr(widget.sale.increase)),
-            ],
+          InkWell(
+            onTap: _editIncrease,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                children: [
+                  const Text('Acréscimo'),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4),
+                    child: Icon(
+                      Icons.edit,
+                      size: 12,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      formatRealBr(widget.sale.increase),
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
           Divider(color: Theme.of(context).primaryColor.withOpacity(0.1)),
+          const SizedBox(height: 4),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
