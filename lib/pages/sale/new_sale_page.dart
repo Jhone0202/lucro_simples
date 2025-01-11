@@ -153,49 +153,81 @@ class _NewSalePageState extends State<NewSalePage> {
     setState(() {});
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Nova Venda'),
-      ),
-      body: ListView(
-        children: [
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            separatorBuilder: (context, i) => const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Divider(),
-            ),
-            itemCount: sale.items.length,
-            itemBuilder: (context, i) => SaleItemTile(item: sale.items[i]),
+  Future<bool> _showExitConfirmationDialog() async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirmar saída'),
+        content: const Text('A venda será perdida'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancelar'),
           ),
-          SecondaryButton(
-            onPressed: _selectAndAddNewItem,
-            title: 'Adicionar Item',
-            margin: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-            iconData: Icons.add,
-          ),
-          SaleCustomerCard(sale: sale),
-          SaleDeliveryCard(
-            sale: sale,
-            setDelivery: setDelivery,
-          ),
-          SalePaymentCard(
-            sale: sale,
-            setPaymentMethod: setPaymentMethod,
-            setDiscount: setDiscount,
-            setIncrease: setIncrease,
-          ),
-          SaleProfitCard(profit: sale.profit),
-          PrimaryButton(
-            onPressed: _registerSale,
-            title: 'Concluír Venda',
-            iconData: Icons.check,
-            margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Sair'),
           ),
         ],
+      ),
+    );
+
+    return result ?? false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (bool didPop, Object? result) async {
+        if (didPop) return;
+
+        final bool shouldPop = await _showExitConfirmationDialog();
+
+        if (context.mounted && shouldPop) Navigator.pop(context);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Nova Venda'),
+        ),
+        body: ListView(
+          children: [
+            ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              separatorBuilder: (context, i) => const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Divider(),
+              ),
+              itemCount: sale.items.length,
+              itemBuilder: (context, i) => SaleItemTile(item: sale.items[i]),
+            ),
+            SecondaryButton(
+              onPressed: _selectAndAddNewItem,
+              title: 'Adicionar Item',
+              margin: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+              iconData: Icons.add,
+            ),
+            SaleCustomerCard(sale: sale),
+            SaleDeliveryCard(
+              sale: sale,
+              setDelivery: setDelivery,
+            ),
+            SalePaymentCard(
+              sale: sale,
+              setPaymentMethod: setPaymentMethod,
+              setDiscount: setDiscount,
+              setIncrease: setIncrease,
+            ),
+            SaleProfitCard(profit: sale.profit),
+            PrimaryButton(
+              onPressed: _registerSale,
+              title: 'Concluír Venda',
+              iconData: Icons.check,
+              margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+            ),
+          ],
+        ),
       ),
     );
   }
