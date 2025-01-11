@@ -112,12 +112,12 @@ class _NewSalePageState extends State<NewSalePage> {
 
   void setDiscount(double discount) {
     sale.discount = discount;
-    _refreshValues();
+    _refreshValues(refreshFromPayment: false);
   }
 
   void setIncrease(double increase) {
     sale.increase = increase;
-    _refreshValues();
+    _refreshValues(refreshFromPayment: false);
   }
 
   void setDelivery(Delivery delivery) {
@@ -128,22 +128,27 @@ class _NewSalePageState extends State<NewSalePage> {
     _refreshValues();
   }
 
-  void _refreshValues() {
+  void _refreshValues({bool refreshFromPayment = true}) {
     final double profit = sale.items.fold(0, (sum, i) => sum + i.profit);
     final double itemsTotal = sale.items.fold(0, (sum, i) => sum + i.total);
     final double subtotal = itemsTotal + sale.deliveryCost;
 
-    final increase = subtotal * paymentMethod.increasePercent / 100;
-    sale.increase = double.parse(increase.toStringAsFixed(2));
+    final paymentIncrease = double.parse(
+      (subtotal * paymentMethod.increasePercent / 100).toStringAsFixed(2),
+    );
 
-    final discount = subtotal * paymentMethod.discountPercent / 100;
-    sale.discount = double.parse(discount.toStringAsFixed(2));
+    if (refreshFromPayment) {
+      sale.increase = paymentIncrease;
+      sale.discount = double.parse(
+        (subtotal * paymentMethod.discountPercent / 100).toStringAsFixed(2),
+      );
+    }
 
     final double total = subtotal + sale.increase - sale.discount;
 
-    sale.profit = profit;
     sale.subtotal = subtotal;
     sale.total = total;
+    sale.profit = profit - paymentIncrease - sale.discount + sale.increase;
 
     setState(() {});
   }

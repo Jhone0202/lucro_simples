@@ -78,8 +78,8 @@ class _SalePaymentCardState extends State<SalePaymentCard> {
               labelText: 'Desconto',
             ),
             validator: (_) {
-              if (controller.numberValue <= 0) {
-                return 'O desconto deve ser maior que 0';
+              if (controller.numberValue < 0) {
+                return 'Desconto não permitido';
               }
 
               final maxDiscount = widget.sale.subtotal + widget.sale.increase;
@@ -132,8 +132,8 @@ class _SalePaymentCardState extends State<SalePaymentCard> {
               labelText: 'Acréscimo',
             ),
             validator: (_) {
-              if (controller.numberValue <= 0) {
-                return 'O acréscimo deve ser maior que 0';
+              if (controller.numberValue < 0) {
+                return 'Acréscimo não permitido';
               }
 
               return null;

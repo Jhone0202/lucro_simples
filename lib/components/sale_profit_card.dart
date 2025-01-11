@@ -12,21 +12,23 @@ class SaleProfitCard extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       decoration: BoxDecoration(
-        color: Colors.green.withOpacity(0.05),
+        color: profit < 0
+            ? Colors.red.withOpacity(0.05)
+            : Colors.green.withOpacity(0.05),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
         children: [
-          const Icon(
+          Icon(
             Icons.check_circle_rounded,
             size: 16,
-            color: Colors.green,
+            color: profit < 0 ? Colors.red : Colors.green,
           ),
           const SizedBox(width: 4),
           Text(
-            'Seu lucro com esta venda é de ${formatRealBr(profit)}!',
+            'Seu ${profit < 0 ? 'prejuízo' : 'lucro'} com esta venda é de ${formatRealBr(profit)}!',
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: Colors.green,
+                  color: profit < 0 ? Colors.red : Colors.green,
                 ),
           ),
         ],
