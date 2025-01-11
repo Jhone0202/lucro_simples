@@ -1,4 +1,5 @@
 import 'package:lucro_simples/databases/ls_database.dart';
+import 'package:lucro_simples/entities/payment_method.dart';
 import 'package:lucro_simples/entities/sale.dart';
 import 'package:lucro_simples/entities/sale_item.dart';
 import 'package:lucro_simples/repositories/sale_repository_interface.dart';
@@ -84,5 +85,14 @@ class SaleRepositorySqlite extends ISaleRepository {
 
     final items = itemsRes.map((e) => SaleItem.fromMap(e)).toList();
     return Sale.fromMap(saleRes.first, items);
+  }
+
+  @override
+  Future<List<PaymentMethod>> getPaymentMethods() async {
+    final database = await LsDatabase().db;
+
+    final res = await database.query('payment_methods');
+
+    return res.map((e) => PaymentMethod.fromMap(e)).toList();
   }
 }

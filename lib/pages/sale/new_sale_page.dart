@@ -8,6 +8,7 @@ import 'package:lucro_simples/components/sale_profit_card.dart';
 import 'package:lucro_simples/components/secondary_button.dart';
 import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/entities/delivery_type.dart';
+import 'package:lucro_simples/entities/payment_method.dart';
 import 'package:lucro_simples/entities/product.dart';
 import 'package:lucro_simples/entities/sale.dart';
 import 'package:lucro_simples/entities/sale_item.dart';
@@ -96,6 +97,20 @@ class _NewSalePageState extends State<NewSalePage> {
     _refreshValues();
   }
 
+  void setPaymentMethod(PaymentMethod method) {
+    if (method.id == null) throw 'Método de pagamento inválido';
+
+    sale.paymentMethodId = method.id!;
+
+    final increase = sale.subtotal * method.increasePercent / 100;
+    sale.increase = increase;
+
+    final discount = sale.subtotal * method.discountPercent / 100;
+    sale.discount = discount;
+
+    _refreshValues();
+  }
+
   void _refreshValues() {
     final double profit = sale.items.fold(0, (sum, i) => sum + i.profit);
     final double subtotal = sale.items.fold(0, (sum, i) => sum + i.total);
@@ -133,7 +148,10 @@ class _NewSalePageState extends State<NewSalePage> {
             iconData: Icons.add,
           ),
           SaleCustomerCard(sale: sale),
-          SalePaymentCard(sale: sale),
+          SalePaymentCard(
+            sale: sale,
+            setPaymentMethod: setPaymentMethod,
+          ),
           SaleProfitCard(profit: sale.profit),
           PrimaryButton(
             onPressed: _registerSale,
