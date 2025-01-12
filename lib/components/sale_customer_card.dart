@@ -8,11 +8,9 @@ class SaleCustomerCard extends StatelessWidget {
   const SaleCustomerCard({
     super.key,
     required this.sale,
-    required this.setCustomer,
   });
 
   final Sale sale;
-  final Function(Customer customer) setCustomer;
 
   Future _changeCustomer(BuildContext context) async {
     final newCustomer = await Navigator.pushNamed(
@@ -21,7 +19,7 @@ class SaleCustomerCard extends StatelessWidget {
       arguments: true,
     ) as Customer?;
 
-    if (newCustomer != null) setCustomer(newCustomer);
+    if (newCustomer != null) sale.setCustomer(newCustomer);
   }
 
   @override

@@ -170,4 +170,7 @@ Map<int, String> lsMigrationScripts = {
       UPDATE sales 
       SET customerPhoneNumber = (SELECT phoneNumber FROM customers WHERE customers.id = sales.customerId)
     ''',
+  28: '''
+      ALTER TABLE sale_items ADD COLUMN productCostPrice REAL DEFAULT 0
+    '''
 };

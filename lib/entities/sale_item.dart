@@ -1,14 +1,16 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:lucro_simples/utils/feedback_user.dart';
 
-class SaleItem {
+class SaleItem extends ChangeNotifier {
   int? id;
-  int productId;
   int saleId;
+  int productId;
   String productName;
   String? productPhotoURL;
-  int quantity;
   double productPrice;
+  double productCostPrice;
+  int quantity;
   double total;
   double profit;
 
@@ -20,6 +22,7 @@ class SaleItem {
     this.productPhotoURL,
     required this.quantity,
     required this.productPrice,
+    required this.productCostPrice,
     required this.total,
     required this.profit,
   });
@@ -33,6 +36,7 @@ class SaleItem {
       'productPhotoURL': productPhotoURL,
       'quantity': quantity,
       'productPrice': productPrice,
+      'productCostPrice': productCostPrice,
       'total': total,
       'profit': profit,
     };
@@ -49,6 +53,7 @@ class SaleItem {
           : null,
       quantity: map['quantity'] as int,
       productPrice: map['productPrice'] as double,
+      productCostPrice: map['productCostPrice'] as double,
       total: map['total'] as double,
       profit: map['profit'] as double,
     );
@@ -58,4 +63,39 @@ class SaleItem {
 
   factory SaleItem.fromJson(String source) =>
       SaleItem.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  void Function()? _onSaleUpdate;
+
+  void setSaleCallback(void Function() callback) {
+    _onSaleUpdate = callback;
+  }
+
+  void addQuantity() {
+    quantity++;
+    refreshValues();
+  }
+
+  void removeQuantity() {
+    if (quantity == 1) {
+      return FeedbackUser.toast(msg: 'Quantidade mínima permitida');
+    }
+
+    quantity--;
+    refreshValues();
+  }
+
+  void editQuantity(int newQuantity) {
+    quantity = newQuantity;
+    refreshValues();
+  }
+
+  void refreshValues() {
+    final totalCost = productCostPrice * quantity;
+
+    total = productPrice * quantity;
+    profit = total - totalCost;
+
+    notifyListeners();
+    _onSaleUpdate?.call();
+  }
 }

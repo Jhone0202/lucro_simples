@@ -1,7 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:lucro_simples/components/sale_delivery_card.dart';
+import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/entities/delivery_type.dart';
+import 'package:lucro_simples/entities/payment_method.dart';
 import 'package:lucro_simples/entities/sale_item.dart';
 
-class Sale {
+class Sale extends ChangeNotifier {
   int? id;
   int customerId;
   String? customerPhotoURL;
@@ -19,6 +23,8 @@ class Sale {
   double total;
   double profit;
   int paymentMethodId;
+
+  PaymentMethod paymentMethod = PaymentMethod(name: 'Dinheiro');
 
   Sale({
     this.id,
@@ -38,7 +44,11 @@ class Sale {
     required this.total,
     required this.profit,
     required this.paymentMethodId,
-  });
+  }) {
+    for (var item in items) {
+      item.setSaleCallback(refreshValues);
+    }
+  }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -86,5 +96,67 @@ class Sale {
       profit: map['profit'] as double,
       paymentMethodId: map['paymentMethodId'] as int,
     );
+  }
+
+  void setCustomer(Customer customer) {
+    customerId = customer.id!;
+    customerName = customer.name;
+    customerPhoneNumber = customer.phoneNumber;
+    customerPhotoURL = customer.photoURL;
+    notifyListeners();
+  }
+
+  void addItem(SaleItem saleItem) {
+    saleItem.setSaleCallback(refreshValues);
+    items.add(saleItem);
+    refreshValues();
+  }
+
+  void setPaymentMethod(PaymentMethod method) {
+    if (method.id == null) throw 'Método de pagamento inválido';
+    paymentMethodId = method.id!;
+    paymentMethod = method;
+    refreshValues();
+  }
+
+  void setDiscount(double discount) {
+    this.discount = discount;
+    refreshValues(refreshFromPayment: false);
+  }
+
+  void setIncrease(double increase) {
+    this.increase = increase;
+    refreshValues(refreshFromPayment: false);
+  }
+
+  void setDelivery(Delivery delivery) {
+    deliveryCost = delivery.cost;
+    deliveryDate = delivery.deliveryDate;
+    deliveryType = delivery.type;
+    refreshValues();
+  }
+
+  void refreshValues({bool refreshFromPayment = true}) {
+    final double profit = items.fold(0, (sum, i) => sum + i.profit);
+    final double itemsTotal = items.fold(0, (sum, i) => sum + i.total);
+    final double subtotal = itemsTotal + deliveryCost;
+
+    final paymentIncrease = double.parse(
+      (subtotal * paymentMethod.increasePercent / 100).toStringAsFixed(2),
+    );
+
+    if (refreshFromPayment) {
+      increase = paymentIncrease;
+      discount = double.parse(
+        (subtotal * paymentMethod.discountPercent / 100).toStringAsFixed(2),
+      );
+    }
+
+    final double total = subtotal + increase - discount;
+
+    this.subtotal = subtotal;
+    this.total = total;
+    this.profit = profit - paymentIncrease - discount + increase;
+    notifyListeners();
   }
 }

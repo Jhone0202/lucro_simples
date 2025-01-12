@@ -23,11 +23,9 @@ class SaleDeliveryCard extends StatefulWidget {
   const SaleDeliveryCard({
     super.key,
     required this.sale,
-    required this.setDelivery,
   });
 
   final Sale sale;
-  final Function(Delivery delivery) setDelivery;
 
   @override
   State<SaleDeliveryCard> createState() => _SaleDeliveryCardState();
@@ -77,7 +75,7 @@ class _SaleDeliveryCardState extends State<SaleDeliveryCard> {
       time.minute,
     );
 
-    widget.setDelivery(delivery);
+    widget.sale.setDelivery(delivery);
     refreshDelivery();
   }
 
@@ -133,7 +131,7 @@ class _SaleDeliveryCardState extends State<SaleDeliveryCard> {
             onPressed: () {
               if (_validateAndSave(formKey)) {
                 delivery.cost = controller.numberValue;
-                widget.setDelivery(delivery);
+                widget.sale.setDelivery(delivery);
                 refreshDelivery();
                 Navigator.pop(context);
               }
@@ -182,7 +180,7 @@ class _SaleDeliveryCardState extends State<SaleDeliveryCard> {
                   : DELIVERY_TYPE.delivery;
               delivery.cost = 0;
 
-              widget.setDelivery(delivery);
+              widget.sale.setDelivery(delivery);
               refreshDelivery();
             },
           ),

@@ -12,15 +12,9 @@ class SalePaymentCard extends StatefulWidget {
   const SalePaymentCard({
     super.key,
     required this.sale,
-    required this.setPaymentMethod,
-    required this.setDiscount,
-    required this.setIncrease,
   });
 
   final Sale sale;
-  final Function(PaymentMethod paymentMethod) setPaymentMethod;
-  final Function(double discount) setDiscount;
-  final Function(double increase) setIncrease;
 
   @override
   State<SalePaymentCard> createState() => _SalePaymentCardState();
@@ -99,7 +93,7 @@ class _SalePaymentCardState extends State<SalePaymentCard> {
           TextButton(
             onPressed: () {
               if (_validateAndSave(formKey)) {
-                widget.setDiscount(controller.numberValue);
+                widget.sale.setDiscount(controller.numberValue);
                 Navigator.pop(context);
               }
             },
@@ -148,7 +142,7 @@ class _SalePaymentCardState extends State<SalePaymentCard> {
           TextButton(
             onPressed: () {
               if (_validateAndSave(formKey)) {
-                widget.setIncrease(controller.numberValue);
+                widget.sale.setIncrease(controller.numberValue);
                 Navigator.pop(context);
               }
             },
@@ -192,7 +186,7 @@ class _SalePaymentCardState extends State<SalePaymentCard> {
             value: selected,
             onChanged: (method) {
               if (method != null) {
-                widget.setPaymentMethod(method);
+                widget.sale.setPaymentMethod(method);
                 selected = method;
                 setState(() {});
               }

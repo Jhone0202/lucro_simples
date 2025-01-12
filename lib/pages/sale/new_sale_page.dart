@@ -9,7 +9,6 @@ import 'package:lucro_simples/components/sale_profit_card.dart';
 import 'package:lucro_simples/components/secondary_button.dart';
 import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/entities/delivery_type.dart';
-import 'package:lucro_simples/entities/payment_method.dart';
 import 'package:lucro_simples/entities/product.dart';
 import 'package:lucro_simples/entities/sale.dart';
 import 'package:lucro_simples/entities/sale_item.dart';
@@ -17,6 +16,7 @@ import 'package:lucro_simples/managers/session_manager.dart';
 import 'package:lucro_simples/pages/home/products_page.dart';
 import 'package:lucro_simples/pages/sale/sale_item_page.dart';
 import 'package:lucro_simples/repositories/sale_repository_interface.dart';
+import 'package:provider/provider.dart';
 
 class NewSalePageArgs {
   final List<SaleItem> items;
@@ -38,7 +38,6 @@ class NewSalePage extends StatefulWidget {
 class _NewSalePageState extends State<NewSalePage> {
   final repository = getIt.get<ISaleRepository>();
   late Sale sale;
-  PaymentMethod paymentMethod = PaymentMethod(name: 'Dinheiro');
 
   @override
   void initState() {
@@ -97,68 +96,7 @@ class _NewSalePageState extends State<NewSalePage> {
 
     if (saleItem == null) return;
 
-    sale.items.add(saleItem);
-    _refreshValues();
-  }
-
-  void setCustomer(Customer customer) {
-    sale.customerId = customer.id!;
-    sale.customerName = customer.name;
-    sale.customerPhoneNumber = customer.phoneNumber;
-    sale.customerPhotoURL = customer.photoURL;
-    setState(() {});
-  }
-
-  void setPaymentMethod(PaymentMethod method) {
-    if (method.id == null) throw 'Método de pagamento inválido';
-
-    sale.paymentMethodId = method.id!;
-    paymentMethod = method;
-
-    _refreshValues();
-  }
-
-  void setDiscount(double discount) {
-    sale.discount = discount;
-    _refreshValues(refreshFromPayment: false);
-  }
-
-  void setIncrease(double increase) {
-    sale.increase = increase;
-    _refreshValues(refreshFromPayment: false);
-  }
-
-  void setDelivery(Delivery delivery) {
-    sale.deliveryCost = delivery.cost;
-    sale.deliveryDate = delivery.deliveryDate;
-    sale.deliveryType = delivery.type;
-
-    _refreshValues();
-  }
-
-  void _refreshValues({bool refreshFromPayment = true}) {
-    final double profit = sale.items.fold(0, (sum, i) => sum + i.profit);
-    final double itemsTotal = sale.items.fold(0, (sum, i) => sum + i.total);
-    final double subtotal = itemsTotal + sale.deliveryCost;
-
-    final paymentIncrease = double.parse(
-      (subtotal * paymentMethod.increasePercent / 100).toStringAsFixed(2),
-    );
-
-    if (refreshFromPayment) {
-      sale.increase = paymentIncrease;
-      sale.discount = double.parse(
-        (subtotal * paymentMethod.discountPercent / 100).toStringAsFixed(2),
-      );
-    }
-
-    final double total = subtotal + sale.increase - sale.discount;
-
-    sale.subtotal = subtotal;
-    sale.total = total;
-    sale.profit = profit - paymentIncrease - sale.discount + sale.increase;
-
-    setState(() {});
+    sale.addItem(saleItem);
   }
 
   Future<bool> _showExitConfirmationDialog() async {
@@ -185,59 +123,55 @@ class _NewSalePageState extends State<NewSalePage> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (bool didPop, Object? result) async {
-        if (didPop) return;
+    return ChangeNotifierProvider<Sale>.value(
+      value: sale,
+      child: Consumer<Sale>(
+        builder: (context, sale, _) => PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (bool didPop, Object? result) async {
+            if (didPop) return;
 
-        final bool shouldPop = await _showExitConfirmationDialog();
+            final bool shouldPop = await _showExitConfirmationDialog();
 
-        if (context.mounted && shouldPop) Navigator.pop(context);
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Nova Venda'),
-        ),
-        body: ListView(
-          children: [
-            ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              separatorBuilder: (context, i) => const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Divider(),
-              ),
-              itemCount: sale.items.length,
-              itemBuilder: (context, i) => SaleItemTile(item: sale.items[i]),
+            if (context.mounted && shouldPop) Navigator.pop(context);
+          },
+          child: Scaffold(
+            appBar: AppBar(
+              title: const Text('Nova Venda'),
             ),
-            SecondaryButton(
-              onPressed: _selectAndAddNewItem,
-              title: 'Adicionar Item',
-              margin: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-              iconData: Icons.add,
+            body: ListView(
+              children: [
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  separatorBuilder: (context, i) => const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Divider(),
+                  ),
+                  itemCount: sale.items.length,
+                  itemBuilder: (context, i) => SaleItemTile(
+                    item: sale.items[i],
+                  ),
+                ),
+                SecondaryButton(
+                  onPressed: _selectAndAddNewItem,
+                  title: 'Adicionar Item',
+                  margin: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                  iconData: Icons.add,
+                ),
+                SaleCustomerCard(sale: sale),
+                SaleDeliveryCard(sale: sale),
+                SalePaymentCard(sale: sale),
+                SaleProfitCard(profit: sale.profit),
+                PrimaryButton(
+                  onPressed: _registerSale,
+                  title: 'Concluír Venda',
+                  iconData: Icons.check,
+                  margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                ),
+              ],
             ),
-            SaleCustomerCard(
-              sale: sale,
-              setCustomer: setCustomer,
-            ),
-            SaleDeliveryCard(
-              sale: sale,
-              setDelivery: setDelivery,
-            ),
-            SalePaymentCard(
-              sale: sale,
-              setPaymentMethod: setPaymentMethod,
-              setDiscount: setDiscount,
-              setIncrease: setIncrease,
-            ),
-            SaleProfitCard(profit: sale.profit),
-            PrimaryButton(
-              onPressed: _registerSale,
-              title: 'Concluír Venda',
-              iconData: Icons.check,
-              margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-            ),
-          ],
+          ),
         ),
       ),
     );
