@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/components/circle_file_image.dart';
+import 'package:lucro_simples/components/dash_sale_tile.dart';
 import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/entities/product.dart';
 import 'package:lucro_simples/entities/sale.dart';
@@ -14,7 +15,6 @@ import 'package:lucro_simples/pages/sale/new_sale_page.dart';
 import 'package:lucro_simples/pages/sale/sale_item_page.dart';
 import 'package:lucro_simples/repositories/sale_repository_interface.dart';
 import 'package:lucro_simples/utils/feedback_user.dart';
-import 'package:lucro_simples/utils/formaters_util.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -36,6 +36,42 @@ class _DashboardPageState extends State<DashboardPage> {
       sales = res;
       setState(() {});
     });
+  }
+
+  Future _newSale() async {
+    final customer = await Navigator.pushNamed(
+      context,
+      CustomersPage.routeName,
+      arguments: true,
+    ) as Customer?;
+
+    if (customer == null) return;
+
+    final product = await Navigator.pushNamed(
+      context,
+      ProductsPage.routeName,
+      arguments: true,
+    ) as Product?;
+
+    if (product == null) return;
+
+    final saleItem = await Navigator.pushNamed(
+      context,
+      SaleItemPage.routeName,
+      arguments: product,
+    ) as SaleItem?;
+
+    if (saleItem == null) return;
+
+    final newSale = await Navigator.pushNamed(
+      context,
+      NewSalePage.routeName,
+      arguments: NewSalePageArgs(items: [saleItem], customer: customer),
+    ) as Sale?;
+
+    if (newSale != null) {
+      FeedbackUser.toast(msg: 'Venda registrada com Sucesso!');
+    }
   }
 
   @override
@@ -61,77 +97,14 @@ class _DashboardPageState extends State<DashboardPage> {
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            separatorBuilder: (context, index) => Divider(
-              color: Colors.grey.shade300,
-            ),
+            separatorBuilder: (context, index) => const Divider(),
             itemCount: sales.length,
-            itemBuilder: (context, index) {
-              final sale = sales[index];
-              return ListTile(
-                title: Text(
-                  sale.customerName,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(sale.id?.toString() ?? ''),
-                    Text(
-                      formatRealBr(sale.total),
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall
-                          ?.copyWith(color: Colors.green),
-                    ),
-                  ],
-                ),
-                leading: CircleFileImage(filePath: sale.customerPhotoURL),
-                trailing: Text(
-                  getFriendlyDateTime(sale.saleDate, separated: true),
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  textAlign: TextAlign.end,
-                ),
-              );
-            },
+            itemBuilder: (context, index) => DashSaleTile(sale: sales[index]),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          final customer = await Navigator.pushNamed(
-            context,
-            CustomersPage.routeName,
-            arguments: true,
-          ) as Customer?;
-
-          if (customer == null) return;
-
-          final product = await Navigator.pushNamed(
-            context,
-            ProductsPage.routeName,
-            arguments: true,
-          ) as Product?;
-
-          if (product == null) return;
-
-          final saleItem = await Navigator.pushNamed(
-            context,
-            SaleItemPage.routeName,
-            arguments: product,
-          ) as SaleItem?;
-
-          if (saleItem == null) return;
-
-          final newSale = await Navigator.pushNamed(
-            context,
-            NewSalePage.routeName,
-            arguments: NewSalePageArgs(items: [saleItem], customer: customer),
-          ) as Sale?;
-
-          if (newSale != null) {
-            FeedbackUser.toast(msg: 'Venda registrada com Sucesso!');
-          }
-        },
+        onPressed: _newSale,
         label: const Text('Nova Venda'),
         icon: const Icon(Icons.add),
       ),

@@ -26,10 +26,10 @@ String getFriendlyDateTime(DateTime? dateTime, {bool separated = false}) {
   } else if (dateTime.isAfter(yesterday)) {
     return 'Ontem às${separated ? '\n' : ' '}${DateFormat.Hm('pt_BR').format(dateTime)}';
   } else {
-    return '$dateFormatted às${separated ? '\n' : ''}${DateFormat.Hm('pt_BR').format(dateTime)}';
+    return '$dateFormatted às${separated ? '\n' : ' '}${DateFormat.Hm('pt_BR').format(dateTime)}';
   }
 }
 
 String formatId(int id) {
-  return NumberFormat('00000').format(id);
+  return '#${NumberFormat('00000').format(id)}';
 }

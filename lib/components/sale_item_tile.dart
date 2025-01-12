@@ -57,7 +57,7 @@ class SaleItemTile extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '#${formatId(item.productId)}',
+                      formatId(item.productId),
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
                             color: Colors.black54,
                           ),
