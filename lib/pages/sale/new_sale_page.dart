@@ -72,6 +72,8 @@ class _NewSalePageState extends State<NewSalePage> {
   }
 
   Future _registerSale() async {
+    if (sale.items.isEmpty) throw 'Adicione um item para concluír a venda';
+
     final saved = await repository.registerNewSale(sale);
 
     if (mounted) Navigator.pop(context, saved);
@@ -121,6 +123,28 @@ class _NewSalePageState extends State<NewSalePage> {
     return result ?? false;
   }
 
+  Future _showDeleteDialog(SaleItem item) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirmar'),
+        content: Text('Deseja remover o item ${item.productName} da venda?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Remover'),
+          ),
+        ],
+      ),
+    );
+
+    if (result == true) sale.removeItem(item);
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<Sale>.value(
@@ -151,6 +175,7 @@ class _NewSalePageState extends State<NewSalePage> {
                   itemCount: sale.items.length,
                   itemBuilder: (context, i) => SaleItemTile(
                     item: sale.items[i],
+                    removeItem: _showDeleteDialog,
                   ),
                 ),
                 SecondaryButton(

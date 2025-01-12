@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lucro_simples/utils/input_decorations.dart';
@@ -5,6 +6,7 @@ import 'package:lucro_simples/utils/input_decorations.dart';
 class EditQuantityWidget extends StatelessWidget {
   const EditQuantityWidget({
     super.key,
+    this.removeItem,
     required this.remove,
     required this.add,
     required this.edit,
@@ -12,6 +14,7 @@ class EditQuantityWidget extends StatelessWidget {
     this.showLabel = true,
   });
 
+  final VoidCallback? removeItem;
   final VoidCallback remove;
   final VoidCallback add;
   final Function(int newQuantity) edit;
@@ -97,15 +100,26 @@ class EditQuantityWidget extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              IconButton(
-                onPressed: remove,
-                visualDensity: VisualDensity.compact,
-                icon: Icon(
-                  Icons.remove_circle_outline,
-                  size: 24,
-                  color: Theme.of(context).colorScheme.primary,
+              if (removeItem != null && quantity == 1)
+                IconButton(
+                  onPressed: removeItem,
+                  visualDensity: VisualDensity.compact,
+                  icon: Icon(
+                    CupertinoIcons.trash_circle,
+                    size: 24,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                )
+              else
+                IconButton(
+                  onPressed: remove,
+                  visualDensity: VisualDensity.compact,
+                  icon: Icon(
+                    Icons.remove_circle_outline,
+                    size: 24,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
-              ),
               Expanded(
                 child: InkWell(
                   onTap: () => _editQuantity(context),

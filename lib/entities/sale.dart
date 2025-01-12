@@ -112,6 +112,11 @@ class Sale extends ChangeNotifier {
     refreshValues();
   }
 
+  void removeItem(SaleItem item) {
+    items.remove(item);
+    refreshValues();
+  }
+
   void setPaymentMethod(PaymentMethod method) {
     if (method.id == null) throw 'Método de pagamento inválido';
     paymentMethodId = method.id!;

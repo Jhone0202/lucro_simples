@@ -10,9 +10,11 @@ class SaleItemTile extends StatelessWidget {
   const SaleItemTile({
     super.key,
     required this.item,
+    required this.removeItem,
   });
 
   final SaleItem item;
+  final Function(SaleItem item) removeItem;
 
   @override
   Widget build(BuildContext context) {
@@ -74,8 +76,10 @@ class SaleItemTile extends StatelessWidget {
                             ),
                           ),
                         ),
+                        // Adicionar opção de remover item da venda
                         EditQuantityWidget(
                           showLabel: false,
+                          removeItem: () => removeItem(item),
                           remove: item.removeQuantity,
                           add: item.addQuantity,
                           edit: item.editQuantity,
