@@ -1,14 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/components/circle_file_image.dart';
+import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/entities/sale.dart';
+import 'package:lucro_simples/pages/home/customers_page.dart';
 
 class SaleCustomerCard extends StatelessWidget {
   const SaleCustomerCard({
     super.key,
     required this.sale,
+    required this.setCustomer,
   });
 
   final Sale sale;
+  final Function(Customer customer) setCustomer;
+
+  Future _changeCustomer(BuildContext context) async {
+    final newCustomer = await Navigator.pushNamed(
+      context,
+      CustomersPage.routeName,
+      arguments: true,
+    ) as Customer?;
+
+    if (newCustomer != null) setCustomer(newCustomer);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +59,7 @@ class SaleCustomerCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: ListTile(
+              onTap: () => _changeCustomer(context),
               contentPadding: const EdgeInsets.symmetric(horizontal: 8),
               leading: CircleFileImage(filePath: sale.customerPhotoURL),
               title: Text(

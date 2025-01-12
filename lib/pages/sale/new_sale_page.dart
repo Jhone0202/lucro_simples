@@ -101,6 +101,14 @@ class _NewSalePageState extends State<NewSalePage> {
     _refreshValues();
   }
 
+  void setCustomer(Customer customer) {
+    sale.customerId = customer.id!;
+    sale.customerName = customer.name;
+    sale.customerPhoneNumber = customer.phoneNumber;
+    sale.customerPhotoURL = customer.photoURL;
+    setState(() {});
+  }
+
   void setPaymentMethod(PaymentMethod method) {
     if (method.id == null) throw 'Método de pagamento inválido';
 
@@ -208,7 +216,10 @@ class _NewSalePageState extends State<NewSalePage> {
               margin: const EdgeInsets.fromLTRB(16, 12, 16, 12),
               iconData: Icons.add,
             ),
-            SaleCustomerCard(sale: sale),
+            SaleCustomerCard(
+              sale: sale,
+              setCustomer: setCustomer,
+            ),
             SaleDeliveryCard(
               sale: sale,
               setDelivery: setDelivery,
