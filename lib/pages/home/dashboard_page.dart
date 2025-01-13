@@ -2,8 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
+import 'package:lucro_simples/app_notifiers.dart';
 import 'package:lucro_simples/components/circle_file_image.dart';
 import 'package:lucro_simples/components/dash_sale_tile.dart';
+import 'package:lucro_simples/components/sales_anim_chart.dart';
 import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/entities/product.dart';
 import 'package:lucro_simples/entities/sale.dart';
@@ -71,8 +73,14 @@ class _DashboardPageState extends State<DashboardPage> {
 
     if (newSale != null) {
       FeedbackUser.toast(msg: 'Venda registrada com Sucesso!');
+      sales.insert(0, newSale);
+      setState(() {});
+
+      refreshNotifier.value = true;
     }
   }
+
+  Future _refreshStats() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +95,7 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       body: ListView(
         children: [
+          const SalesAnimChart(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Text(

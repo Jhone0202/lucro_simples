@@ -33,3 +33,11 @@ String getFriendlyDateTime(DateTime? dateTime, {bool separated = false}) {
 String formatId(int id) {
   return '#${NumberFormat('00000').format(id)}';
 }
+
+String getDay(DateTime dateTime) {
+  return DateFormat('dd MMM', 'pt_br').format(dateTime);
+}
+
+String getPercent(double value, double total) {
+  return '${(value * 100 / total).toStringAsFixed(2)}%';
+}
