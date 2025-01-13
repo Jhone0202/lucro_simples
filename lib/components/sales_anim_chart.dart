@@ -28,10 +28,10 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
     super.initState();
     _loadData();
 
-    refreshNotifier.addListener(() {
-      if (refreshNotifier.value) {
+    refreshSalesChart.addListener(() {
+      if (refreshSalesChart.value) {
         _loadData();
-        refreshNotifier.value = false;
+        refreshSalesChart.value = false;
       }
     });
   }
@@ -54,7 +54,7 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),

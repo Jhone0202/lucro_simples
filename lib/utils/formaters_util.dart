@@ -39,5 +39,6 @@ String getDay(DateTime dateTime) {
 }
 
 String getPercent(double value, double total) {
+  if (value == 0 && total == 0) return '0%';
   return '${(value * 100 / total).toStringAsFixed(2)}%';
 }

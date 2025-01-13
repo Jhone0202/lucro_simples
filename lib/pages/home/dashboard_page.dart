@@ -5,7 +5,9 @@ import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/app_notifiers.dart';
 import 'package:lucro_simples/components/circle_file_image.dart';
 import 'package:lucro_simples/components/dash_sale_tile.dart';
+import 'package:lucro_simples/components/month_sales_card.dart';
 import 'package:lucro_simples/components/sales_anim_chart.dart';
+import 'package:lucro_simples/components/today_sales_card.dart';
 import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/entities/product.dart';
 import 'package:lucro_simples/entities/sale.dart';
@@ -76,11 +78,11 @@ class _DashboardPageState extends State<DashboardPage> {
       sales.insert(0, newSale);
       setState(() {});
 
-      refreshNotifier.value = true;
+      refreshSalesChart.value = true;
+      refreshTodayCard.value = true;
+      refreshMonthCard.value = true;
     }
   }
-
-  Future _refreshStats() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +98,12 @@ class _DashboardPageState extends State<DashboardPage> {
       body: ListView(
         children: [
           const SalesAnimChart(),
+          const Row(
+            children: [
+              Expanded(child: TodaySalesCard()),
+              Expanded(child: MonthSalesCard()),
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Text(
