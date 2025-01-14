@@ -9,9 +9,9 @@ class AnalyticsRepositorySqlite extends IAnalyticsRepository {
 
     const query = '''
       SELECT 
-        DATE(saleDate / 1000, 'unixepoch', 'localtime') AS date,
-        SUM(total) AS total,
-        SUM(profit) AS profit
+        COALESCE(DATE(saleDate / 1000, 'unixepoch', 'localtime'), DATE('now', 'localtime')) AS date,
+        COALESCE(SUM(total), 0) AS total,
+        COALESCE(SUM(profit), 0) AS profit
       FROM sales
       WHERE DATE(saleDate / 1000, 'unixepoch', 'localtime') >= DATE('now', '-7 days', 'localtime')
       GROUP BY date
@@ -29,9 +29,9 @@ class AnalyticsRepositorySqlite extends IAnalyticsRepository {
 
     const query = '''
       SELECT 
-        DATE(saleDate / 1000, 'unixepoch', 'localtime') AS date,
-        SUM(total) AS total,
-        SUM(profit) AS profit
+        COALESCE(DATE(saleDate / 1000, 'unixepoch', 'localtime'), DATE('now', 'localtime')) AS date,
+        COALESCE(SUM(total), 0) AS total,
+        COALESCE(SUM(profit), 0) AS profit
       FROM sales
       WHERE DATE(saleDate / 1000, 'unixepoch', 'localtime') = DATE('now', 'localtime');
     ''';
@@ -49,9 +49,9 @@ class AnalyticsRepositorySqlite extends IAnalyticsRepository {
 
     const query = '''
       SELECT 
-        DATE(saleDate / 1000, 'unixepoch', 'start of month', 'localtime') AS date,
-        SUM(total) AS total,
-        SUM(profit) AS profit
+        COALESCE(DATE(saleDate / 1000, 'unixepoch', 'start of month', 'localtime'), DATE('now', 'start of month', 'localtime')) AS date,
+        COALESCE(SUM(total), 0) AS total,
+        COALESCE(SUM(profit), 0) AS profit
       FROM sales
       WHERE DATE(saleDate / 1000, 'unixepoch', 'localtime') >= DATE('now', 'start of month', '-12 months', 'localtime')
       GROUP BY date

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/app_notifiers.dart';
@@ -38,6 +39,7 @@ class _TodaySalesCardState extends State<TodaySalesCard> {
       setState(() {});
       todayResume = await repository.getTodayResume();
     } catch (e) {
+      if (kDebugMode) print('today $e');
       FeedbackUser.toast(msg: e.toString());
     } finally {
       isLoading = false;

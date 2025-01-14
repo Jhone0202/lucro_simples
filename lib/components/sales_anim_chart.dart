@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lucro_simples/app_injector.dart';
@@ -44,6 +45,7 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
       total = monthSeries.fold(0, (s, e) => s + e.total);
       profit = monthSeries.fold(0, (s, e) => s + e.profit);
     } catch (e) {
+      if (kDebugMode) print(e);
       FeedbackUser.toast(msg: e.toString());
     } finally {
       isLoading = false;
