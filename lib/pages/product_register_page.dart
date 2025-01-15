@@ -69,7 +69,7 @@ class _ProductRegisterPageState extends State<ProductRegisterPage> {
                   child: ListView(
                     children: [
                       AspectRatio(
-                        aspectRatio: 1.6,
+                        aspectRatio: 1.4,
                         child: InkWell(
                           onTap: _selectPhoto,
                           borderRadius: BorderRadius.circular(16),
@@ -105,6 +105,7 @@ class _ProductRegisterPageState extends State<ProductRegisterPage> {
                       const SizedBox(height: 16),
                       TextFormField(
                         controller: costPriceController,
+                        keyboardType: TextInputType.number,
                         decoration: defaultFormDecoration(context).copyWith(
                           labelText: 'Preço de Custo',
                         ),
@@ -115,6 +116,7 @@ class _ProductRegisterPageState extends State<ProductRegisterPage> {
                       const SizedBox(height: 16),
                       TextFormField(
                         controller: salePriceController,
+                        keyboardType: TextInputType.number,
                         decoration: defaultFormDecoration(context).copyWith(
                           labelText: 'Preço de Venda',
                         ),

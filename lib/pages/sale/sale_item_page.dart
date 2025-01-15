@@ -49,7 +49,7 @@ class _SaleItemPageState extends State<SaleItemPage> {
                   child: ListView(
                     children: [
                       AspectRatio(
-                        aspectRatio: 1.6,
+                        aspectRatio: 1.4,
                         child: Container(
                           clipBehavior: Clip.hardEdge,
                           decoration: BoxDecoration(

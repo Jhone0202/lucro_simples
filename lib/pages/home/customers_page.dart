@@ -28,6 +28,18 @@ class _CustomersPageState extends State<CustomersPage> {
     });
   }
 
+  Future _registerNewCustomer() async {
+    final newCustomer = await Navigator.pushNamed(
+      context,
+      CustomerRegisterPage.routeName,
+    ) as Customer?;
+
+    if (newCustomer != null) {
+      customers.insert(0, newCustomer);
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,10 +119,7 @@ class _CustomersPageState extends State<CustomersPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.pushNamed(
-          context,
-          CustomerRegisterPage.routeName,
-        ),
+        onPressed: _registerNewCustomer,
         label: const Text('Cadastrar Cliente'),
         icon: const Icon(Icons.add),
       ),

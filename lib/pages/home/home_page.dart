@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucro_simples/pages/home/customers_page.dart';
 import 'package:lucro_simples/pages/home/dashboard_page.dart';
 import 'package:lucro_simples/pages/home/products_page.dart';
+import 'package:lucro_simples/utils/keep_alive_page.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = 'home_page';
@@ -25,9 +26,9 @@ class _HomePageState extends State<HomePage> {
           setState(() {});
         },
         children: const [
-          DashboardPage(),
-          ProductsPage(),
-          CustomersPage(),
+          KeepAlivePage(child: DashboardPage()),
+          KeepAlivePage(child: ProductsPage()),
+          KeepAlivePage(child: CustomersPage()),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

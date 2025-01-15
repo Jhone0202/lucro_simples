@@ -33,6 +33,18 @@ class _ProductsPageState extends State<ProductsPage> {
     });
   }
 
+  Future _registerNewProduct() async {
+    final newProduct = await Navigator.pushNamed(
+      context,
+      ProductRegisterPage.routeName,
+    ) as Product?;
+
+    if (newProduct != null) {
+      products.insert(0, newProduct);
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +79,7 @@ class _ProductsPageState extends State<ProductsPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             AspectRatio(
-                              aspectRatio: 1.6,
+                              aspectRatio: 1.4,
                               child: Container(
                                 clipBehavior: Clip.hardEdge,
                                 decoration: BoxDecoration(
@@ -114,10 +126,7 @@ class _ProductsPageState extends State<ProductsPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.pushNamed(
-          context,
-          ProductRegisterPage.routeName,
-        ),
+        onPressed: _registerNewProduct,
         label: const Text('Cadastrar Produto'),
         icon: const Icon(Icons.add),
       ),
