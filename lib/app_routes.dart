@@ -33,7 +33,9 @@ final appRoutes = <String, WidgetBuilder>{
   SaleItemPage.routeName: (context) => SaleItemPage(
         product: ModalRoute.of(context)?.settings.arguments as Product,
       ),
-  ProductRegisterPage.routeName: (context) => const ProductRegisterPage(),
+  ProductRegisterPage.routeName: (context) => ProductRegisterPage(
+        editableProduct: ModalRoute.of(context)?.settings.arguments as Product?,
+      ),
   CustomerRegisterPage.routeName: (context) => CustomerRegisterPage(
         editableCustomer:
             ModalRoute.of(context)?.settings.arguments as Customer?,

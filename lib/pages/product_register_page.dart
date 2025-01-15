@@ -12,7 +12,9 @@ import 'package:path_provider/path_provider.dart';
 
 class ProductRegisterPage extends StatefulWidget {
   static const String routeName = 'product_register_page';
-  const ProductRegisterPage({super.key});
+  const ProductRegisterPage({super.key, this.editableProduct});
+
+  final Product? editableProduct;
 
   @override
   State<ProductRegisterPage> createState() => _ProductRegisterPageState();
@@ -22,12 +24,28 @@ class _ProductRegisterPageState extends State<ProductRegisterPage> {
   final picker = ImagePicker();
 
   final repository = getIt.get<IProductRepository>();
-  final product = Product(name: '', costPrice: 0, salePrice: 0);
+  Product product = Product(name: '', costPrice: 0, salePrice: 0);
   final formKey = GlobalKey<FormState>();
 
   final nameController = TextEditingController();
   final costPriceController = MoneyMaskedTextController(leftSymbol: 'R\$');
   final salePriceController = MoneyMaskedTextController(leftSymbol: 'R\$');
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.editableProduct != null) {
+      _prepareToEdit(widget.editableProduct!);
+    }
+  }
+
+  void _prepareToEdit(Product editableProduct) {
+    product = editableProduct;
+    nameController.text = product.name;
+    costPriceController.updateValue(product.costPrice);
+    salePriceController.updateValue(product.salePrice);
+    setState(() {});
+  }
 
   Future _selectPhoto() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -47,7 +65,13 @@ class _ProductRegisterPageState extends State<ProductRegisterPage> {
     product.costPrice = costPriceController.numberValue;
     product.salePrice = salePriceController.numberValue;
 
-    final saved = await repository.registerNewProduct(product);
+    late Product saved;
+
+    if (widget.editableProduct != null) {
+      saved = await repository.updateProduct(product);
+    } else {
+      saved = await repository.registerNewProduct(product);
+    }
 
     if (mounted) Navigator.pop(context, saved);
   }
