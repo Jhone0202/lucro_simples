@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/entities/product.dart';
 import 'package:lucro_simples/entities/sale.dart';
 import 'package:lucro_simples/pages/customer_register_page.dart';
@@ -33,7 +34,10 @@ final appRoutes = <String, WidgetBuilder>{
         product: ModalRoute.of(context)?.settings.arguments as Product,
       ),
   ProductRegisterPage.routeName: (context) => const ProductRegisterPage(),
-  CustomerRegisterPage.routeName: (context) => const CustomerRegisterPage(),
+  CustomerRegisterPage.routeName: (context) => CustomerRegisterPage(
+        editableCustomer:
+            ModalRoute.of(context)?.settings.arguments as Customer?,
+      ),
   SaleDetailsPage.routeName: (context) => SaleDetailsPage(
         sale: ModalRoute.of(context)?.settings.arguments as Sale,
       ),

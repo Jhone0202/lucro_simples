@@ -14,7 +14,9 @@ import 'package:path_provider/path_provider.dart';
 
 class CustomerRegisterPage extends StatefulWidget {
   static const String routeName = 'customer_register_page';
-  const CustomerRegisterPage({super.key});
+  const CustomerRegisterPage({super.key, this.editableCustomer});
+
+  final Customer? editableCustomer;
 
   @override
   State<CustomerRegisterPage> createState() => _CustomerRegisterPageState();
@@ -24,7 +26,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
   final picker = ImagePicker();
 
   final repository = getIt.get<ICustomerRepository>();
-  final customer = Customer(
+  Customer customer = Customer(
     name: '',
     phoneNumber: '',
     type: IndividualCustomer(),
@@ -33,6 +35,21 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
 
   final nameController = TextEditingController();
   final phoneController = MaskedTextController(mask: '+55 (00) 00000-0000');
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.editableCustomer != null) {
+      _prepareToEdit(widget.editableCustomer!);
+    }
+  }
+
+  void _prepareToEdit(Customer editableCustomer) {
+    customer = editableCustomer;
+    nameController.text = customer.name;
+    phoneController.updateText(customer.phoneNumber);
+    setState(() {});
+  }
 
   Future _selectPhoto() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -51,7 +68,13 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
     customer.name = nameController.text;
     customer.phoneNumber = phoneController.text;
 
-    final saved = await repository.registerNewCustomer(customer);
+    late Customer saved;
+
+    if (widget.editableCustomer != null) {
+      saved = await repository.updateCustomer(customer);
+    } else {
+      saved = await repository.registerNewCustomer(customer);
+    }
 
     if (mounted) Navigator.pop(context, saved);
   }
