@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/components/primary_button.dart';
+import 'package:lucro_simples/components/receipt_bottom_sheet.dart';
 import 'package:lucro_simples/components/sale_customer_card.dart';
 import 'package:lucro_simples/components/sale_delivery_card.dart';
 import 'package:lucro_simples/components/sale_item_tile.dart';
@@ -86,7 +87,7 @@ class _SaleDetailsPageState extends State<SaleDetailsPage> {
                 ),
                 SaleProfitCard(profit: detailedSale!.profit),
                 PrimaryButton(
-                  onPressed: () {},
+                  onPressed: () => showReceipt(context, detailedSale!),
                   title: 'Ver Comprovante',
                   iconData: Icons.receipt,
                   margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),

@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/app_notifiers.dart';
@@ -18,7 +16,6 @@ import 'package:lucro_simples/pages/home/products_page.dart';
 import 'package:lucro_simples/pages/sale/new_sale_page.dart';
 import 'package:lucro_simples/pages/sale/sale_item_page.dart';
 import 'package:lucro_simples/repositories/sale_repository_interface.dart';
-import 'package:lucro_simples/utils/feedback_user.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -74,7 +71,6 @@ class _DashboardPageState extends State<DashboardPage> {
     ) as Sale?;
 
     if (newSale != null) {
-      FeedbackUser.toast(msg: 'Venda registrada com Sucesso!');
       sales.insert(0, newSale);
       setState(() {});
 

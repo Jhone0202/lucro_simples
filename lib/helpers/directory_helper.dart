@@ -10,4 +10,8 @@ class DirectoryHelper {
       return await getApplicationDocumentsDirectory();
     }
   }
+
+  static Future<Directory> getTempPath() async {
+    return await getTemporaryDirectory();
+  }
 }

@@ -167,7 +167,7 @@ class _SaleDeliveryCardState extends State<SaleDeliveryCard> {
               const SizedBox(width: 4),
               Text(
                 widget.readOnly
-                    ? deliveryTypeName(delivery.type)
+                    ? getDeliveryTypeName(delivery.type)
                     : 'Tipo de Entrega',
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       color: Theme.of(context).primaryColor,

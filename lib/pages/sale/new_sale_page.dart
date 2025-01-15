@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/components/primary_button.dart';
+import 'package:lucro_simples/components/receipt_bottom_sheet.dart';
 import 'package:lucro_simples/components/sale_customer_card.dart';
 import 'package:lucro_simples/components/sale_delivery_card.dart';
 import 'package:lucro_simples/components/sale_item_tile.dart';
@@ -76,7 +77,9 @@ class _NewSalePageState extends State<NewSalePage> {
 
     final saved = await repository.registerNewSale(sale);
 
-    if (mounted) Navigator.pop(context, saved);
+    if (mounted) {
+      showReceipt(context, saved, () => Navigator.pop(context, saved));
+    }
   }
 
   Future _selectAndAddNewItem() async {
