@@ -119,10 +119,12 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
           AspectRatio(
             aspectRatio: 2,
             child: isLoading
-                ? const SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: CircularProgressIndicator(strokeWidth: 1),
+                ? const Center(
+                    child: SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(strokeWidth: 1),
+                    ),
                   )
                 : SfCartesianChart(
                     tooltipBehavior: TooltipBehavior(enable: true),

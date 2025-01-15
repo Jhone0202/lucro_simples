@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/app_notifiers.dart';
@@ -33,6 +35,18 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void initState() {
     super.initState();
+    _loadSales();
+
+    refreshDashboard.addListener(() {
+      if (refreshDashboard.value) {
+        _loadSales();
+        _refreshCharts();
+        refreshDashboard.value = false;
+      }
+    });
+  }
+
+  void _loadSales() {
     repository.getPaginatedSales('', 100, 0).then((res) {
       sales = res;
       setState(() {});
@@ -73,11 +87,14 @@ class _DashboardPageState extends State<DashboardPage> {
     if (newSale != null) {
       sales.insert(0, newSale);
       setState(() {});
-
-      refreshSalesChart.value = true;
-      refreshTodayCard.value = true;
-      refreshMonthCard.value = true;
+      _refreshCharts();
     }
+  }
+
+  void _refreshCharts() {
+    refreshSalesChart.value = true;
+    refreshTodayCard.value = true;
+    refreshMonthCard.value = true;
   }
 
   @override
@@ -93,13 +110,14 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       body: ListView(
         children: [
-          const SalesAnimChart(),
+          const SizedBox(height: 8),
           const Row(
             children: [
               Expanded(child: TodaySalesCard()),
               Expanded(child: MonthSalesCard()),
             ],
           ),
+          const SalesAnimChart(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Text(

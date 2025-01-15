@@ -6,4 +6,5 @@ abstract class ISaleRepository {
   Future<List<Sale>> getPaginatedSales(String search, int? limit, int? offset);
   Future<Sale> getSaleDetails(int saleId);
   Future<List<PaymentMethod>> getPaymentMethods();
+  Future deleteSale(Sale sale);
 }

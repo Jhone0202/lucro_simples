@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
+import 'package:lucro_simples/app_notifiers.dart';
 import 'package:lucro_simples/components/primary_button.dart';
 import 'package:lucro_simples/components/receipt_bottom_sheet.dart';
 import 'package:lucro_simples/components/sale_customer_card.dart';
@@ -7,6 +8,7 @@ import 'package:lucro_simples/components/sale_delivery_card.dart';
 import 'package:lucro_simples/components/sale_item_tile.dart';
 import 'package:lucro_simples/components/sale_payment_card.dart';
 import 'package:lucro_simples/components/sale_profit_card.dart';
+import 'package:lucro_simples/components/secondary_button.dart';
 import 'package:lucro_simples/entities/sale.dart';
 import 'package:lucro_simples/repositories/sale_repository_interface.dart';
 import 'package:lucro_simples/utils/feedback_user.dart';
@@ -41,6 +43,33 @@ class _SaleDetailsPageState extends State<SaleDetailsPage> {
       FeedbackUser.toast(msg: e.toString());
     } finally {
       setState(() {});
+    }
+  }
+
+  Future _confirmAndDeleteSale(Sale sale) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Excluir Venda'),
+        content: const Text('Essa ação não pode ser desfeita'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red.shade900),
+            child: const Text('Excluír'),
+          ),
+        ],
+      ),
+    );
+
+    if (result == true) {
+      await repository.deleteSale(sale);
+      refreshDashboard.value = true;
+      if (mounted) Navigator.pop(context);
     }
   }
 
@@ -90,7 +119,14 @@ class _SaleDetailsPageState extends State<SaleDetailsPage> {
                   onPressed: () => showReceipt(context, detailedSale!),
                   title: 'Ver Comprovante',
                   iconData: Icons.receipt,
+                  margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                ),
+                SecondaryButton(
+                  onPressed: () => _confirmAndDeleteSale(detailedSale!),
+                  title: 'Excluír Venda',
+                  iconData: Icons.delete,
                   margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                  contentColor: Colors.red.shade900,
                 ),
               ],
             ),

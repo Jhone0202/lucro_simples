@@ -95,4 +95,23 @@ class SaleRepositorySqlite extends ISaleRepository {
 
     return res.map((e) => PaymentMethod.fromMap(e)).toList();
   }
+
+  @override
+  Future deleteSale(Sale sale) async {
+    final database = await LsDatabase().db;
+
+    await database.transaction((txn) async {
+      await txn.delete(
+        'sale_items',
+        where: 'saleId = ?',
+        whereArgs: [sale.id],
+      );
+
+      await txn.delete(
+        'sales',
+        where: 'id = ?',
+        whereArgs: [sale.id],
+      );
+    });
+  }
 }
