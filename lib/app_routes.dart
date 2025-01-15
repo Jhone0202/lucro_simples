@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/entities/product.dart';
+import 'package:lucro_simples/entities/sale.dart';
 import 'package:lucro_simples/pages/customer_register_page.dart';
 import 'package:lucro_simples/pages/home/customers_page.dart';
 import 'package:lucro_simples/pages/home/home_page.dart';
@@ -8,6 +9,7 @@ import 'package:lucro_simples/pages/sale/new_sale_page.dart';
 import 'package:lucro_simples/pages/onboarding/intro_company_page.dart';
 import 'package:lucro_simples/pages/onboarding/intro_page.dart';
 import 'package:lucro_simples/pages/product_register_page.dart';
+import 'package:lucro_simples/pages/sale/sale_details_page.dart';
 import 'package:lucro_simples/pages/sale/sale_item_page.dart';
 import 'package:lucro_simples/pages/splash_page.dart';
 
@@ -32,4 +34,7 @@ final appRoutes = <String, WidgetBuilder>{
       ),
   ProductRegisterPage.routeName: (context) => const ProductRegisterPage(),
   CustomerRegisterPage.routeName: (context) => const CustomerRegisterPage(),
+  SaleDetailsPage.routeName: (context) => SaleDetailsPage(
+        sale: ModalRoute.of(context)?.settings.arguments as Sale,
+      ),
 };

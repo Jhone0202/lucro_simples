@@ -10,11 +10,13 @@ class SaleItemTile extends StatelessWidget {
   const SaleItemTile({
     super.key,
     required this.item,
-    required this.removeItem,
+    this.removeItem,
+    this.readOnly = false,
   });
 
   final SaleItem item;
-  final Function(SaleItem item) removeItem;
+  final Function(SaleItem item)? removeItem;
+  final bool readOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -60,33 +62,45 @@ class SaleItemTile extends StatelessWidget {
                     ),
                     Text(
                       formatId(item.productId),
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                            color: Colors.black54,
-                          ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .labelMedium
+                          ?.copyWith(color: Colors.black54),
                     ),
-                    const Spacer(),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            formatRealBr(item.total),
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
+                    if (readOnly)
+                      Text(
+                        '${formatRealBr(item.productPrice)} X ${item.quantity} = ${formatRealBr(item.total)}',
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelMedium
+                            ?.copyWith(color: Colors.black54),
+                      )
+                    else ...[
+                      const Spacer(),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              formatRealBr(item.total),
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
-                        ),
-                        // Adicionar opção de remover item da venda
-                        EditQuantityWidget(
-                          showLabel: false,
-                          removeItem: () => removeItem(item),
-                          remove: item.removeQuantity,
-                          add: item.addQuantity,
-                          edit: item.editQuantity,
-                          quantity: item.quantity,
-                        ),
-                      ],
-                    )
+                          EditQuantityWidget(
+                            showLabel: false,
+                            removeItem: removeItem != null
+                                ? () => removeItem!(item)
+                                : null,
+                            remove: item.removeQuantity,
+                            add: item.addQuantity,
+                            edit: item.editQuantity,
+                            quantity: item.quantity,
+                          ),
+                        ],
+                      )
+                    ]
                   ],
                 ),
               ),

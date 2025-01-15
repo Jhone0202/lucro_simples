@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/components/circle_file_image.dart';
 import 'package:lucro_simples/entities/sale.dart';
+import 'package:lucro_simples/pages/sale/sale_details_page.dart';
 import 'package:lucro_simples/utils/formaters_util.dart';
 
 class DashSaleTile extends StatelessWidget {
@@ -11,6 +12,11 @@ class DashSaleTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () => Navigator.pushNamed(
+        context,
+        SaleDetailsPage.routeName,
+        arguments: sale,
+      ),
       title: Text(
         sale.customerName,
         style: Theme.of(context).textTheme.titleMedium,

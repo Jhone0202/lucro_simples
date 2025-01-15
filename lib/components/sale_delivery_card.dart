@@ -23,9 +23,11 @@ class SaleDeliveryCard extends StatefulWidget {
   const SaleDeliveryCard({
     super.key,
     required this.sale,
+    this.readOnly = false,
   });
 
   final Sale sale;
+  final bool readOnly;
 
   @override
   State<SaleDeliveryCard> createState() => _SaleDeliveryCardState();
@@ -164,26 +166,29 @@ class _SaleDeliveryCardState extends State<SaleDeliveryCard> {
               ),
               const SizedBox(width: 4),
               Text(
-                'Tipo de Entrega',
+                widget.readOnly
+                    ? deliveryTypeName(delivery.type)
+                    : 'Tipo de Entrega',
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       color: Theme.of(context).primaryColor,
                     ),
               ),
             ],
           ),
-          AnimatedSwitch(
-            option1: 'Retirada',
-            option2: 'Entrega',
-            onChanged: (selectedOption) {
-              delivery.type = selectedOption == 'Retirada'
-                  ? DELIVERY_TYPE.pickup
-                  : DELIVERY_TYPE.delivery;
-              delivery.cost = 0;
+          if (!widget.readOnly)
+            AnimatedSwitch(
+              option1: 'Retirada',
+              option2: 'Entrega',
+              onChanged: (selectedOption) {
+                delivery.type = selectedOption == 'Retirada'
+                    ? DELIVERY_TYPE.pickup
+                    : DELIVERY_TYPE.delivery;
+                delivery.cost = 0;
 
-              widget.sale.setDelivery(delivery);
-              refreshDelivery();
-            },
-          ),
+                widget.sale.setDelivery(delivery);
+                refreshDelivery();
+              },
+            ),
           Container(
             margin: const EdgeInsets.only(top: 8),
             decoration: BoxDecoration(
@@ -191,7 +196,7 @@ class _SaleDeliveryCardState extends State<SaleDeliveryCard> {
               borderRadius: BorderRadius.circular(8),
             ),
             child: ListTile(
-              onTap: selectDateAndTime,
+              onTap: widget.readOnly ? null : selectDateAndTime,
               dense: true,
               visualDensity: VisualDensity.compact,
               contentPadding: const EdgeInsets.symmetric(horizontal: 8),
@@ -204,11 +209,13 @@ class _SaleDeliveryCardState extends State<SaleDeliveryCard> {
                 getNamedDateTime(delivery.deliveryDate),
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              trailing: Icon(
-                Icons.swap_horiz,
-                size: 20,
-                color: Theme.of(context).primaryColor,
-              ),
+              trailing: widget.readOnly
+                  ? null
+                  : Icon(
+                      Icons.swap_horiz,
+                      size: 20,
+                      color: Theme.of(context).primaryColor,
+                    ),
             ),
           ),
           AnimatedSwitcher(

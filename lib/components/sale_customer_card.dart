@@ -8,9 +8,11 @@ class SaleCustomerCard extends StatelessWidget {
   const SaleCustomerCard({
     super.key,
     required this.sale,
+    this.readOnly = false,
   });
 
   final Sale sale;
+  final bool readOnly;
 
   Future _changeCustomer(BuildContext context) async {
     final newCustomer = await Navigator.pushNamed(
@@ -57,7 +59,7 @@ class SaleCustomerCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: ListTile(
-              onTap: () => _changeCustomer(context),
+              onTap: readOnly ? null : () => _changeCustomer(context),
               contentPadding: const EdgeInsets.symmetric(horizontal: 8),
               leading: CircleFileImage(filePath: sale.customerPhotoURL),
               title: Text(
@@ -68,11 +70,13 @@ class SaleCustomerCard extends StatelessWidget {
                 sale.customerPhoneNumber,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
-              trailing: Icon(
-                Icons.swap_horiz,
-                size: 20,
-                color: Theme.of(context).primaryColor,
-              ),
+              trailing: readOnly
+                  ? null
+                  : Icon(
+                      Icons.swap_horiz,
+                      size: 20,
+                      color: Theme.of(context).primaryColor,
+                    ),
             ),
           ),
         ],

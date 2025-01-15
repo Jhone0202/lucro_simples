@@ -1,3 +1,5 @@
+// ignore: depend_on_referenced_packages
+import 'package:collection/collection.dart';
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,9 +14,11 @@ class SalePaymentCard extends StatefulWidget {
   const SalePaymentCard({
     super.key,
     required this.sale,
+    this.readOnly = false,
   });
 
   final Sale sale;
+  final bool readOnly;
 
   @override
   State<SalePaymentCard> createState() => _SalePaymentCardState();
@@ -174,37 +178,42 @@ class _SalePaymentCardState extends State<SalePaymentCard> {
               ),
               const SizedBox(width: 4),
               Text(
-                'Pagamento',
+                widget.readOnly
+                    ? 'Pagamento em ${widget.sale.paymentMethod.name}'
+                    : 'Pagamento',
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       color: Theme.of(context).primaryColor,
                     ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
-          DropdownButtonFormField<PaymentMethod>(
-            value: selected,
-            onChanged: (method) {
-              if (method != null) {
-                widget.sale.setPaymentMethod(method);
-                selected = method;
-                setState(() {});
-              }
-            },
-            items: paymentMethods
-                .map((e) => DropdownMenuItem(value: e, child: Text(e.name)))
-                .toList(),
-            decoration: paymentDropDecoration(context).copyWith(
-              isDense: true,
-              contentPadding: const EdgeInsets.all(8),
+          if (!widget.readOnly)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: DropdownButtonFormField<PaymentMethod>(
+                value: selected,
+                onChanged: (method) {
+                  if (method != null) {
+                    widget.sale.setPaymentMethod(method);
+                    selected = method;
+                    setState(() {});
+                  }
+                },
+                items: paymentMethods
+                    .map((e) => DropdownMenuItem(value: e, child: Text(e.name)))
+                    .toList(),
+                decoration: paymentDropDecoration(context).copyWith(
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(8),
+                ),
+                style: Theme.of(context).textTheme.bodyMedium,
+                icon: Icon(
+                  Icons.arrow_drop_down,
+                  color: Theme.of(context).primaryColor,
+                ),
+                iconSize: 20,
+              ),
             ),
-            style: Theme.of(context).textTheme.bodyMedium,
-            icon: Icon(
-              Icons.arrow_drop_down,
-              color: Theme.of(context).primaryColor,
-            ),
-            iconSize: 20,
-          ),
           const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -215,20 +224,21 @@ class _SalePaymentCardState extends State<SalePaymentCard> {
           ),
           const SizedBox(height: 4),
           InkWell(
-            onTap: _editDiscount,
+            onTap: widget.readOnly ? null : _editDiscount,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
               child: Row(
                 children: [
                   const Text('Desconto'),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4),
-                    child: Icon(
-                      Icons.edit,
-                      size: 12,
-                      color: Theme.of(context).primaryColor,
+                  if (!widget.readOnly)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 4),
+                      child: Icon(
+                        Icons.edit,
+                        size: 12,
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
-                  ),
                   Expanded(
                     child: Text(
                       formatRealBr(widget.sale.discount),
@@ -240,20 +250,21 @@ class _SalePaymentCardState extends State<SalePaymentCard> {
             ),
           ),
           InkWell(
-            onTap: _editIncrease,
+            onTap: widget.readOnly ? null : _editIncrease,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
               child: Row(
                 children: [
                   const Text('Acréscimo'),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4),
-                    child: Icon(
-                      Icons.edit,
-                      size: 12,
-                      color: Theme.of(context).primaryColor,
+                  if (!widget.readOnly)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 4),
+                      child: Icon(
+                        Icons.edit,
+                        size: 12,
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
-                  ),
                   Expanded(
                     child: Text(
                       formatRealBr(widget.sale.increase),
