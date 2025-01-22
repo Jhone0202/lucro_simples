@@ -1,6 +1,6 @@
 import 'package:lucro_simples/entities/company.dart';
 
 abstract class ICompanyRepository {
-  Future<Company> registerNewCompany(Company company);
+  Future<Company> saveCompany(Company company);
   Future<Company?> getSavedCompany();
 }

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_assets.dart';
 import 'package:lucro_simples/themes/app_theme.dart';
 
-class IntroPage extends StatelessWidget {
-  const IntroPage({super.key});
+class IntroProductPage extends StatelessWidget {
+  const IntroProductPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,25 +20,25 @@ class IntroPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  constraints: const BoxConstraints(maxHeight: 250),
+                  constraints: const BoxConstraints(maxHeight: 223),
                   child: Image.asset(
-                    AppAssets.imgOnboarding1,
+                    AppAssets.imgOnboarding3,
                   ),
                 ),
                 const SizedBox(height: 48),
                 Text(
-                  'Bem-vindo ao',
+                  'Registre suas vendas em',
                   style: AppTheme.textStyles.h2,
                   textAlign: TextAlign.center,
                 ),
                 Text(
-                  'Lucro Simples',
+                  'Apenas 5 toques',
                   style: AppTheme.textStyles.h1,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  'O app perfeito para você, pequeno empreendedor, gerenciar suas vendas e acompanhar seus lucros de forma prática!',
+                  'Para começar, cadastre seu primeiro produto.',
                   style: AppTheme.textStyles.bodyText,
                   textAlign: TextAlign.center,
                 ),

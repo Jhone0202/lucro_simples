@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/managers/session_manager.dart';
 import 'package:lucro_simples/pages/home/home_page.dart';
-import 'package:lucro_simples/pages/onboarding/intro_page.dart';
+import 'package:lucro_simples/pages/onboarding/onboarding_page.dart';
 import 'package:lucro_simples/repositories/company_repository_interface.dart';
 
 class SplashPage extends StatefulWidget {
@@ -30,7 +30,7 @@ class _SplashPageState extends State<SplashPage> {
     if (mounted) {
       Navigator.pushNamedAndRemoveUntil(
         context,
-        savedCompany != null ? HomePage.routeName : IntroPage.routeName,
+        savedCompany != null ? HomePage.routeName : OnboardingPage.routeName,
         (route) => false,
       );
     }

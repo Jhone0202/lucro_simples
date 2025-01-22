@@ -4,7 +4,13 @@ import 'package:lucro_simples/repositories/company_repository_interface.dart';
 
 class CompanyRepositorySqlite extends ICompanyRepository {
   @override
-  Future<Company> registerNewCompany(Company company) async {
+  Future<Company> saveCompany(Company company) async {
+    if (company.id == null) return await _registerNewCompany(company);
+
+    return await _updateCompany(company);
+  }
+
+  Future<Company> _registerNewCompany(Company company) async {
     final database = await LsDatabase().db;
 
     final existingCompany = await _getCompanyByKey('name', company.name);
@@ -18,6 +24,21 @@ class CompanyRepositorySqlite extends ICompanyRepository {
     final savedCompany = await _getCompanyByKey('id', id);
 
     return savedCompany!;
+  }
+
+  Future<Company> _updateCompany(Company company) async {
+    final database = await LsDatabase().db;
+
+    await database.update(
+      'companies',
+      company.toMap(),
+      where: 'id = ?',
+      whereArgs: [company.id],
+    );
+
+    final updated = await _getCompanyByKey('id', company.id);
+
+    return updated!;
   }
 
   Future<Company?> _getCompanyByKey(String key, dynamic value) async {

@@ -6,9 +6,8 @@ import 'package:lucro_simples/pages/customer_register_page.dart';
 import 'package:lucro_simples/pages/home/customers_page.dart';
 import 'package:lucro_simples/pages/home/home_page.dart';
 import 'package:lucro_simples/pages/home/products_page.dart';
+import 'package:lucro_simples/pages/onboarding/onboarding_page.dart';
 import 'package:lucro_simples/pages/sale/new_sale_page.dart';
-import 'package:lucro_simples/pages/onboarding/intro_company_page.dart';
-import 'package:lucro_simples/pages/onboarding/intro_page.dart';
 import 'package:lucro_simples/pages/product_register_page.dart';
 import 'package:lucro_simples/pages/sale/sale_details_page.dart';
 import 'package:lucro_simples/pages/sale/sale_item_page.dart';
@@ -16,8 +15,7 @@ import 'package:lucro_simples/pages/splash_page.dart';
 
 final appRoutes = <String, WidgetBuilder>{
   SplashPage.routeName: (context) => const SplashPage(),
-  IntroPage.routeName: (context) => const IntroPage(),
-  IntroCompanyPage.routeName: (context) => const IntroCompanyPage(),
+  OnboardingPage.routeName: (context) => const OnboardingPage(),
   HomePage.routeName: (context) => const HomePage(),
   ProductsPage.routeName: (context) => ProductsPage(
         getProduct:

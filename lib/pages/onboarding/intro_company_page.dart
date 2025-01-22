@@ -1,138 +1,117 @@
 import 'dart:io';
-
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:lucro_simples/app_injector.dart';
-import 'package:lucro_simples/components/rounded_button.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:lucro_simples/app_assets.dart';
 import 'package:lucro_simples/entities/company.dart';
-import 'package:lucro_simples/managers/session_manager.dart';
-import 'package:lucro_simples/pages/home/home_page.dart';
-import 'package:lucro_simples/repositories/company_repository_interface.dart';
+import 'package:lucro_simples/themes/app_theme.dart';
 import 'package:lucro_simples/utils/input_decorations.dart';
-import 'package:path_provider/path_provider.dart';
 
-class IntroCompanyPage extends StatefulWidget {
-  static const String routeName = '/intro_company_page';
-  const IntroCompanyPage({super.key});
+class IntroCompanyPage extends StatelessWidget {
+  const IntroCompanyPage({
+    super.key,
+    required this.selectPhoto,
+    required this.company,
+    required this.formKey,
+    required this.nameController,
+    required this.userNameController,
+  });
 
-  @override
-  State<IntroCompanyPage> createState() => _IntroCompanyPageState();
-}
-
-class _IntroCompanyPageState extends State<IntroCompanyPage> {
-  final picker = ImagePicker();
-
-  final repository = getIt.get<ICompanyRepository>();
-  final company = Company(name: '', userName: '');
-  final formKey = GlobalKey<FormState>();
-
-  final nameController = TextEditingController();
-  final userNameController = TextEditingController();
-
-  Future _selectPhoto() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      final dir = await getApplicationDocumentsDirectory();
-      final fileName = pickedFile.name;
-      final saved = await File(pickedFile.path).copy('${dir.path}/$fileName');
-
-      company.photoURL = saved.path;
-      setState(() {});
-    }
-  }
-
-  Future _saveAndInitSession() async {
-    company.name = nameController.text;
-    company.userName = userNameController.text;
-
-    final saved = await repository.registerNewCompany(company);
-    SessionManager.initSession(saved);
-
-    if (mounted) {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        HomePage.routeName,
-        (route) => false,
-      );
-    }
-  }
+  final VoidCallback selectPhoto;
+  final Company company;
+  final Key formKey;
+  final TextEditingController nameController;
+  final TextEditingController userNameController;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Vamos começar cadastrando a sua empresa.',
-              style: Theme.of(context).textTheme.titleSmall,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 32),
-            TextButton(
-              onPressed: _selectPhoto,
-              style: TextButton.styleFrom(
-                fixedSize: const Size(160, 160),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(80),
-                ),
-                backgroundColor: Colors.grey.shade100,
-                padding: EdgeInsets.zero,
-              ),
-              child: company.photoURL != null
-                  ? ClipOval(
-                      child: Image.file(
-                        File(company.photoURL!),
-                        fit: BoxFit.cover,
-                        width: 160,
-                        height: 160,
-                      ),
-                    )
-                  : const Icon(
-                      Icons.camera_alt,
-                      color: Colors.grey,
-                    ),
-            ),
-            const SizedBox(height: 24),
-            Form(
-              key: formKey,
+      body: Stack(
+        children: [
+          FadeIn(
+            child: Image.asset(AppAssets.imgBgOnboarding2),
+          ),
+          FadeInUp(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextFormField(
-                    controller: nameController,
-                    decoration: defaultFormDecoration(context).copyWith(
-                      labelText: 'Nome da Empresa',
+                  KeyboardVisibilityBuilder(
+                    builder: (p0, isKeyboardVisible) => TextButton(
+                      onPressed: selectPhoto,
+                      style: TextButton.styleFrom(
+                        maximumSize: Size(
+                          isKeyboardVisible ? 120 : 232,
+                          isKeyboardVisible ? 120 : 232,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(300),
+                        ),
+                        backgroundColor: Colors.grey.shade100,
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: ClipOval(
+                        child: company.photoURL != null
+                            ? Image.file(
+                                File(company.photoURL!),
+                                fit: BoxFit.cover,
+                                width: 294,
+                                height: 294,
+                              )
+                            : Image.asset(
+                                AppAssets.imgOnboarding2,
+                              ),
+                      ),
                     ),
-                    validator: (v) => v?.trim().isEmpty == true
-                        ? 'Por favor, informe o nome da sua empresa.'
-                        : null,
                   ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: userNameController,
-                    decoration: defaultFormDecoration(context).copyWith(
-                      labelText: 'Seu Nome',
+                  TextButton(
+                    onPressed: selectPhoto,
+                    child: Text(
+                      'Toque aqui ou na imagem para selecionar uma foto.',
+                      style: AppTheme.textStyles.caption,
                     ),
-                    validator: (v) => v?.trim().isEmpty == true
-                        ? 'Por favor, informe o seu nome.'
-                        : null,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Sobre você',
+                    style: AppTheme.textStyles.h2,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  Form(
+                    key: formKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: nameController,
+                          decoration: defaultFormDecoration(context).copyWith(
+                            labelText: 'Nome da Empresa',
+                            fillColor: AppTheme.colors.background,
+                            filled: true,
+                          ),
+                          validator: (v) => v?.trim().isEmpty == true
+                              ? 'Por favor, informe o nome da sua empresa.'
+                              : null,
+                        ),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: userNameController,
+                          decoration: defaultFormDecoration(context).copyWith(
+                            labelText: 'Seu Nome',
+                          ),
+                          validator: (v) => v?.trim().isEmpty == true
+                              ? 'Por favor, informe o seu nome.'
+                              : null,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 32),
-            RoundedButton(
-              onPressed: _saveAndInitSession,
-              title: 'Salvar',
-              iconData: Icons.arrow_forward,
-              expanded: false,
-              formKey: formKey,
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
