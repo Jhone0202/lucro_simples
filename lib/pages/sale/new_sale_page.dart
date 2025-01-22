@@ -10,6 +10,7 @@ import 'package:lucro_simples/components/sale_profit_card.dart';
 import 'package:lucro_simples/components/secondary_button.dart';
 import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/entities/delivery_type.dart';
+import 'package:lucro_simples/entities/payment_method.dart';
 import 'package:lucro_simples/entities/product.dart';
 import 'package:lucro_simples/entities/sale.dart';
 import 'package:lucro_simples/entities/sale_item.dart';
@@ -69,6 +70,7 @@ class _NewSalePageState extends State<NewSalePage> {
       total: subtotal,
       profit: profit,
       paymentMethodId: 1,
+      paymentMethod: PaymentMethod(name: 'Dinheiro'),
     );
   }
 

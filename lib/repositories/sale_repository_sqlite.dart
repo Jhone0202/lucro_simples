@@ -20,29 +20,7 @@ class SaleRepositorySqlite extends ISaleRepository {
       return saleId;
     });
 
-    return await _getSaleById(id);
-  }
-
-  Future<Sale> _getSaleById(int id) async {
-    final database = await LsDatabase().db;
-
-    final saleRes = await database.query(
-      'sales',
-      where: 'id = ?',
-      whereArgs: [id],
-    );
-
-    if (saleRes.isEmpty) throw 'Venda $id não encontrada';
-
-    final itemsRes = await database.query(
-      'sale_items',
-      where: 'saleId = ?',
-      whereArgs: [id],
-    );
-
-    final items = itemsRes.map((e) => SaleItem.fromMap(e)).toList();
-
-    return Sale.fromMap(saleRes.first, items);
+    return await getSaleDetails(id);
   }
 
   @override
@@ -84,7 +62,16 @@ class SaleRepositorySqlite extends ISaleRepository {
     );
 
     final items = itemsRes.map((e) => SaleItem.fromMap(e)).toList();
-    return Sale.fromMap(saleRes.first, items);
+
+    final paymentRes = await database.query(
+      'payment_methods',
+      where: 'id = ?',
+      whereArgs: [saleRes.first['paymentMethodId']],
+    );
+
+    final payment = paymentRes.map((e) => PaymentMethod.fromMap(e)).first;
+
+    return Sale.fromMap(saleRes.first, items, payment);
   }
 
   @override

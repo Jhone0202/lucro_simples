@@ -23,8 +23,7 @@ class Sale extends ChangeNotifier {
   double total;
   double profit;
   int paymentMethodId;
-
-  PaymentMethod paymentMethod = PaymentMethod(name: 'Dinheiro');
+  PaymentMethod paymentMethod;
 
   Sale({
     this.id,
@@ -44,6 +43,7 @@ class Sale extends ChangeNotifier {
     required this.total,
     required this.profit,
     required this.paymentMethodId,
+    required this.paymentMethod,
   }) {
     for (var item in items) {
       item.setSaleCallback(refreshValues);
@@ -71,7 +71,8 @@ class Sale extends ChangeNotifier {
     };
   }
 
-  factory Sale.fromMap(Map<String, dynamic> map, [List<SaleItem>? saleItems]) {
+  factory Sale.fromMap(Map<String, dynamic> map,
+      [List<SaleItem>? saleItems, PaymentMethod? paymentMethod]) {
     return Sale(
       id: map['id'] != null ? map['id'] as int : null,
       customerId: map['customerId'] as int,
@@ -95,6 +96,7 @@ class Sale extends ChangeNotifier {
       total: map['total'] as double,
       profit: map['profit'] as double,
       paymentMethodId: map['paymentMethodId'] as int,
+      paymentMethod: paymentMethod ?? PaymentMethod(name: 'Dinheiro'),
     );
   }
 

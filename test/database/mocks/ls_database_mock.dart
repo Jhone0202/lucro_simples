@@ -2,6 +2,7 @@ import 'package:lucro_simples/entities/company.dart';
 import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/entities/customer_types.dart';
 import 'package:lucro_simples/entities/delivery_type.dart';
+import 'package:lucro_simples/entities/payment_method.dart';
 import 'package:lucro_simples/entities/product.dart';
 import 'package:lucro_simples/entities/sale.dart';
 
@@ -53,6 +54,7 @@ class LsDatabaseMock {
       increase: 0,
       paymentMethodId: 0,
       customerPhoneNumber: '',
+      paymentMethod: PaymentMethod(name: ''),
     );
   }
 }

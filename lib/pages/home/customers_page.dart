@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/components/circle_file_image.dart';
 import 'package:lucro_simples/entities/customer.dart';
+import 'package:lucro_simples/helpers/adaptive_grid_helper.dart';
 import 'package:lucro_simples/pages/customer_register_page.dart';
 import 'package:lucro_simples/repositories/customer_repository_interface.dart';
 
@@ -69,12 +70,8 @@ class _CustomersPageState extends State<CustomersPage> {
           child: Column(
             children: [
               Expanded(
-                child: GridView.builder(
-                  padding: const EdgeInsets.all(16),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 1.7,
-                  ),
+                child: AdaptiveGridHelper(
+                  minSizeItem: 200,
                   itemCount: customers.length,
                   itemBuilder: (context, index) {
                     final customer = customers[index];
