@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lucro_simples/app_routes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:lucro_simples/themes/app_theme.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -12,8 +14,16 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        dividerTheme: const DividerThemeData(color: Color(0xFFEDEEF2)),
+        scaffoldBackgroundColor: AppTheme.colors.background,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: AppTheme.colors.primary,
+          primary: AppTheme.colors.primary,
+        ),
+        dividerTheme: DividerThemeData(
+          color: AppTheme.colors.stroke,
+        ),
+        textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme)
+            .apply(bodyColor: AppTheme.colors.content),
       ),
       routes: appRoutes,
       localizationsDelegates: const [GlobalMaterialLocalizations.delegate],

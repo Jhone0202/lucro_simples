@@ -19,11 +19,13 @@ class AppTextStylesDefault extends IAppTextStyles {
   TextStyle get h1 => const TextStyle(
         fontSize: 36,
         fontWeight: FontWeight.w700,
+        height: 1.25,
       );
 
   @override
   TextStyle get h2 => const TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.w300,
+        height: 1.25,
       );
 }

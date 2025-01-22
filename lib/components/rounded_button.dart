@@ -89,7 +89,7 @@ class _RoundedButtonState extends State<RoundedButton> {
           disabledForegroundColor: Colors.white70,
           padding: widget.small
               ? const EdgeInsets.symmetric(horizontal: 8, vertical: 4)
-              : null,
+              : const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           backgroundColor: widget.backgroundColor,
           foregroundColor: widget.contentColor,
         ),
@@ -113,7 +113,9 @@ class _RoundedButtonState extends State<RoundedButton> {
                   widget.title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: widget.small ? 12 : null),
+                  style: TextStyle(
+                    fontSize: widget.small ? 12 : 16,
+                  ),
                 ),
               ),
               if (widget.iconData != null) ...[
