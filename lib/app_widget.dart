@@ -15,13 +15,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: AppTheme.colors.background,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: AppTheme.colors.primary,
-          primary: AppTheme.colors.primary,
-        ),
-        dividerTheme: DividerThemeData(
-          color: AppTheme.colors.stroke,
-        ),
+        colorScheme: ColorScheme.light(primary: AppTheme.colors.primary),
+        dividerTheme: DividerThemeData(color: AppTheme.colors.background),
         textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme)
             .apply(bodyColor: AppTheme.colors.content),
       ),

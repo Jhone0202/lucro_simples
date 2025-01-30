@@ -19,17 +19,19 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        controller: pageController,
-        onPageChanged: (page) {
-          currentIndex = page;
-          setState(() {});
-        },
-        children: const [
-          KeepAlivePage(child: DashboardPage()),
-          KeepAlivePage(child: ProductsPage()),
-          KeepAlivePage(child: CustomersPage()),
-        ],
+      body: SafeArea(
+        child: PageView(
+          controller: pageController,
+          onPageChanged: (page) {
+            currentIndex = page;
+            setState(() {});
+          },
+          children: const [
+            KeepAlivePage(child: DashboardPage()),
+            KeepAlivePage(child: ProductsPage()),
+            KeepAlivePage(child: CustomersPage()),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,

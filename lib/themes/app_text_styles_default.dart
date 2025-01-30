@@ -16,6 +16,12 @@ class AppTextStylesDefault extends IAppTextStyles {
       );
 
   @override
+  TextStyle get captionMedium => const TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.w500,
+      );
+
+  @override
   TextStyle get h1 => const TextStyle(
         fontSize: 36,
         fontWeight: FontWeight.w700,
@@ -27,5 +33,19 @@ class AppTextStylesDefault extends IAppTextStyles {
         fontSize: 24,
         fontWeight: FontWeight.w300,
         height: 1.25,
+      );
+
+  @override
+  TextStyle get titleMedium => const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w700,
+        height: 1.25,
+      );
+
+  @override
+  TextStyle get subtitleMedium => const TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        height: 1.5,
       );
 }

@@ -5,6 +5,7 @@ import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/app_notifiers.dart';
 import 'package:lucro_simples/entities/month_registers_serie.dart';
 import 'package:lucro_simples/repositories/analytics_repository_interface.dart';
+import 'package:lucro_simples/themes/app_theme.dart';
 import 'package:lucro_simples/utils/feedback_user.dart';
 import 'package:lucro_simples/utils/formaters_util.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -56,11 +57,11 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: const EdgeInsets.all(8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: Theme.of(context).primaryColor.withOpacity(0.05),
+        color: Colors.white,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,17 +75,28 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
                   children: [
                     Text(
                       'Total de Vendas',
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: AppTheme.textStyles.caption,
                     ),
                     Text(
                       formatRealBr(total),
-                      style: Theme.of(context).textTheme.titleLarge,
+                      style: AppTheme.textStyles.titleMedium,
                     ),
-                    Text(
-                      'Lucro de ${formatRealBr(profit)} (${getPercent(profit, total)})',
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                            color: Colors.green,
-                          ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppTheme.colors.primary.withOpacity(0.08),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        'Lucro de ${formatRealBr(profit)} (${getPercent(profit, total)})',
+                        style: AppTheme.textStyles.captionMedium.copyWith(
+                          color: AppTheme.colors.primary,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -94,9 +106,8 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
                 style: FilledButton.styleFrom(
                   visualDensity: VisualDensity.compact,
                   padding: const EdgeInsets.symmetric(horizontal: 8),
-                  backgroundColor:
-                      Theme.of(context).primaryColor.withOpacity(0.05),
-                  foregroundColor: Theme.of(context).primaryColor,
+                  backgroundColor: AppTheme.colors.primary.withOpacity(0.08),
+                  foregroundColor: AppTheme.colors.primary,
                 ),
                 child: const Row(
                   mainAxisSize: MainAxisSize.min,
@@ -109,7 +120,7 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
                         style: TextStyle(fontSize: 10),
                       ),
                     ),
-                    // Icon(Icons.swap_horiz, size: 12),
+                    Icon(Icons.swap_horiz, size: 12),
                   ],
                 ),
               ),
@@ -132,7 +143,14 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
                     plotAreaBorderWidth: 0,
                     primaryXAxis: CategoryAxis(
                       arrangeByIndex: true,
-                      labelStyle: Theme.of(context).textTheme.labelSmall,
+                      labelStyle: AppTheme.textStyles.caption.copyWith(
+                        color: AppTheme.colors.content,
+                      ),
+                      axisLine: AxisLine(
+                        color: AppTheme.colors.stroke,
+                        width: 1,
+                      ),
+                      majorTickLines: const MajorTickLines(width: 0),
                     ),
                     primaryYAxis: NumericAxis(
                       isVisible: false,
@@ -145,22 +163,29 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
                         dataSource: monthSeries,
                         xValueMapper: (value, _) => getDay(value.date),
                         yValueMapper: (value, _) => value.total,
-                        color: Theme.of(context).primaryColor,
+                        color: AppTheme.colors.primary,
                         enableTooltip: true,
                         name: 'Total do Dia',
                         markerSettings: MarkerSettings(
                           isVisible: true,
                           shape: DataMarkerType.circle,
-                          color: Theme.of(context).primaryColor,
+                          color: AppTheme.colors.primary,
                           borderWidth: 2,
                           borderColor: Colors.white,
                         ),
                         width: 2.5,
                         dataLabelSettings: DataLabelSettings(
                           isVisible: true,
-                          textStyle: Theme.of(context).textTheme.labelSmall,
-                          color: Theme.of(context).primaryColor,
-                          opacity: 0.05,
+                          textStyle: AppTheme.textStyles.caption.copyWith(
+                            color: AppTheme.colors.primary,
+                          ),
+                          color: AppTheme.colors.primary,
+                          opacity: 0.08,
+                          borderRadius: 4,
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 4,
+                            vertical: 2,
+                          ),
                         ),
                       )
                     ],

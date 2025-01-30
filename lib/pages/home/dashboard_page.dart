@@ -18,6 +18,7 @@ import 'package:lucro_simples/pages/home/products_page.dart';
 import 'package:lucro_simples/pages/sale/new_sale_page.dart';
 import 'package:lucro_simples/pages/sale/sale_item_page.dart';
 import 'package:lucro_simples/repositories/sale_repository_interface.dart';
+import 'package:lucro_simples/themes/app_theme.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -100,37 +101,73 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: ListTile(
-          contentPadding: EdgeInsets.zero,
-          leading: CircleFileImage(filePath: company.photoURL),
-          title: Text(company.name),
-          subtitle: Text(company.userName),
-        ),
-      ),
       body: ListView(
         children: [
-          const SizedBox(height: 8),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: Colors.white,
+            ),
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+              leading: CircleFileImage(filePath: company.photoURL),
+              title: Text(
+                company.name,
+                style: AppTheme.textStyles.titleMedium,
+              ),
+              subtitle: Text(
+                company.userName,
+                style: AppTheme.textStyles.subtitleMedium,
+              ),
+            ),
+          ),
+          const SalesAnimChart(),
           const Row(
             children: [
               Expanded(child: TodaySalesCard()),
               Expanded(child: MonthSalesCard()),
             ],
           ),
-          const SalesAnimChart(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Text(
-              'Histórico de Vendas',
-              style: Theme.of(context).textTheme.titleMedium,
+          Container(
+            margin: const EdgeInsets.only(top: 8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.white,
             ),
-          ),
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            separatorBuilder: (context, index) => const Divider(),
-            itemCount: sales.length,
-            itemBuilder: (context, index) => DashSaleTile(sale: sales[index]),
+            child: Column(
+              children: [
+                Container(
+                  width: 32,
+                  height: 4,
+                  margin: const EdgeInsets.only(top: 12),
+                  decoration: BoxDecoration(
+                    color: AppTheme.colors.background,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                Container(
+                  width: double.maxFinite,
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  child: Text(
+                    'Histórico de Vendas',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  separatorBuilder: (context, index) => const Divider(),
+                  itemCount: sales.length,
+                  itemBuilder: (context, index) => DashSaleTile(
+                    sale: sales[index],
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
