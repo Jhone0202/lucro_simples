@@ -10,10 +10,10 @@ class AppColorsLight extends IAppColors {
   Color get content => const Color(0xFF1E1E1E);
 
   @override
-  Color get primary => const Color(0xFF4CAF50);
+  Color get primary => const Color(0xFF4EA751);
 
   @override
-  Color get secondary => const Color(0xFF455B46);
+  Color get secondary => const Color(0xFF1C411D);
 
   @override
   Color get stroke => const Color(0xFFD9D9D9);

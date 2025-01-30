@@ -1,10 +1,13 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
-import 'package:lucro_simples/components/circle_file_image.dart';
+import 'package:lucro_simples/components/customer_card.dart';
 import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/helpers/adaptive_grid_helper.dart';
-import 'package:lucro_simples/pages/customer_register_page.dart';
+import 'package:lucro_simples/pages/registers/customer_register_page.dart';
 import 'package:lucro_simples/repositories/customer_repository_interface.dart';
+import 'package:lucro_simples/utils/debouncer.dart';
+import 'package:lucro_simples/utils/input_decorations.dart';
 
 class CustomersPage extends StatefulWidget {
   static const String routeName = 'customers_page';
@@ -18,6 +21,7 @@ class CustomersPage extends StatefulWidget {
 
 class _CustomersPageState extends State<CustomersPage> {
   final repository = getIt.get<ICustomerRepository>();
+  final searchController = TextEditingController();
   List<Customer> customers = [];
 
   @override
@@ -27,7 +31,7 @@ class _CustomersPageState extends State<CustomersPage> {
   }
 
   void _loadCustomers() {
-    repository.getPaginatedCustomers('', 100, 0).then((res) {
+    repository.getPaginatedCustomers(searchController.text, 100, 0).then((res) {
       customers = res;
       setState(() {});
     });
@@ -69,69 +73,34 @@ class _CustomersPageState extends State<CustomersPage> {
         child: SafeArea(
           child: Column(
             children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.white,
+                child: TextField(
+                  controller: searchController,
+                  onChanged: (_) => Debouncer(action: _loadCustomers),
+                  decoration: defaultFormDecoration(context).copyWith(
+                    labelText: 'Pesquisar Cliente',
+                    prefixIcon: const Icon(Icons.search),
+                  ),
+                ),
+              ),
               Expanded(
-                child: AdaptiveGridHelper(
-                  minSizeItem: 200,
-                  itemCount: customers.length,
-                  itemBuilder: (context, index) {
-                    final customer = customers[index];
-                    return Card(
-                      elevation: 0,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          if (widget.getCustomer) {
-                            Navigator.pop(context, customer);
-                          } else {
-                            _editCustomer(customer, index);
-                          }
-                        },
-                        borderRadius: BorderRadius.circular(16),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  CircleFileImage(filePath: customer.photoURL),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: Text(
-                                      customer.name,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleSmall,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  const Icon(Icons.phone, size: 12),
-                                  const SizedBox(width: 4),
-                                  Expanded(
-                                    child: Text(
-                                      customer.phoneNumber,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
+                child: FadeInUp(
+                  child: AdaptiveGridHelper(
+                    minSizeItem: 320,
+                    itemCount: customers.length,
+                    itemBuilder: (context, index) => CustomerCard(
+                      customer: customers[index],
+                      onTap: () {
+                        if (widget.getCustomer) {
+                          Navigator.pop(context, customers[index]);
+                        } else {
+                          _editCustomer(customers[index], index);
+                        }
+                      },
+                    ),
+                  ),
                 ),
               ),
             ],

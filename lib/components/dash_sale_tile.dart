@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucro_simples/components/circle_file_image.dart';
 import 'package:lucro_simples/entities/sale.dart';
 import 'package:lucro_simples/pages/sale/sale_details_page.dart';
+import 'package:lucro_simples/themes/app_theme.dart';
 import 'package:lucro_simples/utils/formaters_util.dart';
 
 class DashSaleTile extends StatelessWidget {
@@ -19,28 +20,31 @@ class DashSaleTile extends StatelessWidget {
       ),
       title: Text(
         sale.customerName,
-        style: Theme.of(context).textTheme.titleMedium,
+        style: AppTheme.textStyles.titleSmall,
       ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             formatId(sale.id ?? 0),
-            style: Theme.of(context).textTheme.bodySmall,
+            style: AppTheme.textStyles.captionMedium.copyWith(
+              color: Colors.black54,
+            ),
           ),
           Text(
             getFriendlyDateTime(sale.saleDate),
-            style: Theme.of(context).textTheme.bodySmall,
+            style: AppTheme.textStyles.captionMedium.copyWith(
+              color: Colors.black54,
+            ),
           ),
         ],
       ),
       leading: CircleFileImage(filePath: sale.customerPhotoURL),
       trailing: Text(
         formatRealBr(sale.total),
-        style: Theme.of(context)
-            .textTheme
-            .titleSmall
-            ?.copyWith(color: Colors.green),
+        style: AppTheme.textStyles.caption.copyWith(
+          color: AppTheme.colors.primary,
+        ),
       ),
     );
   }

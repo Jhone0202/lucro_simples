@@ -76,10 +76,10 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(8),
+      margin: const EdgeInsets.all(4),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         color: Colors.white,
       ),
       child: Column(
@@ -94,14 +94,16 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
                   children: [
                     Text(
                       'Total de Vendas',
-                      style: AppTheme.textStyles.caption,
+                      style: AppTheme.textStyles.caption.copyWith(
+                        color: Colors.black54,
+                      ),
                     ),
                     Text(
                       formatRealBr(total),
                       style: AppTheme.textStyles.titleMedium,
                     ),
                     Container(
-                      margin: const EdgeInsets.only(top: 4),
+                      margin: const EdgeInsets.only(top: 8),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 4,
                         vertical: 2,
@@ -147,7 +149,7 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
           ),
           const SizedBox(height: 4),
           AspectRatio(
-            aspectRatio: 2,
+            aspectRatio: 2.4,
             child: isLoading
                 ? const Center(
                     child: SizedBox(
@@ -157,13 +159,56 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
                     ),
                   )
                 : SfCartesianChart(
-                    tooltipBehavior: TooltipBehavior(enable: true),
+                    tooltipBehavior: TooltipBehavior(
+                      enable: true,
+                      activationMode: ActivationMode.singleTap,
+                      shouldAlwaysShow: true,
+                      format: 'point.x : point.y',
+                    ),
+                    trackballBehavior: TrackballBehavior(
+                      enable: true,
+                      activationMode: ActivationMode.singleTap,
+                      tooltipAlignment: ChartAlignment.near,
+                      tooltipDisplayMode: TrackballDisplayMode.floatAllPoints,
+                      lineColor: AppTheme.colors.stroke,
+                      builder: (BuildContext _, TrackballDetails details) {
+                        final point = details.point!;
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppTheme.colors.secondary,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                point.x,
+                                style:
+                                    AppTheme.textStyles.captionMedium.copyWith(
+                                  color: Colors.white70,
+                                ),
+                              ),
+                              Text(
+                                formatRealBr(point.y?.toDouble() ?? 0),
+                                style: AppTheme.textStyles.caption.copyWith(
+                                  color: AppTheme.colors.background,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                     margin: EdgeInsets.zero,
                     plotAreaBorderWidth: 0,
                     primaryXAxis: CategoryAxis(
                       arrangeByIndex: true,
                       labelStyle: AppTheme.textStyles.caption.copyWith(
-                        color: AppTheme.colors.content,
+                        color: Colors.black54,
                       ),
                       axisLine: AxisLine(
                         color: AppTheme.colors.stroke,

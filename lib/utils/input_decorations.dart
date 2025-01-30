@@ -6,8 +6,9 @@ InputDecoration defaultFormDecoration(BuildContext context) {
     labelStyle: const TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w400,
-      color: Colors.grey,
+      color: Colors.black54,
     ),
+    prefixIconColor: Colors.black54,
     floatingLabelStyle: TextStyle(color: Theme.of(context).primaryColor),
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     enabledBorder: OutlineInputBorder(

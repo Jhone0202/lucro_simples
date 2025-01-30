@@ -4,6 +4,7 @@ import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/app_notifiers.dart';
 import 'package:lucro_simples/entities/month_registers_serie.dart';
 import 'package:lucro_simples/repositories/analytics_repository_interface.dart';
+import 'package:lucro_simples/themes/app_theme.dart';
 import 'package:lucro_simples/utils/feedback_user.dart';
 import 'package:lucro_simples/utils/formaters_util.dart';
 
@@ -50,31 +51,46 @@ class _TodaySalesCardState extends State<TodaySalesCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(left: 8, right: 4),
+      margin: const EdgeInsets.only(left: 4, right: 4),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Colors.white,
+        color: AppTheme.colors.secondary,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Total do Dia',
-            style: Theme.of(context).textTheme.bodySmall,
+            style: AppTheme.textStyles.caption.copyWith(
+              color: Colors.white70,
+            ),
           ),
           Text(
             formatRealBr(todayResume.total),
-            style: Theme.of(context).textTheme.titleMedium,
+            style: AppTheme.textStyles.titleSmall.copyWith(
+              color: AppTheme.colors.background,
+            ),
           ),
-          Text(
-            'Lucro de ${formatRealBr(todayResume.profit)} (${getFormatedPercent(todayResume.profit, todayResume.total)})',
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: Colors.green,
-                ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
+          Container(
+            margin: const EdgeInsets.only(top: 8),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 4,
+              vertical: 2,
+            ),
+            decoration: BoxDecoration(
+              color: AppTheme.colors.primary.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Text(
+              'Lucro de ${formatRealBr(todayResume.profit)} (${getFormatedPercent(todayResume.profit, todayResume.total)})',
+              style: AppTheme.textStyles.captionMedium.copyWith(
+                color: AppTheme.colors.background,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          )
         ],
       ),
     );

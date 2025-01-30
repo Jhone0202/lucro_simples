@@ -22,6 +22,10 @@ class MyApp extends StatelessWidget {
         dividerTheme: DividerThemeData(color: AppTheme.colors.background),
         textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme)
             .apply(bodyColor: AppTheme.colors.content),
+        appBarTheme: AppBarTheme(
+          titleTextStyle: AppTheme.textStyles.appBar,
+          centerTitle: true,
+        ),
       ),
       routes: appRoutes,
       localizationsDelegates: const [GlobalMaterialLocalizations.delegate],

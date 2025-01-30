@@ -1,11 +1,13 @@
-import 'dart:io';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
+import 'package:lucro_simples/components/product_card.dart';
 import 'package:lucro_simples/entities/product.dart';
 import 'package:lucro_simples/helpers/adaptive_grid_helper.dart';
-import 'package:lucro_simples/pages/product_register_page.dart';
+import 'package:lucro_simples/pages/registers/product_register_page.dart';
 import 'package:lucro_simples/repositories/product_repository_interface.dart';
-import 'package:lucro_simples/utils/formaters_util.dart';
+import 'package:lucro_simples/utils/debouncer.dart';
+import 'package:lucro_simples/utils/input_decorations.dart';
 
 class ProductsPage extends StatefulWidget {
   static const String routeName = 'products_page';
@@ -19,6 +21,7 @@ class ProductsPage extends StatefulWidget {
 
 class _ProductsPageState extends State<ProductsPage> {
   final repository = getIt.get<IProductRepository>();
+  final searchController = TextEditingController();
   List<Product> products = [];
 
   @override
@@ -28,7 +31,7 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 
   void _loadProducts() {
-    repository.getPaginatedProducts('', 100, 0).then((res) {
+    repository.getPaginatedProducts(searchController.text, 100, 0).then((res) {
       products = res;
       setState(() {});
     });
@@ -70,74 +73,34 @@ class _ProductsPageState extends State<ProductsPage> {
         child: SafeArea(
           child: Column(
             children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.white,
+                child: TextField(
+                  controller: searchController,
+                  onChanged: (_) => Debouncer(action: _loadProducts),
+                  decoration: defaultFormDecoration(context).copyWith(
+                    labelText: 'Pesquisar Produto',
+                    prefixIcon: const Icon(Icons.search),
+                  ),
+                ),
+              ),
               Expanded(
-                child: AdaptiveGridHelper(
-                  minSizeItem: 200,
-                  itemCount: products.length,
-                  itemBuilder: (context, index) {
-                    final product = products[index];
-                    return Card(
-                      elevation: 0,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          if (widget.getProduct) {
-                            Navigator.pop(context, product);
-                          } else {
-                            _editProduct(product, index);
-                          }
-                        },
-                        borderRadius: BorderRadius.circular(16),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AspectRatio(
-                                aspectRatio: 1.4,
-                                child: Container(
-                                  clipBehavior: Clip.hardEdge,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: Colors.grey.shade100,
-                                  ),
-                                  child: product.photoURL != null
-                                      ? Image.file(
-                                          File(product.photoURL!),
-                                          fit: BoxFit.cover,
-                                          width: double.maxFinite,
-                                        )
-                                      : const Icon(
-                                          Icons.camera_alt,
-                                          color: Colors.grey,
-                                        ),
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                product.name,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                              Text(
-                                formatRealBr(product.salePrice),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleSmall
-                                    ?.copyWith(color: Colors.green),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
+                child: FadeInUp(
+                  child: AdaptiveGridHelper(
+                    minSizeItem: 200,
+                    itemCount: products.length,
+                    itemBuilder: (context, index) => ProductCard(
+                      product: products[index],
+                      onTap: () {
+                        if (widget.getProduct) {
+                          Navigator.pop(context, products[index]);
+                        } else {
+                          _editProduct(products[index], index);
+                        }
+                      },
+                    ),
+                  ),
                 ),
               ),
             ],

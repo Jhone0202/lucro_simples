@@ -5,6 +5,7 @@ import 'package:lucro_simples/components/edit_quantity_widget.dart';
 import 'package:lucro_simples/components/sale_button.dart';
 import 'package:lucro_simples/entities/product.dart';
 import 'package:lucro_simples/entities/sale_item.dart';
+import 'package:lucro_simples/pages/full_screem_page.dart';
 import 'package:lucro_simples/utils/formaters_util.dart';
 import 'package:provider/provider.dart';
 
@@ -56,10 +57,22 @@ class _SaleItemPageState extends State<SaleItemPage> {
                             color: Colors.grey.shade100,
                           ),
                           child: widget.product.photoURL != null
-                              ? Image.file(
-                                  File(widget.product.photoURL!),
-                                  fit: BoxFit.cover,
-                                  width: double.maxFinite,
+                              ? InkWell(
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => FullScreenPage(
+                                        images: [
+                                          File(widget.product.photoURL!),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  child: Image.file(
+                                    File(widget.product.photoURL!),
+                                    fit: BoxFit.cover,
+                                    width: double.maxFinite,
+                                  ),
                                 )
                               : const Icon(
                                   Icons.camera_alt,

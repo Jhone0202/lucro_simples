@@ -6,6 +6,8 @@ abstract class IAppTextStyles {
   TextStyle get bodyText;
   TextStyle get caption;
   TextStyle get captionMedium;
+  TextStyle get titleSmall;
   TextStyle get titleMedium;
   TextStyle get subtitleMedium;
+  TextStyle get appBar;
 }

@@ -106,9 +106,9 @@ class _DashboardPageState extends State<DashboardPage> {
         child: ListView(
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 8),
+              margin: const EdgeInsets.symmetric(horizontal: 4),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(12),
                 color: Colors.white,
               ),
               child: ListTile(
@@ -132,7 +132,7 @@ class _DashboardPageState extends State<DashboardPage> {
               ],
             ),
             Container(
-              margin: const EdgeInsets.only(top: 8),
+              margin: const EdgeInsets.only(top: 4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 color: Colors.white,
@@ -156,7 +156,9 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                     child: Text(
                       'Histórico de Vendas',
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: AppTheme.textStyles.titleSmall.copyWith(
+                        color: AppTheme.colors.content,
+                      ),
                     ),
                   ),
                   ListView.separated(

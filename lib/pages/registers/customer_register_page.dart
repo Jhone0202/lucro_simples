@@ -84,7 +84,11 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cadastrar Cliente'),
+        title: Text(
+          widget.editableCustomer != null
+              ? 'Editar Cliente'
+              : 'Cadastrar Cliente',
+        ),
       ),
       backgroundColor: Colors.white,
       body: FadeInRight(
