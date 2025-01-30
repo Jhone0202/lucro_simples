@@ -68,7 +68,7 @@ class _TodaySalesCardState extends State<TodaySalesCard> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(
-            'Lucro de ${formatRealBr(todayResume.profit)} (${getPercent(todayResume.profit, todayResume.total)})',
+            'Lucro de ${formatRealBr(todayResume.profit)} (${getFormatedPercent(todayResume.profit, todayResume.total)})',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: Colors.green,
                 ),

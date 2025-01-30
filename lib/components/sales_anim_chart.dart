@@ -25,6 +25,11 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
   double total = 0;
   double profit = 0;
 
+  DateTimeRange period = DateTimeRange(
+    start: DateTime.now().subtract(const Duration(days: 6)),
+    end: DateTime.now(),
+  );
+
   @override
   void initState() {
     super.initState();
@@ -42,7 +47,7 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
     try {
       isLoading = true;
       setState(() {});
-      monthSeries = await repository.getLastDaysResume();
+      monthSeries = await repository.getByPeriod(period);
       total = monthSeries.fold(0, (s, e) => s + e.total);
       profit = monthSeries.fold(0, (s, e) => s + e.profit);
     } catch (e) {
@@ -51,6 +56,20 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
     } finally {
       isLoading = false;
       setState(() {});
+    }
+  }
+
+  Future _changePeriod() async {
+    final newPeriod = await showDateRangePicker(
+      context: context,
+      firstDate: DateTime(2024),
+      lastDate: DateTime.now(),
+      initialDateRange: period,
+    );
+
+    if (newPeriod != null) {
+      period = newPeriod;
+      _loadData();
     }
   }
 
@@ -92,7 +111,7 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
-                        'Lucro de ${formatRealBr(profit)} (${getPercent(profit, total)})',
+                        'Lucro de ${formatRealBr(profit)} (${getFormatedPercent(profit, total)})',
                         style: AppTheme.textStyles.captionMedium.copyWith(
                           color: AppTheme.colors.primary,
                         ),
@@ -102,25 +121,25 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
                 ),
               ),
               FilledButton(
-                onPressed: () {},
+                onPressed: _changePeriod,
                 style: FilledButton.styleFrom(
                   visualDensity: VisualDensity.compact,
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   backgroundColor: AppTheme.colors.primary.withOpacity(0.08),
                   foregroundColor: AppTheme.colors.primary,
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.calendar_month, size: 12),
+                    const Icon(Icons.calendar_month, size: 12),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: Text(
-                        'Últimos 7 dias',
-                        style: TextStyle(fontSize: 10),
+                        getFriendlyPeriod(period),
+                        style: const TextStyle(fontSize: 10),
                       ),
                     ),
-                    Icon(Icons.swap_horiz, size: 12),
+                    const Icon(Icons.swap_horiz, size: 12),
                   ],
                 ),
               ),

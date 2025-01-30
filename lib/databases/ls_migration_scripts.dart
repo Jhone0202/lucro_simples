@@ -172,5 +172,5 @@ Map<int, String> lsMigrationScripts = {
     ''',
   28: '''
       ALTER TABLE sale_items ADD COLUMN productCostPrice REAL DEFAULT 0
-    '''
+    ''',
 };

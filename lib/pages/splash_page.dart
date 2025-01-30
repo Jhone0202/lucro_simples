@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/managers/session_manager.dart';
 import 'package:lucro_simples/pages/home/home_page.dart';
@@ -20,6 +21,7 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     _firstLoad();
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
   }
 
   Future _firstLoad() async {

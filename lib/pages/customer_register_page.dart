@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -85,96 +86,99 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
       appBar: AppBar(
         title: const Text('Cadastrar Cliente'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: Form(
-                  key: formKey,
-                  child: ListView(
-                    children: [
-                      Center(
-                        child: TextButton(
-                          onPressed: _selectPhoto,
-                          style: TextButton.styleFrom(
-                            fixedSize: const Size(160, 160),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(80),
+      backgroundColor: Colors.white,
+      body: FadeInRight(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: Form(
+                    key: formKey,
+                    child: ListView(
+                      children: [
+                        Center(
+                          child: TextButton(
+                            onPressed: _selectPhoto,
+                            style: TextButton.styleFrom(
+                              fixedSize: const Size(160, 160),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(80),
+                              ),
+                              backgroundColor: Colors.grey.shade100,
+                              padding: EdgeInsets.zero,
                             ),
-                            backgroundColor: Colors.grey.shade100,
-                            padding: EdgeInsets.zero,
-                          ),
-                          child: customer.photoURL != null
-                              ? ClipOval(
-                                  child: Image.file(
-                                    File(customer.photoURL!),
-                                    fit: BoxFit.cover,
-                                    width: 160,
-                                    height: 160,
+                            child: customer.photoURL != null
+                                ? ClipOval(
+                                    child: Image.file(
+                                      File(customer.photoURL!),
+                                      fit: BoxFit.cover,
+                                      width: 160,
+                                      height: 160,
+                                    ),
+                                  )
+                                : const Icon(
+                                    Icons.camera_alt,
+                                    color: Colors.grey,
                                   ),
-                                )
-                              : const Icon(
-                                  Icons.camera_alt,
-                                  color: Colors.grey,
-                                ),
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: nameController,
-                        decoration: defaultFormDecoration(context).copyWith(
-                          labelText: 'Nome',
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: nameController,
+                          decoration: defaultFormDecoration(context).copyWith(
+                            labelText: 'Nome',
+                          ),
+                          validator: (v) => v?.trim().isEmpty == true
+                              ? 'Por favor, informe o nome do cliente.'
+                              : null,
                         ),
-                        validator: (v) => v?.trim().isEmpty == true
-                            ? 'Por favor, informe o nome do cliente.'
-                            : null,
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: phoneController,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        keyboardType: TextInputType.phone,
-                        decoration: defaultFormDecoration(context).copyWith(
-                          labelText: 'Telefone',
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: phoneController,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                          ],
+                          keyboardType: TextInputType.phone,
+                          decoration: defaultFormDecoration(context).copyWith(
+                            labelText: 'Telefone',
+                          ),
+                          validator: (v) => v?.trim().isEmpty == true
+                              ? 'Por favor, informe o telefone do cliente.'
+                              : null,
                         ),
-                        validator: (v) => v?.trim().isEmpty == true
-                            ? 'Por favor, informe o telefone do cliente.'
-                            : null,
-                      ),
-                      const SizedBox(height: 16),
-                      DropdownButtonFormField<int>(
-                        value: customer.type.id,
-                        items: CustomerType.getAllTypes().map((e) {
-                          return DropdownMenuItem<int>(
-                            value: e.id,
-                            child: Text(e.description),
-                          );
-                        }).toList(),
-                        onChanged: (id) {
-                          if (id != null) {
-                            customer.type = CustomerType.fromId(id);
-                            setState(() {});
-                          }
-                        },
-                        decoration: defaultFormDecoration(context).copyWith(
-                          labelText: 'Tipo de Cliente',
+                        const SizedBox(height: 16),
+                        DropdownButtonFormField<int>(
+                          value: customer.type.id,
+                          items: CustomerType.getAllTypes().map((e) {
+                            return DropdownMenuItem<int>(
+                              value: e.id,
+                              child: Text(e.description),
+                            );
+                          }).toList(),
+                          onChanged: (id) {
+                            if (id != null) {
+                              customer.type = CustomerType.fromId(id);
+                              setState(() {});
+                            }
+                          },
+                          decoration: defaultFormDecoration(context).copyWith(
+                            labelText: 'Tipo de Cliente',
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              PrimaryButton(
-                onPressed: _saveCustomer,
-                title: 'Salvar',
-                iconData: Icons.save,
-                formKey: formKey,
-              ),
-            ],
+                PrimaryButton(
+                  onPressed: _saveCustomer,
+                  title: 'Salvar',
+                  iconData: Icons.save,
+                  formKey: formKey,
+                ),
+              ],
+            ),
           ),
         ),
       ),

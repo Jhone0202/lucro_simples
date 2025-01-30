@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/app_notifiers.dart';
@@ -101,75 +102,77 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: Colors.white,
-            ),
-            child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-              leading: CircleFileImage(filePath: company.photoURL),
-              title: Text(
-                company.name,
-                style: AppTheme.textStyles.titleMedium,
+      body: FadeInUp(
+        child: ListView(
+          children: [
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: Colors.white,
               ),
-              subtitle: Text(
-                company.userName,
-                style: AppTheme.textStyles.subtitleMedium,
+              child: ListTile(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                leading: CircleFileImage(filePath: company.photoURL),
+                title: Text(
+                  company.name,
+                  style: AppTheme.textStyles.titleMedium,
+                ),
+                subtitle: Text(
+                  company.userName,
+                  style: AppTheme.textStyles.subtitleMedium,
+                ),
               ),
             ),
-          ),
-          const SalesAnimChart(),
-          const Row(
-            children: [
-              Expanded(child: TodaySalesCard()),
-              Expanded(child: MonthSalesCard()),
-            ],
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Colors.white,
-            ),
-            child: Column(
+            const SalesAnimChart(),
+            const Row(
               children: [
-                Container(
-                  width: 32,
-                  height: 4,
-                  margin: const EdgeInsets.only(top: 12),
-                  decoration: BoxDecoration(
-                    color: AppTheme.colors.background,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-                Container(
-                  width: double.maxFinite,
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  child: Text(
-                    'Histórico de Vendas',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ),
-                ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  separatorBuilder: (context, index) => const Divider(),
-                  itemCount: sales.length,
-                  itemBuilder: (context, index) => DashSaleTile(
-                    sale: sales[index],
-                  ),
-                ),
+                Expanded(child: TodaySalesCard()),
+                Expanded(child: MonthSalesCard()),
               ],
             ),
-          ),
-        ],
+            Container(
+              margin: const EdgeInsets.only(top: 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.white,
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    width: 32,
+                    height: 4,
+                    margin: const EdgeInsets.only(top: 12),
+                    decoration: BoxDecoration(
+                      color: AppTheme.colors.background,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                  Container(
+                    width: double.maxFinite,
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    child: Text(
+                      'Histórico de Vendas',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    separatorBuilder: (context, index) => const Divider(),
+                    itemCount: sales.length,
+                    itemBuilder: (context, index) => DashSaleTile(
+                      sale: sales[index],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _newSale,

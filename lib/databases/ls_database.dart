@@ -42,13 +42,17 @@ class LsDatabase {
 
   Future _onCreate(Database db, int version) async {
     for (var i = 1; i <= lsMigrationScripts.length; i++) {
-      await db.execute(lsMigrationScripts[i]!);
+      if (lsMigrationScripts[i] != null) {
+        await db.execute(lsMigrationScripts[i]!);
+      }
     }
   }
 
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
     for (var i = oldVersion + 1; i <= newVersion; i++) {
-      await db.execute(lsMigrationScripts[i]!);
+      if (lsMigrationScripts[i] != null) {
+        await db.execute(lsMigrationScripts[i]!);
+      }
     }
   }
 }
