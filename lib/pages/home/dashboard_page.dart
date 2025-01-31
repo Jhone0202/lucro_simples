@@ -116,11 +116,13 @@ class _DashboardPageState extends State<DashboardPage> {
                 leading: CircleFileImage(filePath: company.photoURL),
                 title: Text(
                   company.name,
-                  style: AppTheme.textStyles.titleMedium,
+                  style: AppTheme.textStyles.titleSmall,
                 ),
                 subtitle: Text(
                   company.userName,
-                  style: AppTheme.textStyles.subtitleMedium,
+                  style: AppTheme.textStyles.caption.copyWith(
+                    color: Colors.black54,
+                  ),
                 ),
               ),
             ),

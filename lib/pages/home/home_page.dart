@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucro_simples/pages/home/customers_page.dart';
 import 'package:lucro_simples/pages/home/dashboard_page.dart';
 import 'package:lucro_simples/pages/home/products_page.dart';
+import 'package:lucro_simples/themes/app_theme.dart';
 import 'package:lucro_simples/utils/keep_alive_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -42,6 +43,7 @@ class _HomePageState extends State<HomePage> {
             curve: Curves.ease,
           );
         },
+        unselectedItemColor: AppTheme.colors.secondary,
         items: const [
           BottomNavigationBarItem(
             label: 'Início',
@@ -49,7 +51,7 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             label: 'Produtos',
-            icon: Icon(Icons.local_offer),
+            icon: Icon(Icons.archive),
           ),
           BottomNavigationBarItem(
             label: 'Clientes',

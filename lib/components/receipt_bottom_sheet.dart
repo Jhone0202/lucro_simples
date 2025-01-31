@@ -6,9 +6,8 @@ import 'package:lucro_simples/components/receipt.dart';
 import 'package:lucro_simples/components/secondary_button.dart';
 import 'package:lucro_simples/entities/sale.dart';
 import 'package:lucro_simples/helpers/directory_helper.dart';
-import 'package:lucro_simples/utils/formaters_util.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:share_extend/share_extend.dart';
+import 'package:share_plus/share_plus.dart';
 
 showReceipt(BuildContext context, Sale sale, [Function? then]) {
   showModalBottomSheet(
@@ -39,7 +38,7 @@ class ReceiptBottomSheet extends StatelessWidget {
     );
     await file.writeAsBytes(capturedImage);
 
-    ShareExtend.share(file.path, formatId(sale.id ?? 0));
+    Share.shareXFiles([XFile(file.path)]);
   }
 
   @override
