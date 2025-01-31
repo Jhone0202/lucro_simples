@@ -11,12 +11,11 @@ import 'package:lucro_simples/components/secondary_button.dart';
 import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/entities/delivery_type.dart';
 import 'package:lucro_simples/entities/payment_method.dart';
-import 'package:lucro_simples/entities/product.dart';
 import 'package:lucro_simples/entities/sale.dart';
 import 'package:lucro_simples/entities/sale_item.dart';
+import 'package:lucro_simples/entities/sale_progess.dart';
 import 'package:lucro_simples/managers/session_manager.dart';
-import 'package:lucro_simples/pages/home/products_page.dart';
-import 'package:lucro_simples/pages/sale/sale_item_page.dart';
+import 'package:lucro_simples/pages/sale/sale_wizard_page.dart';
 import 'package:lucro_simples/repositories/sale_repository_interface.dart';
 import 'package:provider/provider.dart';
 
@@ -85,25 +84,13 @@ class _NewSalePageState extends State<NewSalePage> {
   }
 
   Future _selectAndAddNewItem() async {
-    final product = await Navigator.pushNamed(
+    final progress = await Navigator.pushNamed(
       context,
-      ProductsPage.routeName,
-      arguments: true,
-    ) as Product?;
+      SaleWizardPage.routeName,
+      arguments: SaleFlowType.productWithItemSelection,
+    ) as SaleProgress?;
 
-    if (product == null) return;
-
-    if (!mounted) return;
-
-    final saleItem = await Navigator.pushNamed(
-      context,
-      SaleItemPage.routeName,
-      arguments: product,
-    ) as SaleItem?;
-
-    if (saleItem == null) return;
-
-    sale.addItem(saleItem);
+    if (progress?.item != null) sale.addItem(progress!.item!);
   }
 
   Future<bool> _showExitConfirmationDialog() async {

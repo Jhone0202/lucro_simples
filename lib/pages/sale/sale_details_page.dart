@@ -79,6 +79,7 @@ class _SaleDetailsPageState extends State<SaleDetailsPage> {
       appBar: AppBar(
         title: Text('Detalhes da Venda ${formatId(widget.sale.id ?? 0)}'),
       ),
+      backgroundColor: Colors.white,
       body: detailedSale == null
           ? const Center(
               child: SizedBox(

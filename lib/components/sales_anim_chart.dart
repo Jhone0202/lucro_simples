@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/app_notifiers.dart';
@@ -65,6 +66,20 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
       firstDate: DateTime(2024),
       lastDate: DateTime.now(),
       initialDateRange: period,
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData(
+            colorScheme: ColorScheme.light(
+              primary: AppTheme.colors.primary,
+              secondary: AppTheme.colors.primary.withValues(alpha: 0.5),
+            ),
+            appBarTheme: const AppBarTheme(
+              systemOverlayStyle: SystemUiOverlayStyle.dark,
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
 
     if (newPeriod != null) {
@@ -109,7 +124,7 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
                         vertical: 2,
                       ),
                       decoration: BoxDecoration(
-                        color: AppTheme.colors.primary.withOpacity(0.08),
+                        color: AppTheme.colors.primary.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
@@ -127,8 +142,10 @@ class _SalesAnimChartState extends State<SalesAnimChart> {
                 style: FilledButton.styleFrom(
                   visualDensity: VisualDensity.compact,
                   padding: const EdgeInsets.symmetric(horizontal: 8),
-                  backgroundColor: AppTheme.colors.primary.withOpacity(0.08),
+                  backgroundColor:
+                      AppTheme.colors.primary.withValues(alpha: 0.08),
                   foregroundColor: AppTheme.colors.primary,
+                  iconColor: AppTheme.colors.primary,
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,

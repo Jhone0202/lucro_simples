@@ -42,5 +42,7 @@ final appRoutes = <String, WidgetBuilder>{
   SaleDetailsPage.routeName: (context) => SaleDetailsPage(
         sale: ModalRoute.of(context)?.settings.arguments as Sale,
       ),
-  SaleWizardPage.routeName: (context) => const SaleWizardPage(),
+  SaleWizardPage.routeName: (context) => SaleWizardPage(
+        flowType: ModalRoute.of(context)!.settings.arguments as SaleFlowType,
+      ),
 };

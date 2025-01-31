@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
@@ -9,11 +7,10 @@ import 'package:lucro_simples/components/dash_sale_tile.dart';
 import 'package:lucro_simples/components/month_sales_card.dart';
 import 'package:lucro_simples/components/sales_anim_chart.dart';
 import 'package:lucro_simples/components/today_sales_card.dart';
-import 'package:lucro_simples/entities/customer.dart';
-import 'package:lucro_simples/entities/product.dart';
 import 'package:lucro_simples/entities/sale.dart';
-import 'package:lucro_simples/entities/sale_item.dart';
+import 'package:lucro_simples/entities/sale_progess.dart';
 import 'package:lucro_simples/managers/session_manager.dart';
+import 'package:lucro_simples/pages/sale/new_sale_page.dart';
 import 'package:lucro_simples/pages/sale/sale_wizard_page.dart';
 import 'package:lucro_simples/repositories/sale_repository_interface.dart';
 import 'package:lucro_simples/themes/app_theme.dart';
@@ -53,9 +50,21 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Future _newSale() async {
-    final newSale = await Navigator.pushNamed(
+    final progress = await Navigator.pushNamed(
       context,
       SaleWizardPage.routeName,
+      arguments: SaleFlowType.fullFlow,
+    ) as SaleProgress?;
+
+    if (progress == null || !mounted) return;
+
+    final newSale = await Navigator.pushNamed(
+      context,
+      NewSalePage.routeName,
+      arguments: NewSalePageArgs(
+        items: [progress.item!],
+        customer: progress.customer!,
+      ),
     ) as Sale?;
 
     if (newSale != null) {
@@ -157,10 +166,4 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
     );
   }
-}
-
-class SaleProgress {
-  Customer? customer;
-  Product? product;
-  SaleItem? item;
 }

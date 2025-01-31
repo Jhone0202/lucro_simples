@@ -92,6 +92,7 @@ class _SecondaryButtonState extends State<SecondaryButton> {
               ? const EdgeInsets.symmetric(horizontal: 8, vertical: 4)
               : const EdgeInsets.all(12),
           foregroundColor: widget.contentColor,
+          iconColor: widget.contentColor,
           side: BorderSide(
             color: widget.contentColor ?? Theme.of(context).primaryColor,
           ),
