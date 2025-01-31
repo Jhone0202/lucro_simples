@@ -14,10 +14,7 @@ import 'package:lucro_simples/entities/product.dart';
 import 'package:lucro_simples/entities/sale.dart';
 import 'package:lucro_simples/entities/sale_item.dart';
 import 'package:lucro_simples/managers/session_manager.dart';
-import 'package:lucro_simples/pages/home/customers_page.dart';
-import 'package:lucro_simples/pages/home/products_page.dart';
-import 'package:lucro_simples/pages/sale/new_sale_page.dart';
-import 'package:lucro_simples/pages/sale/sale_item_page.dart';
+import 'package:lucro_simples/pages/sale/sale_wizard_page.dart';
 import 'package:lucro_simples/repositories/sale_repository_interface.dart';
 import 'package:lucro_simples/themes/app_theme.dart';
 
@@ -56,34 +53,9 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Future _newSale() async {
-    final customer = await Navigator.pushNamed(
-      context,
-      CustomersPage.routeName,
-      arguments: true,
-    ) as Customer?;
-
-    if (customer == null) return;
-
-    final product = await Navigator.pushNamed(
-      context,
-      ProductsPage.routeName,
-      arguments: true,
-    ) as Product?;
-
-    if (product == null) return;
-
-    final saleItem = await Navigator.pushNamed(
-      context,
-      SaleItemPage.routeName,
-      arguments: product,
-    ) as SaleItem?;
-
-    if (saleItem == null) return;
-
     final newSale = await Navigator.pushNamed(
       context,
-      NewSalePage.routeName,
-      arguments: NewSalePageArgs(items: [saleItem], customer: customer),
+      SaleWizardPage.routeName,
     ) as Sale?;
 
     if (newSale != null) {
@@ -185,4 +157,10 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
     );
   }
+}
+
+class SaleProgress {
+  Customer? customer;
+  Product? product;
+  SaleItem? item;
 }

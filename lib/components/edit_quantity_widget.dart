@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lucro_simples/themes/app_theme.dart';
 import 'package:lucro_simples/utils/input_decorations.dart';
 
 class EditQuantityWidget extends StatelessWidget {
@@ -107,7 +108,7 @@ class EditQuantityWidget extends StatelessWidget {
                   icon: Icon(
                     CupertinoIcons.trash_circle,
                     size: 24,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: AppTheme.colors.primary,
                   ),
                 )
               else
@@ -117,7 +118,7 @@ class EditQuantityWidget extends StatelessWidget {
                   icon: Icon(
                     Icons.remove_circle_outline,
                     size: 24,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: AppTheme.colors.primary,
                   ),
                 ),
               Expanded(
@@ -135,7 +136,7 @@ class EditQuantityWidget extends StatelessWidget {
                 icon: Icon(
                   Icons.add_circle_outline,
                   size: 24,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: AppTheme.colors.primary,
                 ),
               ),
             ],
@@ -145,7 +146,9 @@ class EditQuantityWidget extends StatelessWidget {
           Text(
             'Quantidade',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: AppTheme.textStyles.caption.copyWith(
+              color: Colors.black54,
+            ),
           ),
       ],
     );

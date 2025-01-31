@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucro_simples/themes/app_theme.dart';
 import 'package:lucro_simples/utils/formaters_util.dart';
 
 class SaleProfitCard extends StatelessWidget {
@@ -13,8 +14,8 @@ class SaleProfitCard extends StatelessWidget {
       margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       decoration: BoxDecoration(
         color: profit < 0
-            ? Colors.red.withOpacity(0.05)
-            : Colors.green.withOpacity(0.05),
+            ? Colors.red.withValues(alpha: 0.05)
+            : AppTheme.colors.primary.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -22,14 +23,14 @@ class SaleProfitCard extends StatelessWidget {
           Icon(
             Icons.check_circle_rounded,
             size: 16,
-            color: profit < 0 ? Colors.red : Colors.green,
+            color: profit < 0 ? Colors.red : AppTheme.colors.primary,
           ),
           const SizedBox(width: 4),
           Text(
             'Seu ${profit < 0 ? 'prejuízo' : 'lucro'} com esta venda é de ${formatRealBr(profit)}!',
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: profit < 0 ? Colors.red : Colors.green,
-                ),
+            style: AppTheme.textStyles.caption.copyWith(
+              color: profit < 0 ? Colors.red : AppTheme.colors.primary,
+            ),
           ),
         ],
       ),

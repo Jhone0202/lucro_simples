@@ -12,8 +12,9 @@ import 'package:lucro_simples/utils/input_decorations.dart';
 class CustomersPage extends StatefulWidget {
   static const String routeName = 'customers_page';
 
-  final bool getCustomer;
-  const CustomersPage({super.key, this.getCustomer = false});
+  final Function(Customer)? onSelected;
+
+  const CustomersPage({super.key, this.onSelected});
 
   @override
   State<CustomersPage> createState() => _CustomersPageState();
@@ -65,9 +66,6 @@ class _CustomersPageState extends State<CustomersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: widget.getCustomer
-          ? AppBar(title: const Text('Selecione o Cliente'))
-          : null,
       body: RefreshIndicator(
         onRefresh: () async => _loadCustomers(),
         child: SafeArea(
@@ -93,8 +91,8 @@ class _CustomersPageState extends State<CustomersPage> {
                     itemBuilder: (context, index) => CustomerCard(
                       customer: customers[index],
                       onTap: () {
-                        if (widget.getCustomer) {
-                          Navigator.pop(context, customers[index]);
+                        if (widget.onSelected != null) {
+                          widget.onSelected!(customers[index]);
                         } else {
                           _editCustomer(customers[index], index);
                         }

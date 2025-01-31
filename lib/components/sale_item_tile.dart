@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/components/edit_quantity_widget.dart';
 import 'package:lucro_simples/entities/sale_item.dart';
+import 'package:lucro_simples/themes/app_theme.dart';
 import 'package:lucro_simples/utils/formaters_util.dart';
 import 'package:provider/provider.dart';
 
@@ -55,25 +56,20 @@ class SaleItemTile extends StatelessWidget {
                     Text(
                       item.productName,
                       maxLines: 2,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: AppTheme.textStyles.titleSmall,
                     ),
                     Text(
                       formatId(item.productId),
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelMedium
-                          ?.copyWith(color: Colors.black54),
+                      style: AppTheme.textStyles.captionMedium.copyWith(
+                        color: Colors.black54,
+                      ),
                     ),
                     if (readOnly)
                       Text(
                         '${formatRealBr(item.productPrice)} X ${item.quantity} = ${formatRealBr(item.total)}',
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelMedium
-                            ?.copyWith(color: Colors.black54),
+                        style: AppTheme.textStyles.captionMedium.copyWith(
+                          color: Colors.black54,
+                        ),
                       )
                     else ...[
                       const Spacer(),
@@ -82,10 +78,7 @@ class SaleItemTile extends StatelessWidget {
                           Expanded(
                             child: Text(
                               formatRealBr(item.total),
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: AppTheme.textStyles.titleSmall,
                             ),
                           ),
                           EditQuantityWidget(

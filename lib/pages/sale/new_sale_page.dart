@@ -168,6 +168,7 @@ class _NewSalePageState extends State<NewSalePage> {
             appBar: AppBar(
               title: const Text('Nova Venda'),
             ),
+            backgroundColor: Colors.white,
             body: ListView(
               children: [
                 ListView.separated(

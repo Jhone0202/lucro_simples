@@ -11,6 +11,7 @@ import 'package:lucro_simples/pages/sale/new_sale_page.dart';
 import 'package:lucro_simples/pages/registers/product_register_page.dart';
 import 'package:lucro_simples/pages/sale/sale_details_page.dart';
 import 'package:lucro_simples/pages/sale/sale_item_page.dart';
+import 'package:lucro_simples/pages/sale/sale_wizard_page.dart';
 import 'package:lucro_simples/pages/splash_page.dart';
 
 final appRoutes = <String, WidgetBuilder>{
@@ -18,18 +19,18 @@ final appRoutes = <String, WidgetBuilder>{
   OnboardingPage.routeName: (context) => const OnboardingPage(),
   HomePage.routeName: (context) => const HomePage(),
   ProductsPage.routeName: (context) => ProductsPage(
-        getProduct:
-            ModalRoute.of(context)?.settings.arguments as bool? ?? false,
+        onSelected:
+            ModalRoute.of(context)?.settings.arguments as Function(Product)?,
       ),
   CustomersPage.routeName: (context) => CustomersPage(
-        getCustomer:
-            ModalRoute.of(context)?.settings.arguments as bool? ?? false,
+        onSelected:
+            ModalRoute.of(context)?.settings.arguments as Function(Customer)?,
       ),
   NewSalePage.routeName: (context) => NewSalePage(
         args: ModalRoute.of(context)?.settings.arguments as NewSalePageArgs,
       ),
   SaleItemPage.routeName: (context) => SaleItemPage(
-        product: ModalRoute.of(context)?.settings.arguments as Product,
+        args: ModalRoute.of(context)?.settings.arguments as SaleItemArgs,
       ),
   ProductRegisterPage.routeName: (context) => ProductRegisterPage(
         editableProduct: ModalRoute.of(context)?.settings.arguments as Product?,
@@ -41,4 +42,5 @@ final appRoutes = <String, WidgetBuilder>{
   SaleDetailsPage.routeName: (context) => SaleDetailsPage(
         sale: ModalRoute.of(context)?.settings.arguments as Sale,
       ),
+  SaleWizardPage.routeName: (context) => const SaleWizardPage(),
 };

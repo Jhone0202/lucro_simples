@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/components/circle_file_image.dart';
-import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/entities/sale.dart';
 import 'package:lucro_simples/pages/home/customers_page.dart';
 
@@ -15,13 +14,14 @@ class SaleCustomerCard extends StatelessWidget {
   final bool readOnly;
 
   Future _changeCustomer(BuildContext context) async {
-    final newCustomer = await Navigator.pushNamed(
+    Navigator.pushNamed(
       context,
       CustomersPage.routeName,
-      arguments: true,
-    ) as Customer?;
-
-    if (newCustomer != null) sale.setCustomer(newCustomer);
+      arguments: (customer) {
+        sale.setCustomer(customer);
+        Navigator.pop(context);
+      },
+    );
   }
 
   @override

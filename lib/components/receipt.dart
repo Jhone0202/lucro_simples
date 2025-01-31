@@ -4,6 +4,7 @@ import 'package:lucro_simples/components/receipt_row.dart';
 import 'package:lucro_simples/entities/delivery_type.dart';
 import 'package:lucro_simples/entities/sale.dart';
 import 'package:lucro_simples/managers/session_manager.dart';
+import 'package:lucro_simples/themes/app_theme.dart';
 import 'package:lucro_simples/utils/formaters_util.dart';
 
 class Receipt extends StatelessWidget {
@@ -25,7 +26,7 @@ class Receipt extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                color: Colors.green.withOpacity(0.1),
+                color: AppTheme.colors.primary.withOpacity(0.1),
               ),
             ),
             child: Container(
@@ -33,14 +34,14 @@ class Receipt extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: Colors.green.withOpacity(0.5),
+                  color: AppTheme.colors.primary.withOpacity(0.5),
                 ),
               ),
               child: Container(
                 padding: const EdgeInsets.all(6),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.green,
+                  color: AppTheme.colors.primary,
                 ),
                 child: const Icon(
                   Icons.check,

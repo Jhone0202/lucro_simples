@@ -12,8 +12,8 @@ import 'package:lucro_simples/utils/input_decorations.dart';
 class ProductsPage extends StatefulWidget {
   static const String routeName = 'products_page';
 
-  final bool getProduct;
-  const ProductsPage({super.key, this.getProduct = false});
+  final Function(Product)? onSelected;
+  const ProductsPage({super.key, this.onSelected});
 
   @override
   State<ProductsPage> createState() => _ProductsPageState();
@@ -65,9 +65,6 @@ class _ProductsPageState extends State<ProductsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: widget.getProduct
-          ? AppBar(title: const Text('Selecione o Produto'))
-          : null,
       body: RefreshIndicator(
         onRefresh: () async => _loadProducts(),
         child: SafeArea(
@@ -93,8 +90,8 @@ class _ProductsPageState extends State<ProductsPage> {
                     itemBuilder: (context, index) => ProductCard(
                       product: products[index],
                       onTap: () {
-                        if (widget.getProduct) {
-                          Navigator.pop(context, products[index]);
+                        if (widget.onSelected != null) {
+                          widget.onSelected!(products[index]);
                         } else {
                           _editProduct(products[index], index);
                         }
