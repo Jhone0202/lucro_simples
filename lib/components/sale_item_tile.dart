@@ -65,10 +65,13 @@ class SaleItemTile extends StatelessWidget {
                       ),
                     ),
                     if (readOnly)
-                      Text(
-                        '${formatRealBr(item.productPrice)} X ${item.quantity} = ${formatRealBr(item.total)}',
-                        style: AppTheme.textStyles.captionMedium.copyWith(
-                          color: Colors.black54,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(
+                          '${formatRealBr(item.productPrice)} X ${item.quantity} = ${formatRealBr(item.total)}',
+                          style: AppTheme.textStyles.caption.copyWith(
+                            color: AppTheme.colors.content,
+                          ),
                         ),
                       )
                     else ...[

@@ -86,7 +86,7 @@ class _CustomersPageState extends State<CustomersPage> {
               Expanded(
                 child: FadeInUp(
                   child: AdaptiveGridHelper(
-                    minSizeItem: 320,
+                    minSizeItem: 200,
                     itemCount: customers.length,
                     itemBuilder: (context, index) => CustomerCard(
                       customer: customers[index],

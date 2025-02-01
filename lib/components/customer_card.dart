@@ -26,44 +26,37 @@ class CustomerCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         child: Padding(
           padding: const EdgeInsets.all(8),
-          child: Row(
+          child: Column(
             children: [
-              CircleFileImage(filePath: customer.photoURL, size: 72),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      customer.name,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTheme.textStyles.titleSmall,
-                    ),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.phone,
-                          size: 12,
-                          color: Colors.black54,
-                        ),
-                        const SizedBox(width: 4),
-                        Expanded(
-                          child: Text(
-                            customer.phoneNumber,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: AppTheme.textStyles.caption.copyWith(
-                              color: Colors.black54,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+              CircleFileImage(filePath: customer.photoURL, size: 80),
+              const SizedBox(height: 8),
+              Text(
+                customer.name,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: AppTheme.textStyles.titleSmall,
               ),
-              const Icon(Icons.chevron_right, color: Colors.black38),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.phone,
+                    size: 12,
+                    color: Colors.black54,
+                  ),
+                  const SizedBox(width: 4),
+                  Flexible(
+                    child: Text(
+                      customer.phoneNumber,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTheme.textStyles.caption.copyWith(
+                        color: Colors.black54,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

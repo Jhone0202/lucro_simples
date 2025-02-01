@@ -128,6 +128,7 @@ class _NewSalePageState extends State<NewSalePage> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red.shade900),
             child: const Text('Remover'),
           ),
         ],
