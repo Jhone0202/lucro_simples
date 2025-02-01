@@ -163,7 +163,7 @@ class _SalePaymentCardState extends State<SalePaymentCard> {
       padding: const EdgeInsets.all(8.0),
       margin: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor.withOpacity(0.05),
+        color: Theme.of(context).primaryColor.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -275,7 +275,7 @@ class _SalePaymentCardState extends State<SalePaymentCard> {
               ),
             ),
           ),
-          Divider(color: Theme.of(context).primaryColor.withOpacity(0.1)),
+          Divider(color: Theme.of(context).primaryColor.withValues(alpha: 0.1)),
           const SizedBox(height: 4),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

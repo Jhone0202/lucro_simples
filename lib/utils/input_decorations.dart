@@ -34,7 +34,7 @@ InputDecoration defaultFormDecoration(BuildContext context) {
 InputDecoration paymentDropDecoration(BuildContext context) {
   return InputDecoration(
     filled: true,
-    fillColor: Theme.of(context).primaryColor.withOpacity(0.05),
+    fillColor: Theme.of(context).primaryColor.withValues(alpha: 0.05),
     contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
     enabledBorder: OutlineInputBorder(
       borderSide: BorderSide.none,

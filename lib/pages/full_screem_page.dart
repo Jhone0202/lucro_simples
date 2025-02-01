@@ -50,7 +50,7 @@ class _FullScreenPageState extends State<FullScreenPage> {
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
             ),
             child: Text(
               '$_curretImage / ${widget.images.length}',

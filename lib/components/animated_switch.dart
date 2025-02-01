@@ -67,7 +67,7 @@ class _AnimatedSwitchState extends State<AnimatedSwitch>
             margin: const EdgeInsets.only(top: 8),
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor.withOpacity(0.05),
+              color: Theme.of(context).primaryColor.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Stack(

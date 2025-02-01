@@ -26,7 +26,7 @@ class Receipt extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                color: AppTheme.colors.primary.withOpacity(0.1),
+                color: AppTheme.colors.primary.withValues(alpha: 0.1),
               ),
             ),
             child: Container(
@@ -34,7 +34,7 @@ class Receipt extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: AppTheme.colors.primary.withOpacity(0.5),
+                  color: AppTheme.colors.primary.withValues(alpha: 0.5),
                 ),
               ),
               child: Container(

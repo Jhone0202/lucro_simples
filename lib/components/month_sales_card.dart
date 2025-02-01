@@ -77,7 +77,7 @@ class _MonthSalesCardState extends State<MonthSalesCard> {
               vertical: 2,
             ),
             decoration: BoxDecoration(
-              color: AppTheme.colors.primary.withOpacity(0.08),
+              color: AppTheme.colors.primary.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(4),
             ),
             child: Text(
