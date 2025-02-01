@@ -8,12 +8,15 @@ import 'package:lucro_simples/components/outlined_rounded_button.dart';
 import 'package:lucro_simples/components/page_indicator.dart';
 import 'package:lucro_simples/components/rounded_button.dart';
 import 'package:lucro_simples/entities/company.dart';
+import 'package:lucro_simples/entities/product.dart';
 import 'package:lucro_simples/helpers/directory_helper.dart';
 import 'package:lucro_simples/managers/session_manager.dart';
 import 'package:lucro_simples/pages/home/home_page.dart';
 import 'package:lucro_simples/pages/onboarding/intro_company_page.dart';
+import 'package:lucro_simples/pages/onboarding/intro_finish_page.dart';
 import 'package:lucro_simples/pages/onboarding/intro_page.dart';
 import 'package:lucro_simples/pages/onboarding/intro_product_page.dart';
+import 'package:lucro_simples/pages/registers/product_register_page.dart';
 import 'package:lucro_simples/repositories/company_repository_interface.dart';
 import 'package:lucro_simples/utils/keep_alive_page.dart';
 
@@ -70,6 +73,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     _nextPage();
   }
 
+  // page 3
   void _finish() {
     Navigator.pushNamedAndRemoveUntil(
       context,
@@ -78,7 +82,61 @@ class _OnboardingPageState extends State<OnboardingPage> {
     );
   }
 
-  void _registerProduct() {}
+  Future _registerProduct() async {
+    final newProduct = await Navigator.pushNamed(
+      context,
+      ProductRegisterPage.routeName,
+    ) as Product?;
+
+    if (newProduct != null) {
+      _nextPage();
+    }
+  }
+
+  Widget _buildCurrentButton() {
+    switch (currentIndex) {
+      case 0:
+        return RoundedButton(
+          onPressed: _nextPage,
+          title: 'Começar',
+          iconData: Icons.arrow_forward,
+          expanded: false,
+        );
+      case 1:
+        return RoundedButton(
+          onPressed: _saveAndInitSession,
+          title: 'Continuar',
+          iconData: Icons.arrow_forward,
+          expanded: false,
+          formKey: formKey,
+        );
+      case 2:
+        return Column(
+          children: [
+            RoundedButton(
+              onPressed: _registerProduct,
+              title: 'Cadastrar Produto',
+              iconData: Icons.arrow_forward,
+              expanded: false,
+            ),
+            const SizedBox(height: 16),
+            OutlinedRoundedButton(
+              onPressed: _finish,
+              title: 'Cadastrar Depois',
+              iconData: Icons.arrow_forward,
+              expanded: false,
+            ),
+          ],
+        );
+      default:
+        return RoundedButton(
+          onPressed: _finish,
+          title: 'Concluir',
+          iconData: Icons.arrow_forward,
+          expanded: false,
+        );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +157,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       },
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
-                        const KeepAlivePage(child: IntroPage()),
+                        const KeepAlivePage(
+                          child: IntroPage(),
+                        ),
                         KeepAlivePage(
                           child: IntroCompanyPage(
                             company: company,
@@ -109,7 +169,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             userNameController: userNameController,
                           ),
                         ),
-                        const KeepAlivePage(child: IntroProductPage()),
+                        const KeepAlivePage(
+                          child: IntroProductPage(),
+                        ),
+                        const KeepAlivePage(
+                          child: IntroFinishPage(),
+                        ),
                       ],
                     ),
                     AnimatedSwitcher(
@@ -138,38 +203,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     ),
                     AnimatedSwitcher(
                       duration: Durations.medium1,
-                      child: currentIndex == 0
-                          ? RoundedButton(
-                              onPressed: _nextPage,
-                              title: 'Começar',
-                              iconData: Icons.arrow_forward,
-                              expanded: false,
-                            )
-                          : currentIndex == 1
-                              ? RoundedButton(
-                                  onPressed: _saveAndInitSession,
-                                  title: 'Continuar',
-                                  iconData: Icons.arrow_forward,
-                                  expanded: false,
-                                  formKey: formKey,
-                                )
-                              : Column(
-                                  children: [
-                                    RoundedButton(
-                                      onPressed: _registerProduct,
-                                      title: 'Cadastrar Produto',
-                                      iconData: Icons.arrow_forward,
-                                      expanded: false,
-                                    ),
-                                    const SizedBox(height: 16),
-                                    OutlinedRoundedButton(
-                                      onPressed: _finish,
-                                      title: 'Cadastrar Depois',
-                                      iconData: Icons.arrow_forward,
-                                      expanded: false,
-                                    ),
-                                  ],
-                                ),
+                      child: _buildCurrentButton(),
                     ),
                   ],
                 ),

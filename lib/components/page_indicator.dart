@@ -5,7 +5,7 @@ class PageIndicator extends StatelessWidget {
   const PageIndicator({
     super.key,
     this.currentIndex = 0,
-    this.length = 3,
+    this.length = 4,
     this.padding,
   });
 
