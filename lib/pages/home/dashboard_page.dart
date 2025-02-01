@@ -10,6 +10,7 @@ import 'package:lucro_simples/components/today_sales_card.dart';
 import 'package:lucro_simples/entities/sale.dart';
 import 'package:lucro_simples/entities/sale_progess.dart';
 import 'package:lucro_simples/managers/session_manager.dart';
+import 'package:lucro_simples/pages/registers/company_register_page.dart';
 import 'package:lucro_simples/pages/sale/new_sale_page.dart';
 import 'package:lucro_simples/pages/sale/sale_wizard_page.dart';
 import 'package:lucro_simples/repositories/sale_repository_interface.dart';
@@ -93,6 +94,10 @@ class _DashboardPageState extends State<DashboardPage> {
                 color: Colors.white,
               ),
               child: ListTile(
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  CompanyRegisterPage.routeName,
+                ),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 8),
                 leading: CircleFileImage(filePath: company.photoURL),
                 title: Text(

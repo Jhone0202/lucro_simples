@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/entities/product.dart';
 import 'package:lucro_simples/entities/sale.dart';
+import 'package:lucro_simples/pages/registers/company_register_page.dart';
 import 'package:lucro_simples/pages/registers/customer_register_page.dart';
 import 'package:lucro_simples/pages/home/customers_page.dart';
 import 'package:lucro_simples/pages/home/home_page.dart';
@@ -45,4 +46,5 @@ final appRoutes = <String, WidgetBuilder>{
   SaleWizardPage.routeName: (context) => SaleWizardPage(
         flowType: ModalRoute.of(context)!.settings.arguments as SaleFlowType,
       ),
+  CompanyRegisterPage.routeName: (context) => const CompanyRegisterPage(),
 };
