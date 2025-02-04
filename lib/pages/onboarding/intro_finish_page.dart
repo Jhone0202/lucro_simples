@@ -15,7 +15,7 @@ class IntroFinishPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              constraints: const BoxConstraints(maxHeight: 320),
+              constraints: const BoxConstraints(maxHeight: 280),
               child: Image.asset(
                 AppAssets.imgOnboarding4,
               ),
