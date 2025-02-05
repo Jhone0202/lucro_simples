@@ -52,9 +52,13 @@ class LsDatabaseMock {
       deliveryCost: 0,
       deliveryType: DELIVERY_TYPE.pickup,
       increase: 0,
-      paymentMethodId: 0,
+      paymentMethodId: 1,
       customerPhoneNumber: '',
       paymentMethod: PaymentMethod(name: ''),
     );
+  }
+
+  List<String> defaultPaymentMethodsNames() {
+    return ['Dinheiro', 'Pix', 'Cartão de Crédito', 'Cartão de Débito'];
   }
 }

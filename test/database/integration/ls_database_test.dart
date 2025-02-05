@@ -64,4 +64,13 @@ void main() {
     final res = await database.insert('sales', sale.toMap());
     expect(res > 0, true);
   });
+
+  test('Check default payment methods', () async {
+    final res = await database.query('payment_methods');
+
+    final names = res.map((e) => e['name']);
+    final defaultNames = dataMock.defaultPaymentMethodsNames();
+
+    expect(names, defaultNames);
+  });
 }
