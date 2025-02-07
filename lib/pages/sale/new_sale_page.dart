@@ -40,10 +40,20 @@ class _NewSalePageState extends State<NewSalePage> {
   final repository = getIt.get<ISaleRepository>();
   late Sale sale;
 
+  final scrollController = ScrollController();
+  bool isButtonVisible = false;
+
   @override
   void initState() {
     super.initState();
     initSale();
+    scrollController.addListener(_checkButtonVisibility);
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   void initSale() {
@@ -70,6 +80,24 @@ class _NewSalePageState extends State<NewSalePage> {
       profit: profit,
       paymentMethodId: 1,
       paymentMethod: PaymentMethod(name: 'Dinheiro'),
+    );
+  }
+
+  void _checkButtonVisibility() {
+    if (scrollController.position.maxScrollExtent == scrollController.offset) {
+      isButtonVisible = true;
+      setState(() {});
+    } else {
+      isButtonVisible = false;
+      setState(() {});
+    }
+  }
+
+  void _scrollToBottom() {
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent,
+      duration: Durations.medium2,
+      curve: Curves.ease,
     );
   }
 
@@ -158,6 +186,8 @@ class _NewSalePageState extends State<NewSalePage> {
             ),
             backgroundColor: Colors.white,
             body: ListView(
+              controller: scrollController,
+              physics: const BouncingScrollPhysics(),
               children: [
                 ListView.separated(
                   shrinkWrap: true,
@@ -190,6 +220,12 @@ class _NewSalePageState extends State<NewSalePage> {
                 ),
               ],
             ),
+            floatingActionButton: isButtonVisible
+                ? null
+                : FloatingActionButton(
+                    onPressed: _scrollToBottom,
+                    child: const Icon(Icons.arrow_downward),
+                  ),
           ),
         ),
       ),

@@ -153,6 +153,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       controller: pageController,
                       onPageChanged: (page) {
                         currentIndex = page;
+                        FocusScope.of(context).unfocus();
                         setState(() {});
                       },
                       physics: const NeverScrollableScrollPhysics(),

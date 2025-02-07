@@ -99,6 +99,8 @@ class IntroCompanyPage extends StatelessWidget {
                           controller: userNameController,
                           decoration: defaultFormDecoration(context).copyWith(
                             labelText: 'Seu Nome',
+                            fillColor: AppTheme.colors.background,
+                            filled: true,
                           ),
                           validator: (v) => v?.trim().isEmpty == true
                               ? 'Por favor, informe o seu nome.'
