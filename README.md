@@ -33,29 +33,29 @@ No momento utilizo o Sqlite para armazenar os dados, mas futuramente posso imple
 
 Desenvolvi uma lógica simplificada de migrations para organizar as mudanças no banco de dados, e ainda sobre ele, lidei como se estivesse em **produção**, optando por modificar o banco sem perder os dados cadastrados durante o desenvolvimento.
 
-Isso me trouxe desafios muito parecidos com os que lido no dia a dia.
+Isso me trouxe desafios muito parecidos com os que enfrento no dia a dia.
 
 ### 📖 Gerenciamento de Estado
 
 Aqui uma exceção, acoplei o ChangeNotifier na entidade Sale transformando-a em praticamente uma model. Fazia mais sentido neste contexto, consegui centralizar a funcionalidade de venda no app muito rapidamente e com fácil manutenção.
 
-Apesar de não ser o ideal em projetos grandes, e o custo benefício disso no momento se mostrou melhor.
+Apesar de não ser o ideal em projetos grandes, o custo-benefício disso, no momento, se mostrou mais vantajoso.
 
 ### 🧪 Testes
 
 É muito legal ter uma alta cobertura de testes no código, porém isso demanda tempo, por isso foquei no essencial para o bom funcionamento do app.
 
-Comecei pelos de integração com o banco de dados, eles foram cruciais para garantir as diversas mudanças que fiz ao longo do desenvolvimento.
+Comecei pelos testes de integração com o banco de dados, que foram cruciais para garantir as diversas mudanças feitas ao longo do desenvolvimento.
 
-Depois fiz os teste unitários do processo de venda para garantir que todos os cálculos estão certos e vão continuar após mudanças futuras.
+Depois, fiz os testes unitários do processo de venda para garantir que todos os cálculos estão certos e vão continuar após mudanças futuras.
 
-E por fim, os testes de widget para garantir que a interface da venda.
+E, por fim, fiz testes de widget para garantir a interface de venda.
 
-Poucos testes, mas de muito impacto para o projeto.
+Poucos testes, mas com grande impacto no projeto.
 
 ### 💡 Considerações finais
 
-Esse projeto reflete um pouco do meu modo de pensar como desenvolvedor, busco sempre encontrar o equilíbrio, para entregar o projeto rápido, funcional e manutenível.
+Este projeto reflete um pouco do meu modo de pensar como desenvolvedor. Busco sempre encontrar o equilíbrio para entregar algo rápido, funcional e manutenível.
 
 Se tiver dúvidas ou sugestões, pode me chama! Ficarei feliz em ajudar.
 
