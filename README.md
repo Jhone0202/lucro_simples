@@ -81,4 +81,4 @@ Sem problemas! Para rodar o projeto, siga estes passos:
 
 💡 Recomendo rodar em um dispositivo ou emulador Android/iOS para a melhor experiência.
 
-Pra instalar o [**Flutter**](https://docs.flutter.dev/get-started/install?_gl=1*33a0gk*_ga*MTMzMjA1NjEzNy4xNzM2NjA4MzAw*_ga_04YGWK0175*MTczODg5ODQzNC4zLjAuMTczODg5ODQzNC4wLjAuMA..)
+Para instalar o [**Flutter**](https://docs.flutter.dev/get-started/install?_gl=1*33a0gk*_ga*MTMzMjA1NjEzNy4xNzM2NjA4MzAw*_ga_04YGWK0175*MTczODg5ODQzNC4zLjAuMTczODg5ODQzNC4wLjAuMA..)
