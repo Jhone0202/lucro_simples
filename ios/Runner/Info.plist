@@ -45,5 +45,7 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSContactsUsageDescription</key>
+	<string>Precisamos acessar seus contatos para importar nome e telefone, facilitando seu cadastro</string>
 </dict>
 </plist>

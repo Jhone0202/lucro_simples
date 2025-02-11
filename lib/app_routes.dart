@@ -8,6 +8,7 @@ import 'package:lucro_simples/pages/home/customers_page.dart';
 import 'package:lucro_simples/pages/home/home_page.dart';
 import 'package:lucro_simples/pages/home/products_page.dart';
 import 'package:lucro_simples/pages/onboarding/onboarding_page.dart';
+import 'package:lucro_simples/pages/registers/import_contact_page.dart';
 import 'package:lucro_simples/pages/sale/new_sale_page.dart';
 import 'package:lucro_simples/pages/registers/product_register_page.dart';
 import 'package:lucro_simples/pages/sale/sale_details_page.dart';
@@ -47,4 +48,5 @@ final appRoutes = <String, WidgetBuilder>{
         flowType: ModalRoute.of(context)!.settings.arguments as SaleFlowType,
       ),
   CompanyRegisterPage.routeName: (context) => const CompanyRegisterPage(),
+  ImportContactPage.routeName: (context) => const ImportContactPage(),
 };

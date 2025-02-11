@@ -5,6 +5,7 @@ import 'package:lucro_simples/components/customer_card.dart';
 import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/helpers/adaptive_grid_helper.dart';
 import 'package:lucro_simples/pages/registers/customer_register_page.dart';
+import 'package:lucro_simples/pages/registers/import_contact_page.dart';
 import 'package:lucro_simples/repositories/customer_repository_interface.dart';
 import 'package:lucro_simples/utils/debouncer.dart';
 import 'package:lucro_simples/utils/input_decorations.dart';
@@ -105,10 +106,22 @@ class _CustomersPageState extends State<CustomersPage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _registerNewCustomer,
-        label: const Text('Cadastrar Cliente'),
-        icon: const Icon(Icons.add),
+      floatingActionButton: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.pushNamed(context, ImportContactPage.routeName);
+            },
+            child: Icon(Icons.import_contacts),
+          ),
+          const SizedBox(width: 8),
+          FloatingActionButton.extended(
+            onPressed: _registerNewCustomer,
+            label: const Text('Cadastrar Cliente'),
+            icon: const Icon(Icons.add),
+          ),
+        ],
       ),
     );
   }
