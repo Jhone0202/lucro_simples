@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:lucro_simples/app_assets.dart';
 import 'package:lucro_simples/components/primary_button.dart';
 import 'package:lucro_simples/themes/app_theme.dart';
+import 'package:lucro_simples/utils/feedback_user.dart';
 
 class SuccessImportPage extends StatelessWidget {
   static const String routeName = 'success_import_page';
@@ -12,6 +13,8 @@ class SuccessImportPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FeedbackUser.vibrate();
+
     return Scaffold(
       appBar: AppBar(),
       backgroundColor: Colors.white,
