@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/app_notifiers.dart';
 import 'package:lucro_simples/components/import_customers_list.dart';
@@ -108,7 +109,7 @@ class _ImportContactPageState extends State<ImportContactPage> {
                       onPressed: selecteds.isEmpty ? null : _import,
                       margin: const EdgeInsets.all(8),
                       title: 'Importar',
-                      iconData: Icons.file_download_outlined,
+                      iconData: CupertinoIcons.square_arrow_down,
                     ),
                   ],
                 ),

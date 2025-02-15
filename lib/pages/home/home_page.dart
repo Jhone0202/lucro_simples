@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/pages/home/customers_page.dart';
 import 'package:lucro_simples/pages/home/dashboard_page.dart';
@@ -47,15 +48,15 @@ class _HomePageState extends State<HomePage> {
         items: const [
           BottomNavigationBarItem(
             label: 'Início',
-            icon: Icon(Icons.home),
+            icon: Icon(CupertinoIcons.home),
           ),
           BottomNavigationBarItem(
             label: 'Produtos',
-            icon: Icon(Icons.archive),
+            icon: Icon(CupertinoIcons.cube_box),
           ),
           BottomNavigationBarItem(
             label: 'Clientes',
-            icon: Icon(Icons.people),
+            icon: Icon(CupertinoIcons.person_2),
           ),
         ],
       ),

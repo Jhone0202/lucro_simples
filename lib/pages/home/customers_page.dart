@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/app_notifiers.dart';
@@ -121,7 +122,7 @@ class _CustomersPageState extends State<CustomersPage> {
             onPressed: () {
               Navigator.pushNamed(context, ImportContactPage.routeName);
             },
-            child: Icon(Icons.file_download_outlined),
+            child: Icon(CupertinoIcons.square_arrow_down),
           ),
           const SizedBox(width: 8),
           FloatingActionButton.extended(
