@@ -28,7 +28,7 @@ class SuccessImportPage extends StatelessWidget {
                 width: 96,
                 height: 96,
                 child: Lottie.asset(
-                  AppAssets.sucessAnim,
+                  AppAssets.animSucess,
                   repeat: false,
                 ),
               ),

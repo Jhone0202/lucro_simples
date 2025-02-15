@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/entities/product.dart';
 import 'package:lucro_simples/entities/sale.dart';
+import 'package:lucro_simples/pages/changelog/changelog_page.dart';
 import 'package:lucro_simples/pages/import_contacts/success_import_page.dart';
 import 'package:lucro_simples/pages/registers/company_register_page.dart';
 import 'package:lucro_simples/pages/registers/customer_register_page.dart';
@@ -15,6 +16,7 @@ import 'package:lucro_simples/pages/registers/product_register_page.dart';
 import 'package:lucro_simples/pages/sale/sale_details_page.dart';
 import 'package:lucro_simples/pages/sale/sale_item_page.dart';
 import 'package:lucro_simples/pages/sale/sale_wizard_page.dart';
+import 'package:lucro_simples/pages/settings/settings_page.dart';
 import 'package:lucro_simples/pages/splash_page.dart';
 
 final appRoutes = <String, WidgetBuilder>{
@@ -51,4 +53,6 @@ final appRoutes = <String, WidgetBuilder>{
   CompanyRegisterPage.routeName: (context) => const CompanyRegisterPage(),
   ImportContactPage.routeName: (context) => const ImportContactPage(),
   SuccessImportPage.routeName: (context) => const SuccessImportPage(),
+  ChangelogPage.routeName: (context) => const ChangelogPage(),
+  SettingsPage.routeName: (context) => const SettingsPage(),
 };

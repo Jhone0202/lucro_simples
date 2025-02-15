@@ -7,5 +7,6 @@ class AppAssets {
   static String imgOnboarding4 = 'assets/images/onboarding_fourth.png';
   static String importContacts = 'assets/images/import_contacts.png';
   static String loadingTiles = 'assets/animations/loading_tiles.json';
-  static String sucessAnim = 'assets/animations/success.json';
+  static String animSucess = 'assets/animations/success.json';
+  static String iconStars = 'assets/icons/stars.svg';
 }
