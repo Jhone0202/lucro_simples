@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:animate_do/animate_do.dart';
-import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lucro_simples/app_injector.dart';
@@ -9,6 +8,7 @@ import 'package:lucro_simples/components/primary_button.dart';
 import 'package:lucro_simples/entities/product.dart';
 import 'package:lucro_simples/repositories/product_repository_interface.dart';
 import 'package:lucro_simples/utils/input_decorations.dart';
+import 'package:lucro_simples/utils/masks.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ProductRegisterPage extends StatefulWidget {
@@ -29,8 +29,8 @@ class _ProductRegisterPageState extends State<ProductRegisterPage> {
   final formKey = GlobalKey<FormState>();
 
   final nameController = TextEditingController();
-  final costPriceController = MoneyMaskedTextController(leftSymbol: 'R\$');
-  final salePriceController = MoneyMaskedTextController(leftSymbol: 'R\$');
+  final costPriceController = moneyMaskedTextController();
+  final salePriceController = moneyMaskedTextController();
 
   @override
   void initState() {

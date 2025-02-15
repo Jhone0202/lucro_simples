@@ -1,6 +1,5 @@
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
-import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lucro_simples/app_injector.dart';
@@ -9,6 +8,7 @@ import 'package:lucro_simples/entities/sale.dart';
 import 'package:lucro_simples/repositories/sale_repository_interface.dart';
 import 'package:lucro_simples/utils/formaters_util.dart';
 import 'package:lucro_simples/utils/input_decorations.dart';
+import 'package:lucro_simples/utils/masks.dart';
 
 class SalePaymentCard extends StatefulWidget {
   const SalePaymentCard({
@@ -56,8 +56,7 @@ class _SalePaymentCardState extends State<SalePaymentCard> {
 
   void _editDiscount() {
     final formKey = GlobalKey<FormState>();
-    final controller = MoneyMaskedTextController(
-      leftSymbol: 'R\$',
+    final controller = moneyMaskedTextController(
       initialValue: widget.sale.discount,
     );
 
@@ -110,8 +109,7 @@ class _SalePaymentCardState extends State<SalePaymentCard> {
 
   void _editIncrease() {
     final formKey = GlobalKey<FormState>();
-    final controller = MoneyMaskedTextController(
-      leftSymbol: 'R\$',
+    final controller = moneyMaskedTextController(
       initialValue: widget.sale.increase,
     );
 

@@ -1,11 +1,12 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_injector.dart';
+import 'package:lucro_simples/app_notifiers.dart';
 import 'package:lucro_simples/components/customer_card.dart';
 import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/helpers/adaptive_grid_helper.dart';
 import 'package:lucro_simples/pages/registers/customer_register_page.dart';
-import 'package:lucro_simples/pages/registers/import_contact_page.dart';
+import 'package:lucro_simples/pages/import_contacts/import_contact_page.dart';
 import 'package:lucro_simples/repositories/customer_repository_interface.dart';
 import 'package:lucro_simples/utils/debouncer.dart';
 import 'package:lucro_simples/utils/input_decorations.dart';
@@ -30,6 +31,13 @@ class _CustomersPageState extends State<CustomersPage> {
   void initState() {
     super.initState();
     _loadCustomers();
+
+    refreshCustomers.addListener(() {
+      if (refreshCustomers.value) {
+        _loadCustomers();
+        refreshCustomers.value = false;
+      }
+    });
   }
 
   void _loadCustomers() {
@@ -113,7 +121,7 @@ class _CustomersPageState extends State<CustomersPage> {
             onPressed: () {
               Navigator.pushNamed(context, ImportContactPage.routeName);
             },
-            child: Icon(Icons.import_contacts),
+            child: Icon(Icons.file_download_outlined),
           ),
           const SizedBox(width: 8),
           FloatingActionButton.extended(

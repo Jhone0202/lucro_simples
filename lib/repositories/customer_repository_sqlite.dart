@@ -75,4 +75,16 @@ class CustomerRepositorySqlite extends ICustomerRepository {
 
     return res.map((e) => Customer.fromMap(e)).toList();
   }
+
+  @override
+  Future<List<String>> getAllPhones() async {
+    final database = await LsDatabase().db;
+
+    final res = await database.query(
+      'customers',
+      columns: ['phoneNumber'],
+    );
+
+    return res.map((e) => e['phoneNumber'] as String).toList();
+  }
 }

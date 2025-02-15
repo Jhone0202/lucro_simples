@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:animate_do/animate_do.dart';
-import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,6 +10,7 @@ import 'package:lucro_simples/entities/customer.dart';
 import 'package:lucro_simples/entities/customer_types.dart';
 import 'package:lucro_simples/repositories/customer_repository_interface.dart';
 import 'package:lucro_simples/utils/input_decorations.dart';
+import 'package:lucro_simples/utils/masks.dart';
 import 'package:path_provider/path_provider.dart';
 
 class CustomerRegisterPage extends StatefulWidget {
@@ -35,7 +35,7 @@ class _CustomerRegisterPageState extends State<CustomerRegisterPage> {
   final formKey = GlobalKey<FormState>();
 
   final nameController = TextEditingController();
-  final phoneController = MaskedTextController(mask: '+55 (00) 00000-0000');
+  final phoneController = phoneMask;
 
   @override
   void initState() {

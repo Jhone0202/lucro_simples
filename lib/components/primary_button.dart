@@ -89,7 +89,6 @@ class _PrimaryButtonState extends State<PrimaryButton> {
             borderRadius: BorderRadius.circular(8),
           ),
           disabledBackgroundColor: Colors.grey.shade400,
-          disabledForegroundColor: Colors.grey.shade100,
           padding: widget.small
               ? const EdgeInsets.symmetric(horizontal: 8, vertical: 4)
               : const EdgeInsets.all(12),

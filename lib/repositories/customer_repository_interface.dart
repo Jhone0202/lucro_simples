@@ -8,4 +8,5 @@ abstract class ICustomerRepository {
     int? limit,
     int? offset,
   );
+  Future<List<String>> getAllPhones();
 }

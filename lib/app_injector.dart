@@ -3,6 +3,8 @@ import 'package:lucro_simples/repositories/analytics_repository_interface.dart';
 import 'package:lucro_simples/repositories/analytics_repository_sqlite.dart';
 import 'package:lucro_simples/repositories/company_repository_interface.dart';
 import 'package:lucro_simples/repositories/company_repository_sqlite.dart';
+import 'package:lucro_simples/repositories/contacts_repository_fast.dart';
+import 'package:lucro_simples/repositories/contacts_repository_interface.dart';
 import 'package:lucro_simples/repositories/customer_repository_interface.dart';
 import 'package:lucro_simples/repositories/customer_repository_sqlite.dart';
 import 'package:lucro_simples/repositories/product_repository_interface.dart';
@@ -31,5 +33,9 @@ void appInjectorSetup() {
 
   getIt.registerLazySingleton<IAnalyticsRepository>(
     () => AnalyticsRepositorySqlite(),
+  );
+
+  getIt.registerLazySingleton<IContactsRepository>(
+    () => ContactsRepositoryFast(),
   );
 }

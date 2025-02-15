@@ -1,4 +1,3 @@
-import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lucro_simples/components/animated_switch.dart';
@@ -6,6 +5,7 @@ import 'package:lucro_simples/entities/delivery_type.dart';
 import 'package:lucro_simples/entities/sale.dart';
 import 'package:lucro_simples/utils/formaters_util.dart';
 import 'package:lucro_simples/utils/input_decorations.dart';
+import 'package:lucro_simples/utils/masks.dart';
 
 class Delivery {
   DELIVERY_TYPE type;
@@ -96,8 +96,7 @@ class _SaleDeliveryCardState extends State<SaleDeliveryCard> {
 
   void editDeliveryCost() {
     final formKey = GlobalKey<FormState>();
-    final controller = MoneyMaskedTextController(
-      leftSymbol: 'R\$',
+    final controller = moneyMaskedTextController(
       initialValue: widget.sale.deliveryCost,
     );
 
