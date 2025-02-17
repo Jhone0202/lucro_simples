@@ -37,6 +37,13 @@ class AppTextStylesDefault extends IAppTextStyles {
       );
 
   @override
+  TextStyle get h3 => const TextStyle(
+        fontSize: 22,
+        fontWeight: FontWeight.w700,
+        height: 1.25,
+      );
+
+  @override
   TextStyle get titleSmall => const TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w600,

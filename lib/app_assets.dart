@@ -10,4 +10,6 @@ class AppAssets {
   static String animSucess = 'assets/animations/success.json';
   static String iconStars = 'assets/icons/stars.svg';
   static String imgDataAnalysis = 'assets/images/data_analysis.svg';
+  static String imgContacts = 'assets/images/contacts.svg';
+  static String tutorialContactsGif = 'assets/tutorials/tutorial_contact.gif';
 }
