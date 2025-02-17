@@ -1,5 +1,7 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lucro_simples/app_assets.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/app_notifiers.dart';
@@ -29,23 +31,65 @@ class _ProfilePageState extends State<ProfilePage> {
   void _showSalesAggregationDialog() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            RadioListTile<String>(
-              value: 'saleDate',
-              groupValue: config.salesAggregationDate,
-              onChanged: (v) => _onAggregationChanged(v, context),
-              title: const Text('Data de registro'),
-            ),
-            RadioListTile<String>(
-              value: 'deliveryDate',
-              groupValue: config.salesAggregationDate,
-              onChanged: (v) => _onAggregationChanged(v, context),
-              title: const Text('Data de entrega'),
-            ),
-          ],
+      builder: (context) => FadeInUp(
+        curve: Curves.easeInSine,
+        child: AlertDialog(
+          contentPadding: EdgeInsets.zero,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                height: 160,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  gradient: LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 240, 244, 197),
+                      Color.fromARGB(255, 220, 243, 190),
+                    ],
+                  ),
+                ),
+                child: SvgPicture.asset(
+                  AppAssets.imgDataAnalysis,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Data para Cálculos',
+                style: AppTheme.textStyles.titleMedium,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                'Selecione a data que os gráficos devem considerar para os cálculos',
+                textAlign: TextAlign.center,
+                style: AppTheme.textStyles.subtitleMedium.copyWith(
+                  color: Colors.black54,
+                ),
+              ),
+              const SizedBox(height: 12),
+              RadioListTile<String>(
+                value: 'saleDate',
+                groupValue: config.salesAggregationDate,
+                onChanged: (v) => _onAggregationChanged(v, context),
+                title: Text(
+                  'Data de registro',
+                  style: AppTheme.textStyles.bodyText,
+                ),
+              ),
+              const Divider(),
+              RadioListTile<String>(
+                value: 'deliveryDate',
+                groupValue: config.salesAggregationDate,
+                onChanged: (v) => _onAggregationChanged(v, context),
+                title: Text(
+                  'Data de entrega',
+                  style: AppTheme.textStyles.bodyText,
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
         ),
       ),
     );
@@ -55,6 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
     if (value != null && value != config.salesAggregationDate) {
       await config.setSalesAggregationDate(value);
       refreshDashboard.value = true;
+      setState(() {});
       if (dialogContext.mounted) Navigator.pop(dialogContext);
     }
   }

@@ -6,7 +6,7 @@ class AppInfoService {
 
   AppInfoService._internal();
 
-  late final String version;
+  late String version;
 
   Future<void> loadAppInfo() async {
     final packageInfo = await PackageInfo.fromPlatform();

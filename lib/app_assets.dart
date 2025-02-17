@@ -9,4 +9,5 @@ class AppAssets {
   static String loadingTiles = 'assets/animations/loading_tiles.json';
   static String animSucess = 'assets/animations/success.json';
   static String iconStars = 'assets/icons/stars.svg';
+  static String imgDataAnalysis = 'assets/images/data_analysis.svg';
 }
