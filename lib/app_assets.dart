@@ -12,4 +12,5 @@ class AppAssets {
   static String imgDataAnalysis = 'assets/images/data_analysis.svg';
   static String imgContacts = 'assets/images/contacts.svg';
   static String tutorialContactsGif = 'assets/tutorials/tutorial_contact.gif';
+  static String imgChangelog = 'assets/images/changelog.svg';
 }
