@@ -7,4 +7,5 @@ abstract class IAppColors {
   Color get secondary;
   Color get stroke;
   Color get yellow;
+  Color get red;
 }

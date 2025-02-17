@@ -1,8 +1,5 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:lucro_simples/app_assets.dart';
 import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/app_notifiers.dart';
 import 'package:lucro_simples/components/circle_file_image.dart';
@@ -13,16 +10,15 @@ import 'package:lucro_simples/components/today_sales_card.dart';
 import 'package:lucro_simples/entities/sale.dart';
 import 'package:lucro_simples/entities/sale_progess.dart';
 import 'package:lucro_simples/managers/session_manager.dart';
-import 'package:lucro_simples/pages/changelog/changelog_page.dart';
-import 'package:lucro_simples/pages/registers/company_register_page.dart';
 import 'package:lucro_simples/pages/sale/new_sale_page.dart';
 import 'package:lucro_simples/pages/sale/sale_wizard_page.dart';
-import 'package:lucro_simples/pages/settings/settings_page.dart';
 import 'package:lucro_simples/repositories/sale_repository_interface.dart';
 import 'package:lucro_simples/themes/app_theme.dart';
 
 class DashboardPage extends StatefulWidget {
-  const DashboardPage({super.key});
+  const DashboardPage({super.key, required this.goToProfile});
+
+  final VoidCallback goToProfile;
 
   @override
   State<DashboardPage> createState() => _DashboardPageState();
@@ -98,66 +94,25 @@ class _DashboardPageState extends State<DashboardPage> {
                 borderRadius: BorderRadius.circular(12),
                 color: Colors.white,
               ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ListTile(
-                      onTap: () => Navigator.pushNamed(
-                        context,
-                        CompanyRegisterPage.routeName,
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-                      leading: CircleFileImage(filePath: company.photoURL),
-                      title: Text(
-                        company.name,
-                        style: AppTheme.textStyles.titleSmall,
-                      ),
-                      subtitle: Text(
-                        company.userName,
-                        style: AppTheme.textStyles.caption.copyWith(
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ),
+              child: ListTile(
+                onTap: widget.goToProfile,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                leading: CircleFileImage(filePath: company.photoURL),
+                title: Text(
+                  company.name,
+                  style: AppTheme.textStyles.titleSmall,
+                ),
+                subtitle: Text(
+                  company.userName,
+                  style: AppTheme.textStyles.caption.copyWith(
+                    color: Colors.black54,
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(right: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: AppTheme.colors.yellow.withValues(alpha: 0.1),
-                    ),
-                    child: IconButton(
-                      onPressed: () => Navigator.pushNamed(
-                        context,
-                        ChangelogPage.routeName,
-                      ),
-                      icon: SvgPicture.asset(
-                        AppAssets.iconStars,
-                        width: 20,
-                      ),
-                      style: IconButton.styleFrom(
-                        foregroundColor: AppTheme.colors.yellow,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(right: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: AppTheme.colors.primary.withValues(alpha: 0.1),
-                    ),
-                    child: IconButton(
-                      onPressed: () => Navigator.pushNamed(
-                        context,
-                        SettingsPage.routeName,
-                      ),
-                      icon: Icon(Icons.settings),
-                      style: IconButton.styleFrom(
-                        foregroundColor: AppTheme.colors.primary,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
+                trailing: Icon(
+                  Icons.chevron_right,
+                  size: 16,
+                  color: AppTheme.colors.stroke,
+                ),
               ),
             ),
             const SalesAnimChart(),

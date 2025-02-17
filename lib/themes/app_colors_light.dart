@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:lucro_simples/themes/app_colors_interface.dart';
 
 class AppColorsLight extends IAppColors {
@@ -20,4 +21,7 @@ class AppColorsLight extends IAppColors {
 
   @override
   Color get yellow => const Color(0xFFFFC107);
+
+  @override
+  Color get red => const Color(0xFFE53935);
 }
