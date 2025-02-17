@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lucro_simples/app_assets.dart';
+import 'package:lucro_simples/app_injector.dart';
+import 'package:lucro_simples/app_notifiers.dart';
 import 'package:lucro_simples/components/circle_file_image.dart';
 import 'package:lucro_simples/components/profile_list_tile.dart';
 import 'package:lucro_simples/managers/session_manager.dart';
 import 'package:lucro_simples/pages/changelog/changelog_page.dart';
 import 'package:lucro_simples/pages/registers/company_register_page.dart';
+import 'package:lucro_simples/services/config_service.dart';
 import 'package:lucro_simples/themes/app_theme.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -17,6 +20,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final company = SessionManager.loggedCompany!;
+  final config = getIt.get<ConfigService>();
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +69,49 @@ class _ProfilePageState extends State<ProfilePage> {
           subtitle: 'Conheça as funcionalidades do app',
         ),
         ProfileListTile(
-          onTap: () {},
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    RadioListTile<String>(
+                      value: 'saleDate',
+                      groupValue: config.salesAggregationDate,
+                      onChanged: (v) async {
+                        if (v != null && v != config.salesAggregationDate) {
+                          await config.setSalesAggregationDate(v);
+                          refreshDashboard.value = true;
+                          setState(() {});
+                          if (mounted) Navigator.pop(context);
+                        }
+                      },
+                      title: const Text('Data de registro'),
+                    ),
+                    RadioListTile<String>(
+                      value: 'deliveryDate',
+                      groupValue: config.salesAggregationDate,
+                      onChanged: (v) async {
+                        if (v != null && v != config.salesAggregationDate) {
+                          await config.setSalesAggregationDate(v);
+                          refreshDashboard.value = true;
+                          setState(() {});
+                          Navigator.pop(context);
+                        }
+                      },
+                      title: const Text('Data de entrega'),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
           icon: CupertinoIcons.calendar,
           title: 'Data para Cálculos',
-          subtitle: 'Data do registro',
+          subtitle: config.salesAggregationDate == 'saleDate'
+              ? 'Data de registro'
+              : 'Data de entrega',
         ),
         ProfileListTile(
           icon: CupertinoIcons.info_circle,
