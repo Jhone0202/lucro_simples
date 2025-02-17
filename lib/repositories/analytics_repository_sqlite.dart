@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:lucro_simples/databases/ls_database.dart';
 import 'package:lucro_simples/entities/month_registers_serie.dart';
 import 'package:lucro_simples/repositories/analytics_repository_interface.dart';
+import 'package:lucro_simples/services/config_service.dart';
 import 'package:lucro_simples/utils/formaters_util.dart';
 
 class AnalyticsRepositorySqlite extends IAnalyticsRepository {
+  final ConfigService config;
+
+  AnalyticsRepositorySqlite(this.config);
+
   @override
   Future<List<MonthRegistersSerie>> getByPeriod(DateTimeRange period) async {
     final database = await LsDatabase().db;
 
-    const query = '''
+    final query = '''
       WITH RECURSIVE custom_period AS (
           SELECT DATE(? || ' 00:00:00') AS date
           UNION ALL
@@ -23,7 +28,7 @@ class AnalyticsRepositorySqlite extends IAnalyticsRepository {
           COALESCE(SUM(s.profit), 0) AS profit
       FROM custom_period d
       LEFT JOIN sales s 
-          ON DATE(s.saleDate / 1000, 'unixepoch', 'localtime') = d.date
+          ON DATE(s.${config.salesAggregationDate} / 1000, 'unixepoch', 'localtime') = d.date
       GROUP BY d.date
       ORDER BY d.date ASC;
     ''';
@@ -39,13 +44,13 @@ class AnalyticsRepositorySqlite extends IAnalyticsRepository {
   Future<MonthRegistersSerie> getTodayResume() async {
     final database = await LsDatabase().db;
 
-    const query = '''
+    final query = '''
       SELECT 
-        COALESCE(DATE(saleDate / 1000, 'unixepoch', 'localtime'), DATE('now', 'localtime')) AS date,
+        COALESCE(DATE(${config.salesAggregationDate} / 1000, 'unixepoch', 'localtime'), DATE('now', 'localtime')) AS date,
         COALESCE(SUM(total), 0) AS total,
         COALESCE(SUM(profit), 0) AS profit
       FROM sales
-      WHERE DATE(saleDate / 1000, 'unixepoch', 'localtime') = DATE('now', 'localtime');
+      WHERE DATE(${config.salesAggregationDate} / 1000, 'unixepoch', 'localtime') = DATE('now', 'localtime');
     ''';
 
     final res = await database.rawQuery(query);
@@ -59,13 +64,13 @@ class AnalyticsRepositorySqlite extends IAnalyticsRepository {
   Future<MonthRegistersSerie> getMonthResume() async {
     final database = await LsDatabase().db;
 
-    const query = '''
+    final query = '''
       SELECT 
-        COALESCE(DATE(saleDate / 1000, 'unixepoch', 'start of month', 'localtime'), DATE('now', 'start of month', 'localtime')) AS date,
+        COALESCE(DATE(${config.salesAggregationDate} / 1000, 'unixepoch', 'start of month', 'localtime'), DATE('now', 'start of month', 'localtime')) AS date,
         COALESCE(SUM(total), 0) AS total,
         COALESCE(SUM(profit), 0) AS profit
       FROM sales
-      WHERE DATE(saleDate / 1000, 'unixepoch', 'localtime') >= DATE('now', 'start of month', '-12 months', 'localtime')
+      WHERE DATE(${config.salesAggregationDate} / 1000, 'unixepoch', 'localtime') >= DATE('now', 'start of month', '-12 months', 'localtime')
       GROUP BY date
       ORDER BY date ASC;
     ''';

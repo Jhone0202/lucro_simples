@@ -5,6 +5,7 @@ import 'package:lucro_simples/managers/session_manager.dart';
 import 'package:lucro_simples/pages/home/home_page.dart';
 import 'package:lucro_simples/pages/onboarding/onboarding_page.dart';
 import 'package:lucro_simples/repositories/company_repository_interface.dart';
+import 'package:lucro_simples/services/config_service.dart';
 
 class SplashPage extends StatefulWidget {
   static const String routeName = '/';
@@ -25,6 +26,8 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future _firstLoad() async {
+    await getIt.get<ConfigService>().loadConfigs();
+
     final savedCompany = await repository.getSavedCompany();
 
     if (savedCompany != null) SessionManager.initSession(savedCompany);

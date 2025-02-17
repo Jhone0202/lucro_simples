@@ -11,10 +11,15 @@ import 'package:lucro_simples/repositories/product_repository_interface.dart';
 import 'package:lucro_simples/repositories/product_repository_sqlite.dart';
 import 'package:lucro_simples/repositories/sale_repository_interface.dart';
 import 'package:lucro_simples/repositories/sale_repository_sqlite.dart';
+import 'package:lucro_simples/services/config_service.dart';
 
 final getIt = GetIt.instance;
 
 void appInjectorSetup() {
+  getIt.registerLazySingleton<ConfigService>(
+    () => ConfigService(),
+  );
+
   getIt.registerLazySingleton<ICompanyRepository>(
     () => CompanyRepositorySqlite(),
   );
@@ -32,7 +37,7 @@ void appInjectorSetup() {
   );
 
   getIt.registerLazySingleton<IAnalyticsRepository>(
-    () => AnalyticsRepositorySqlite(),
+    () => AnalyticsRepositorySqlite(getIt.get<ConfigService>()),
   );
 
   getIt.registerLazySingleton<IContactsRepository>(
