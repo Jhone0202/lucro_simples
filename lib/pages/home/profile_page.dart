@@ -8,6 +8,7 @@ import 'package:lucro_simples/components/profile_list_tile.dart';
 import 'package:lucro_simples/managers/session_manager.dart';
 import 'package:lucro_simples/pages/changelog/changelog_page.dart';
 import 'package:lucro_simples/pages/registers/company_register_page.dart';
+import 'package:lucro_simples/services/app_info_service.dart';
 import 'package:lucro_simples/services/config_service.dart';
 import 'package:lucro_simples/themes/app_theme.dart';
 
@@ -21,6 +22,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final company = SessionManager.loggedCompany!;
   final config = getIt.get<ConfigService>();
+  final appInfo = getIt.get<AppInfoService>();
 
   void _showSalesAggregationDialog() {
     showDialog(
@@ -111,7 +113,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         ProfileListTile(
           icon: CupertinoIcons.info_circle,
-          title: 'v1.0.1',
+          title: 'v${appInfo.version}',
           subtitle: 'Versão do Lucro Simples',
         ),
         ProfileListTile(

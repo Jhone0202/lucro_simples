@@ -11,11 +11,16 @@ import 'package:lucro_simples/repositories/product_repository_interface.dart';
 import 'package:lucro_simples/repositories/product_repository_sqlite.dart';
 import 'package:lucro_simples/repositories/sale_repository_interface.dart';
 import 'package:lucro_simples/repositories/sale_repository_sqlite.dart';
+import 'package:lucro_simples/services/app_info_service.dart';
 import 'package:lucro_simples/services/config_service.dart';
 
 final getIt = GetIt.instance;
 
 void appInjectorSetup() {
+  getIt.registerLazySingleton<AppInfoService>(
+    () => AppInfoService(),
+  );
+
   getIt.registerLazySingleton<ConfigService>(
     () => ConfigService(),
   );
