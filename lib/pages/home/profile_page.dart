@@ -22,6 +22,39 @@ class _ProfilePageState extends State<ProfilePage> {
   final company = SessionManager.loggedCompany!;
   final config = getIt.get<ConfigService>();
 
+  void _showSalesAggregationDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            RadioListTile<String>(
+              value: 'saleDate',
+              groupValue: config.salesAggregationDate,
+              onChanged: (v) => _onAggregationChanged(v, context),
+              title: const Text('Data de registro'),
+            ),
+            RadioListTile<String>(
+              value: 'deliveryDate',
+              groupValue: config.salesAggregationDate,
+              onChanged: (v) => _onAggregationChanged(v, context),
+              title: const Text('Data de entrega'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _onAggregationChanged(String? value, BuildContext dialogContext) async {
+    if (value != null && value != config.salesAggregationDate) {
+      await config.setSalesAggregationDate(value);
+      refreshDashboard.value = true;
+      if (dialogContext.mounted) Navigator.pop(dialogContext);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -69,44 +102,7 @@ class _ProfilePageState extends State<ProfilePage> {
           subtitle: 'Conheça as funcionalidades do app',
         ),
         ProfileListTile(
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    RadioListTile<String>(
-                      value: 'saleDate',
-                      groupValue: config.salesAggregationDate,
-                      onChanged: (v) async {
-                        if (v != null && v != config.salesAggregationDate) {
-                          await config.setSalesAggregationDate(v);
-                          refreshDashboard.value = true;
-                          setState(() {});
-                          if (mounted) Navigator.pop(context);
-                        }
-                      },
-                      title: const Text('Data de registro'),
-                    ),
-                    RadioListTile<String>(
-                      value: 'deliveryDate',
-                      groupValue: config.salesAggregationDate,
-                      onChanged: (v) async {
-                        if (v != null && v != config.salesAggregationDate) {
-                          await config.setSalesAggregationDate(v);
-                          refreshDashboard.value = true;
-                          setState(() {});
-                          Navigator.pop(context);
-                        }
-                      },
-                      title: const Text('Data de entrega'),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
+          onTap: _showSalesAggregationDialog,
           icon: CupertinoIcons.calendar,
           title: 'Data para Cálculos',
           subtitle: config.salesAggregationDate == 'saleDate'
