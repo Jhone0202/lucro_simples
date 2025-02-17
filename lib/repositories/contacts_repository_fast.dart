@@ -28,17 +28,25 @@ class ContactsRepositoryFast implements IContactsRepository {
       }
     }
 
-    return contacts.map((e) {
-      String rawPhoneNumber = e.phones.firstOrNull?.number ?? '';
+    List<Customer> customers = [];
+
+    for (final contact in contacts) {
+      String rawPhoneNumber = contact.phones.firstOrNull?.number ?? '';
       String formattedPhoneNumber = _formatPhoneNumber(rawPhoneNumber);
 
-      return Customer(
-        photoURL: imgs[e.id],
-        name: e.displayName,
-        phoneNumber: formattedPhoneNumber,
-        type: IndividualCustomer(),
-      );
-    }).toList();
+      if (rawPhoneNumber.isNotEmpty && contact.displayName.isNotEmpty) {
+        customers.add(
+          Customer(
+            photoURL: imgs[contact.id],
+            name: contact.displayName,
+            phoneNumber: formattedPhoneNumber,
+            type: IndividualCustomer(),
+          ),
+        );
+      }
+    }
+
+    return customers;
   }
 
   String _formatPhoneNumber(String number) {

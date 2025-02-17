@@ -195,7 +195,7 @@ class _ImportCustomersListState extends State<ImportCustomersList> {
                 children: letters.map((letter) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(
-                      vertical: 4,
+                      vertical: 2,
                       horizontal: 8,
                     ),
                     child: Text(

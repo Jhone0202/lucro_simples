@@ -79,7 +79,7 @@ class _TodaySalesCardState extends State<TodaySalesCard> {
               vertical: 2,
             ),
             decoration: BoxDecoration(
-              color: AppTheme.colors.primary.withValues(alpha: 0.2),
+              color: Colors.white10,
               borderRadius: BorderRadius.circular(4),
             ),
             child: Text(
