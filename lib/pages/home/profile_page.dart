@@ -26,7 +26,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final company = SessionManager.loggedCompany!;
   final config = getIt.get<ConfigService>();
-  final appInfo = getIt.get<AppInfoService>();
+  final appInfoService = getIt.get<AppInfoService>();
 
   void _showSalesAggregationDialog() {
     showDialog(
@@ -195,7 +195,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         ProfileListTile(
           icon: CupertinoIcons.info_circle,
-          title: 'v${appInfo.version}',
+          title: 'v${appInfoService.version}',
           subtitle: 'Versão do Lucro Simples',
         ),
         ProfileListTile(

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lucro_simples/app_assets.dart';
+import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/components/primary_button.dart';
 import 'package:lucro_simples/components/secondary_button.dart';
 import 'package:lucro_simples/pages/changelog/changelog_page.dart';
@@ -10,6 +11,7 @@ import 'package:lucro_simples/pages/home/customers_page.dart';
 import 'package:lucro_simples/pages/home/dashboard_page.dart';
 import 'package:lucro_simples/pages/home/products_page.dart';
 import 'package:lucro_simples/pages/home/profile_page.dart';
+import 'package:lucro_simples/services/app_info_service.dart';
 import 'package:lucro_simples/themes/app_theme.dart';
 import 'package:lucro_simples/utils/keep_alive_page.dart';
 
@@ -22,6 +24,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final appInfoService = getIt.get<AppInfoService>();
   final pageController = PageController();
   int currentIndex = 0;
 
@@ -29,7 +32,10 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      showChangeLogDialog();
+      if (appInfoService.shouldShowChangelog) {
+        showChangeLogDialog();
+        appInfoService.markChangelogAsSeen();
+      }
     });
   }
 
@@ -55,6 +61,7 @@ class _HomePageState extends State<HomePage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
+                width: double.maxFinite,
                 height: 160,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
