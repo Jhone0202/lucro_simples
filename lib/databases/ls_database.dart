@@ -55,4 +55,13 @@ class LsDatabase {
       }
     }
   }
+
+  Future resetDatabase() async {
+    final database = await db;
+
+    await closeDatabase();
+    await deleteDatabase(database.path);
+
+    _db = await initDb();
+  }
 }

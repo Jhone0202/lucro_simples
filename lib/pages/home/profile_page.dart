@@ -5,9 +5,11 @@ import 'package:lucro_simples/app_injector.dart';
 import 'package:lucro_simples/app_notifiers.dart';
 import 'package:lucro_simples/components/circle_file_image.dart';
 import 'package:lucro_simples/components/profile_list_tile.dart';
+import 'package:lucro_simples/databases/ls_database.dart';
 import 'package:lucro_simples/managers/session_manager.dart';
 import 'package:lucro_simples/pages/changelog/changelog_page.dart';
 import 'package:lucro_simples/pages/registers/company_register_page.dart';
+import 'package:lucro_simples/pages/splash_page.dart';
 import 'package:lucro_simples/services/app_info_service.dart';
 import 'package:lucro_simples/services/config_service.dart';
 import 'package:lucro_simples/themes/app_theme.dart';
@@ -54,6 +56,41 @@ class _ProfilePageState extends State<ProfilePage> {
       await config.setSalesAggregationDate(value);
       refreshDashboard.value = true;
       if (dialogContext.mounted) Navigator.pop(dialogContext);
+    }
+  }
+
+  Future _logout() async {
+    final shouldLogout = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Confirmação'),
+        content: const Text(
+            'Tem certeza que deseja sair? Todos os dados serão apagados.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Sair'),
+          ),
+        ],
+      ),
+    );
+
+    if (shouldLogout == true) {
+      config.clearAll();
+
+      await LsDatabase().resetDatabase();
+
+      if (mounted) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          SplashPage.routeName,
+          (route) => false,
+        );
+      }
     }
   }
 
@@ -117,7 +154,7 @@ class _ProfilePageState extends State<ProfilePage> {
           subtitle: 'Versão do Lucro Simples',
         ),
         ProfileListTile(
-          onTap: () {},
+          onTap: _logout,
           icon: CupertinoIcons.square_arrow_right,
           iconColor: AppTheme.colors.red,
           backgroundColor: AppTheme.colors.red.withValues(alpha: 0.1),

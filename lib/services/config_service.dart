@@ -14,9 +14,14 @@ class ConfigService {
         prefs.getString('salesAggregationDate') ?? 'saleDate';
   }
 
-  Future<void> setSalesAggregationDate(String value) async {
+  Future setSalesAggregationDate(String value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('salesAggregationDate', value);
     salesAggregationDate = value;
+  }
+
+  Future clearAll() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
   }
 }
